@@ -1,0 +1,5 @@
+POSTGRES_DB: hyper
+POSTGRES_USER: hyper
+POSTGRES_PASSWORD: hyper
+TZ: 'Europe/Helsinki'
+PGTZ: 'Europe/Helsinki'

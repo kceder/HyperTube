@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15.1-alpine
+    container_name: postgres-express-hypertube
+    restart: always
+    env_file:
+      - ./server/.postgres-env
+    volumes:
+      - pg-express-data:/var/lib/postgresql/data
+      - ./docker/postgres/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    ports:
+      - "5432:5432"
+
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: hyper@tube.com
+      PGADMIN_DEFAULT_USER: hyper
+      PGADMIN_DEFAULT_PASSWORD: hyper
+      GUNICORN_ACCESS_LOGFILE: "/dev/null"
+    ports:
+      - "8080:80"
+
+volumes:
+  pg-express-data:
