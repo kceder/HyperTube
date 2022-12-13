@@ -6,7 +6,7 @@ services:
     container_name: postgres-express-hypertube
     restart: always
     env_file:
-      - ./server/.postgres-env
+      - ./docker/postgres/.postgres-env
     volumes:
       - pg-express-data:/var/lib/postgresql/data
       - ./docker/postgres/schema.sql:/docker-entrypoint-initdb.d/schema.sql

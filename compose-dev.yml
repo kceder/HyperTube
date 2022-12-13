@@ -7,7 +7,7 @@ services:
     depends_on: 
       - postgres
     env_file:
-      - ./server/.postgres-env
+      - ./docker/postgres/.postgres-env
     build: 
       context: ./
       dockerfile: ./docker/Dockerfile.dev
