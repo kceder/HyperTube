@@ -69,11 +69,13 @@ function getSessionsRouter() {
     passport.authenticate('local', function (err, user, info) {
       if (err) return res.status(401).json({ message: err })
       if (user) {
+        res.setHeader('Content-Type', 'application/json')
         res.status(200).json({
           message: 'successful authentication',
         })
       } else {
-        res.status(401).json({ message: info })
+        res.setHeader('Content-Type', 'application/json')
+        res.status(401).json({ message: info, error: true })
       }
     })(req, res)
   })

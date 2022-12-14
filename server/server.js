@@ -4,16 +4,19 @@ import { getUsersRouter } from './src/routes/users.js'
 import { getSessionsRouter } from './src/routes/sessions.js'
 
 // Middleware
+import cors from 'cors'
 import bodyParser from 'body-parser'
 import passport from 'passport'
 import session from 'express-session'
 
 const app = express()
 
+
 app.get('/api', (req, res) => {
   res.send('Hello world!\n')
 }) // testing shit out
 
+app.use(cors())
 app.use(bodyParser.json()) // Content-Type: application-json
 app.use(
   session({
