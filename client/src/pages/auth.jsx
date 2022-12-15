@@ -5,6 +5,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import Input from '../components/input'
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
+// redux
+import { useSelector, useDispatch } from 'react-redux'
+import { logIn } from '../store/authSlice'
 
 const validationSchema = z.object({
   userName: z
@@ -32,7 +35,16 @@ export default function AuthPage() {
     mode: 'all',
     resolver: zodResolver(validationSchema),
   })
+
   const navigate = useNavigate()
+  // Redux
+  const dispatch = useDispatch()
+  const { isLoggedIn } = useSelector(slices => slices.auth)
+
+  React.useEffect(() => {
+    if (isLoggedIn)
+      navigate('/', { replace: true })
+  }, [])
 
   async function submitHandler(data) {
     console.log(data.userName, data.password) // testing
@@ -55,6 +67,15 @@ export default function AuthPage() {
         // Let's clear the input fields (unnecessary if we redirect...)
         setValue('userName', '')
         setValue('password', '')
+
+        // set global state
+        dispatch(logIn({
+          uid: parsed.uid,
+          username: parsed.username,
+          profilePic: parsed.profilePic,
+          accessToken: parsed.accessToken
+        }))
+
         // And redirect the user to the main page
         navigate('/', { replace: true })
       } else {

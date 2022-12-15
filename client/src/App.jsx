@@ -8,7 +8,7 @@ import AuthPage from './pages/auth'
 export default function Home() {
   return (
     <BrowserRouter>
-    <Layout>
+      <Layout>
         <Routes>
           <Route path='/'
             element={<Hero />}

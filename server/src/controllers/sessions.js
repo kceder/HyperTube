@@ -33,8 +33,11 @@ async function login(req, res) {
   const expiryAccessToken = jwt.verify(accessToken, process.env.SECRET_JWT_KEY).exp
 
   res.status(200).json({
-    message: 'successfully logged in',
-    accessToken: accessToken
+    message:      'successfully logged in',
+    uid:          user.id,
+    username:     user.username,
+    accessToken:  accessToken,
+    profilePic:   user.profilePic
   })
 }
 
