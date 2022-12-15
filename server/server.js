@@ -1,3 +1,11 @@
+// Sensitive intel kept in environment variables defined in .env
+import dotenv from 'dotenv'
+import dotenvExpand from 'dotenv-expand'
+
+const config = dotenv.config({ path: '/app/.env' })
+dotenvExpand.expand(config)
+// console.log(process.env)  // testing
+
 import express from 'express'
 
 import { getUsersRouter } from './src/routes/users.js'
@@ -6,27 +14,20 @@ import { getSessionsRouter } from './src/routes/sessions.js'
 // Middleware
 import cors from 'cors'
 import bodyParser from 'body-parser'
-import passport from 'passport'
-import session from 'express-session'
+
 
 const app = express()
-
 
 app.get('/api', (req, res) => {
   res.send('Hello world!\n')
 }) // testing shit out
 
-app.use(cors())
+app.use(cors({
+  credentials: true,
+  origin: 'http://localhost:5173'
+}))
 app.use(bodyParser.json()) // Content-Type: application-json
-app.use(
-  session({
-    secret: 'secret', // later use something from process.env.SECRET or whatevs
-    resave: false,
-    saveUninitialized: true,
-  }),
-)
-app.use(passport.initialize())  // initialize passport on every route call.
-app.use(passport.session())     // allow passport to use "express-session".
+
 
 // Routes for creating user accounts, getting user profiles...
 app.use('/api', getUsersRouter())

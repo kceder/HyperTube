@@ -1,11 +1,12 @@
 import pg from 'pg'
 
-// Sensitive intel kept in environment variables defined in .env
+/* Surprisingly, I have to import dotenv here again (bc dotenvExpand)
+** Notice that this time, we don't have to pass the '.env' file to dotenv.
+*/
 import dotenv from 'dotenv'
 import dotenvExpand from 'dotenv-expand'
 
-dotenv.config({ path: '/app/.env' })
-dotenvExpand.expand(dotenv.config({ path: '/app/.env' }))
+dotenvExpand.expand(dotenv.config())
 // console.log(process.env)  // testing
 
 const { Pool } = pg

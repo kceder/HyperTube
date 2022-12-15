@@ -6,6 +6,18 @@ import {
 } from '@heroicons/react/24/outline'
 
 function Header() {
+  function logOutHandler() {
+    async function sendRequest() {
+      const resp = await fetch('/api/sessions', {
+        method: 'DELETE',
+        credentials: 'include'
+      })
+      const data = await resp.json()
+      console.log(data)
+    }
+    sendRequest()
+  }
+
   return (
     <header className='bg-gray-800 py-4 border-b-[1px] border-gray-700'>
       <div className='flex justify-between items-center max-w-6xl mx-auto'>
@@ -17,14 +29,14 @@ function Header() {
 
         <nav className='text-white'>
           <ul className='flex space-x-4 text-xl'>
-            {true &&  // hardcoded values for now
+            {false &&  // hardcoded values for now
             (<li>
               <Link to='/auth'>
                 <ArrowLeftOnRectangleIcon className='inline w-10 md:w-12 mr-4 hover:scale-105 hover:text-green-300'/>
               </Link>
             </li>)}
-            {false &&  // hardcoded values for now
-            (<li onClick={() => signOut({redirect: false, callbackUrl: "/"})}>
+            {true &&  // hardcoded values for now
+            (<li onClick={() => logOutHandler()}>
               <ArrowRightOnRectangleIcon className='inline w-10 md:w-12 mr-4 hover:scale-105 hover:text-red-500'/>
             </li>)}
             {/* User Settings (for logged-in users) */}

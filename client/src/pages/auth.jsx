@@ -45,7 +45,7 @@ export default function AuthPage() {
           username: data.userName,
           password: data.password
         }),
-        // credentials: 'include' // reminder for other requests (not needed here)
+        // credentials: 'include'
       })
       // console.log(result) // testing
       const parsed = await result.json()
