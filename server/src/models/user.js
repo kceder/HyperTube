@@ -25,11 +25,14 @@ async function createUser(user) {
     username,
     firstname,
     lastname,
-    email
+    email,
+    hashed_password
   } = user
-  const query = `INSERT INTO users (username, firstname, lastname, email)
-  VALUES ($1, $2, $3, $4) RETURNING *`
-  const values = [ username, firstname, lastname, email ]
+  const query = `INSERT INTO users
+  (username, firstname, lastname, email, password)
+  VALUES ($1, $2, $3, $4, $5) RETURNING *`
+
+  const values = [ username, firstname, lastname, email, hashed_password ]
   const result = await pool.query(query, values)
 
   console.log('User model - created user',result.rows[0]) // testing
@@ -37,4 +40,16 @@ async function createUser(user) {
   return createdUser ?? null 
 }
 
-export { findByUsername, findByEmail, createUser }
+async function writeProfilePic(user) {
+  const { id, profilePic } = user
+  const query = `UPDATE users SET profile_pic = $1 WHERE id = $2`
+
+  const values = [ profilePic, id ]
+  const result = await pool.query(query, values)
+
+  console.log('User profile Pic inserted: ', result.rows[0]) // testing
+  const createdUser = result.rows[0]
+  return createdUser ?? null 
+}
+
+export { findByUsername, findByEmail, createUser, writeProfilePic }

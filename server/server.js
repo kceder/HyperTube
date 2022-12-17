@@ -10,6 +10,7 @@ import express from 'express'
 
 import { getUsersRouter } from './src/routes/users.js'
 import { getSessionsRouter } from './src/routes/sessions.js'
+import { getUsernamesRouter } from './src/routes/usernames.js'
 
 // Middleware
 import cors from 'cors'
@@ -22,17 +23,18 @@ app.get('/api', (req, res) => {
   res.send('Hello world!\n')
 }) // testing shit out
 
-app.use(cors({
-  credentials: true,
-  origin: 'http://localhost:5173'
-}))
+app.use(cors())
 app.use(bodyParser.json()) // Content-Type: application-json
 
 
 // Routes for creating user accounts, getting user profiles...
 app.use('/api', getUsersRouter())
+
 // Routes for creating user sessions, deleting them...
 app.use('/api', getSessionsRouter())
+
+// Route for checking usernames (useful when signing up)
+app.use('/api', getUsernamesRouter())
 
 //Listen port
 const PORT = 3000

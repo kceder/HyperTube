@@ -5,6 +5,7 @@ import Layout from './components/layout'
 import Hero from './components/hero'
 import AuthPage from './pages/auth'
 import OAuthPage from './pages/oauth'
+import SignUpPage from './pages/sign-up'
 
 export default function Home() {
   return (
@@ -13,6 +14,10 @@ export default function Home() {
         <Routes>
           <Route path='/'
             element={<Hero />}
+          />
+
+          <Route path='sign-up'
+            element={<SignUpPage />}
           />
 
           <Route path='auth'
