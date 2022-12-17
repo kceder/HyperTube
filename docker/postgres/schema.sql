@@ -6,10 +6,10 @@ SET TIME ZONE 'Europe/Helsinki';
 CREATE TABLE IF NOT EXISTS users (
 	id SERIAL PRIMARY KEY,
 	username VARCHAR(10) NOT NULL,
-	firstname VARCHAR(30) NOT NULL,
-	lastname VARCHAR(30) NOT NULL,
+	firstname VARCHAR(30) DEFAULT '',
+	lastname VARCHAR(30) DEFAULT '',
 	email VARCHAR(255) NOT NULL,
-	password VARCHAR(255) NOT NULL,
+	password VARCHAR(255) DEFAULT '',
 	profile_pic VARCHAR(255) DEFAULT ''
 );
 

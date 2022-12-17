@@ -149,7 +149,10 @@ export default function AuthPage() {
           </p>
         </div>
 
-        <div className='border border-gray-700 rounded-md flex p-4 space-x-4 items-center justify-center hover:cursor-pointer hover:bg-white hover:bg-opacity-20 group'>
+        <a
+          className='border border-gray-700 rounded-md flex p-4 space-x-4 items-center justify-center hover:cursor-pointer hover:bg-white hover:bg-opacity-20 group'
+          href={`${import.meta.env.VITE_GITHUB_OAUTH_URL}${import.meta.env.VITE_GITHUB_CLIENT_ID}`}
+        >
           <img
             src='/github.svg'
             alt='github'
@@ -160,7 +163,7 @@ export default function AuthPage() {
           <p className='py-3 group-hover:underline group-hover:underline-offset-4'>
             Access using your Github Account
           </p>
-        </div>
+        </a>
       </div>
     </div>
   )

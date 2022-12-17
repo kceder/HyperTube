@@ -1,5 +1,5 @@
 import express from 'express'
-import { login, logout } from '../controllers/sessions.js'
+import { login, logout, oauthGitHub } from '../controllers/sessions.js'
 
 // middleware
 import { validateLogin } from '../middlewares/validateLogin.js'
@@ -10,9 +10,12 @@ function getSessionsRouter() {
 
   // Endpoint for logging in
   router.post('/sessions', validateLogin, login)
-
-  // Endpoint for logging in
+  
+  // Endpoint for logging out
   router.delete('/sessions', validateToken, logout)
+  
+  // Endpoint for logging in using GitHub OAuth
+  router.post('/sessions/oauth/github', oauthGitHub)
 
   return router
 }
