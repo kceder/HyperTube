@@ -106,7 +106,12 @@ export default function SignUpPage() {
       body: formData
     })
     const parsed = await response.json()
-    // console.log(parsed.message)
+    if (parsed.error) {
+      console.log(`sign-up failed: ${JSON.stringify(parsed.error)}`) // show some feedback in modal bro!!!
+    } else {
+      console.log(`sign-up OK: ${JSON.stringify(parsed.message)}`) // show some feedback in modal bro!!!
+      // and redirect
+    }
   }
 
   // console.log(watch('userName')) // we can watch input content on 'change' events

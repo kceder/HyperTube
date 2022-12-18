@@ -5,7 +5,7 @@ async function findByUsername({ username }) {
   const values = [ username ]
   const result = await pool.query(query, values)
 
-  console.log('User model - found user',result.rows[0]) // testing
+  // console.log('User model - found user',result.rows[0]) // testing
   const user = result.rows[0]
   return user ?? null 
 }
@@ -15,7 +15,7 @@ async function findByEmail({ email }) {
   const values = [ email ]
   const result = await pool.query(query, values)
 
-  console.log('User model - found user', result.rows[0]) // testing
+  // console.log('User model - found user', result.rows[0]) // testing
   const user = result.rows[0]
   return user ?? null 
 }
@@ -35,7 +35,7 @@ async function createUser(user) {
   const values = [ username, firstname, lastname, email, hashed_password ]
   const result = await pool.query(query, values)
 
-  console.log('User model - created user',result.rows[0]) // testing
+  // console.log('User model - created user',result.rows[0]) // testing
   const createdUser = result.rows[0]
   return createdUser ?? null 
 }
@@ -47,7 +47,7 @@ async function writeProfilePic(user) {
   const values = [ profilePic, id ]
   const result = await pool.query(query, values)
 
-  console.log('User profile Pic inserted: ', result.rows[0]) // testing
+  // console.log('User profile Pic inserted: ', result.rows[0]) // testing
   const createdUser = result.rows[0]
   return createdUser ?? null 
 }

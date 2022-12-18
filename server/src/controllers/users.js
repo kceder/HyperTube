@@ -10,9 +10,13 @@ import { savePic } from '/app/src/lib/picUtils.js'
 // To hash passwords before saving them to DB
 import { hashPassword } from '/app/src/lib/auth.js'
 
+// To peek into the content of user uploaded files
+import { fileTypeFromFile } from 'file-type'
+
 // To create a user, insert profile pic, and check if username already exists
 import {
   findByUsername,
+  findByEmail,
   createUser,
   writeProfilePic
 } from '/app/src/models/user.js'
@@ -53,7 +57,15 @@ const validationSchema = z
     email: z
       .string()
       .min(1, { message: 'Email is required' })
-      .email({ message: 'Must be a valid email' }),
+      .email({ message: 'Must be a valid email' })
+      .refine(
+        async (email) => {
+          const user = await findByEmail({ email })
+
+          return user ? false : true
+        },
+        { message: 'Email already exists' }
+      ),
     password: z
       .string()
       .min(5, { message: 'Between 5-10 characters' })
@@ -67,7 +79,16 @@ const validationSchema = z
         `Max image size is 5MB.`
       )
       .refine(
-        (file) => !file || ACCEPTED_IMAGE_TYPES.includes(file.mimetype),
+        async (file) => {
+          if (!file) return true // if the user didn't submit a file
+          // console.log(JSON.stringify(file)) // testing
+
+          const result = await fileTypeFromFile(file.filepath)
+          if (!result) return false     // if file is not recognized (undefined)
+          const { ext, mime } = result  // if file is recognized
+          console.log(`File: ${mime}, ${ext}`) // testing
+          if (ACCEPTED_IMAGE_TYPES.includes(mime)) return true
+        },
         'Only .jpg, .jpeg, .png and .webp formats are supported.'
       ),
   })
@@ -78,7 +99,7 @@ export const config = { api: { bodyParser: false } }
 async function signUpUser(req, res) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST')
-    return res.status(405).json({ message: 'Method not allowed'})
+    return res.status(405).json({ error: 'Method not allowed'})
   }
 
   const form = new formidable.IncomingForm()
@@ -97,9 +118,10 @@ async function signUpUser(req, res) {
       })
       // console.log(`parsedUser: ${JSON.stringify(parsedUser)}`) // testing
     } catch (errors) {
-      // console.log(`Errors parsing User: ${errors}`) // testing
+      const firstError = JSON.parse(errors)[0].message
+      console.log(`Errors parsing User: ${JSON.parse(errors)[0].message}`) // testing
       return res.status(400).json({
-        message: JSON.stringify(errors)
+        error: firstError
       })
     }
 
@@ -122,7 +144,7 @@ async function signUpUser(req, res) {
     } catch (error) {
       // console.log(error.stack) // testing
       return res.status(422).json({
-        message: `couldn't create account: ${error.stack}`
+        error: `couldn't create account: ${error.stack}`
       })
     }
     let profilePicUrl = ''
@@ -135,7 +157,7 @@ async function signUpUser(req, res) {
       } catch (error) {
         // console.log('could not save pic', error) // testing
         return res.status(422).json({
-          message: `couldn't save pic: ${error.stack}`
+          error: `couldn't save pic: ${error.stack}`
         })
       }
     }
@@ -151,7 +173,7 @@ async function signUpUser(req, res) {
       } catch (error) {
         console.log('could not save pic url to DB', error) // testing
         return res.status(422).json({
-          message: 'could not save user profile to DB'
+          error: 'could not save user profile to DB'
         })
       }
     }
