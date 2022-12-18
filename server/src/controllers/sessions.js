@@ -60,13 +60,14 @@ async function oauthGitHub(req, res) {
   // URL for requesting an access token from GitHub
   const urlAccessToken = 'https://github.com/login/oauth/access_token?'
   
+  // Necessary parameteres for requesting the token
   const queryParams = new URLSearchParams({
     client_id:      process.env.GITHUB_CLIENT_ID,
     client_secret:  process.env.GITHUB_CLIENT_SECRET,
     code:           code,
     redirect_uri:   'http://localhost:5173/oauth/github'
   })
-  // Make request to get a GitHub access token (needed to get user data)
+  // Make request to get the GitHub access token (needed to get user data)
   const response = await fetch(urlAccessToken + queryParams, {
     method: 'POST',
     headers: { 'Accept': 'application/json' },
@@ -79,9 +80,9 @@ async function oauthGitHub(req, res) {
       error: data.error_description
     })
   }
+  // Now that we have the token, let's pull out data from the GitHub API!
   const GitHubAccessToken = data.access_token
   console.log(`Response: ${JSON.stringify(data)}`) // testing
-  
   
   // URL for getting just the EMAILS from user's GitHub account
   const urlEmail = 'https://api.github.com/user/emails'
@@ -112,9 +113,10 @@ async function oauthGitHub(req, res) {
       username,
       email,
       firstname: 'Anonymous',
-      lastname: ''
+      lastname: '',
+      password: ''
     }
-    console.log(`creating user...`)
+    console.log(`creating user...`) // testing
     const createdUser = await createUser(newUser)
     console.log(`user created: ${createdUser.id}`)
     
@@ -136,11 +138,13 @@ async function oauthGitHub(req, res) {
       sub:    user.id
     }, process.env.SECRET_JWT_KEY, { expiresIn: process.env.ACCESS_TOKEN_EXP })
 
+    // console.log(user) // testing
+
     /* Send response back to the existing user. */
     res.status(200).json({
       message:      'successfully logged in',
       accessToken:  accessToken,
-      uid:          user.uid,
+      uid:          user.id,
       username:     user.username,
       profilePic:   user.profile_pic
     })

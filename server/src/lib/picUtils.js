@@ -1,4 +1,5 @@
-import fs from 'fs/promises'
+import { default as fsPromise } from 'fs/promises'
+import fs from 'fs'
 import path from 'path'
 
 /**
@@ -24,7 +25,7 @@ export const savePic = async (pic, uid) => {
   // Check if the user images folder exists
   var folderExists
   try {
-    await fs.access(userFolder)
+    await fsPromise.access(userFolder)
     folderExists = true
     // console.log(`folderExists? ${folderExists}`) // testing
   } catch (error) {
@@ -35,7 +36,7 @@ export const savePic = async (pic, uid) => {
 
   if (!folderExists) {
     try {
-      await fs.mkdir(userFolder, { recursive: true })
+      await fsPromise.mkdir(userFolder, { recursive: true })
       // console.log(`Creating ${userFolder}`) // testing
     } catch (error) {
       // console.log(`Error creating ${userFolder} (${error})`) // testing
@@ -43,7 +44,7 @@ export const savePic = async (pic, uid) => {
   }
 
   // Read the first pic (the server placed it in a /temp folder)
-  const content = await fs.readFile(pic.filepath, (err) => {
+  const content = await fsPromise.readFile(pic.filepath, (err) => {
     if (err) console.log(err)
   })
 
@@ -51,8 +52,17 @@ export const savePic = async (pic, uid) => {
   const ext = pic.mimetype.split('/')[1]
 
   // Write the pic to the user's folder
-  await fs.writeFile(`${userFolder}/${pic.newFilename}.${ext}`, content)
+  await fsPromise.writeFile(`${userFolder}/${pic.newFilename}.${ext}`, content)
 
   // We return the relative URL, in case we want to send it in the response.
   return `/uploads/${uid}/${pic.newFilename}.${ext}`
+}
+
+export const deletePic = async (picPath) => {
+  fs.unlink(`/app/public${picPath}`, (err) => {
+    if (err)
+      console.log(`Error deleting pic: ${err}`)
+    else
+      console.log("File Deleted Successfully")
+  })
 }

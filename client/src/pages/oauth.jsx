@@ -14,54 +14,58 @@ export default function OAuthPage() {
   const searchParams = new URLSearchParams(document.location.search)
   const dispatch = useDispatch()
   const { isLoggedIn } = useSelector(slices => slices.auth)
-  
+
+  async function oauthGitHub() {
+    setIsLoading(true)
+    const data = { code: searchParams.get('code') }
+    console.log('code: ', data.code);
+
+    const response = await fetch('/api/sessions/oauth/github', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
+
+    const parsed = await response.json()
+    // console.log(`response: ${JSON.stringify(parsed)}`)
+    console.log(`response: ${JSON.stringify(parsed.id)}`) // testing
+    if (parsed.error) {
+      // Don't log in the user
+      setError(parsed.error)
+
+      // Redirect after 3 seconds
+      setTimeout(() => { 
+        navigate('/', { replace: true })
+    }, 3000)
+    } else if (parsed.newUser) {
+      // Log in the user
+      dispatch(logIn({
+        uid: parsed.uid,
+        username: parsed.username,
+        profilePic: parsed.profilePic || '',
+        accessToken: parsed.accessToken
+      }))
+      // Redirect to profile, so that user can update settings (username, ...)
+      navigate('/profile', { replace: true })
+    } else {
+      // Log in the user
+      dispatch(logIn({
+        uid: parsed.uid,
+        username: parsed.username,
+        profilePic: parsed.profilePic || '',
+        accessToken: parsed.accessToken
+      }))
+      navigate('/', { replace: true })
+    }
+    setIsLoading(false)
+  }
+
   React.useEffect(() => {
     // if (isLoggedIn) navigate('/', { replace: true })
-    async function getGitHub() {
-      setIsLoading(true)
-      const data = { code: searchParams.get('code') }
-      console.log('code: ', data.code);
 
-      const response = await fetch('/api/sessions/oauth/github', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      })
-
-      const parsed = await response.json()
-      // console.log(`response: ${JSON.stringify(parsed)}`)
-      console.log(`response: ${JSON.stringify(parsed)}`)
-      if (parsed.error) {
-        // Don't log in the user
-        setError(parsed.error)
-
-        // Redirect after 3 seconds
-        setTimeout(() => { 
-          navigate('/', { replace: true })
-      }, 3000)
-      } else if (parsed.newUser) {
-        // Log in the user
-        dispatch(logIn({
-          uid: parsed.uid,
-          username: parsed.username,
-          profilePic: parsed.profilePic || '',
-          accessToken: parsed.accessToken
-        }))
-        navigate('/', { replace: true })
-      } else {
-        // Log in the user
-        dispatch(logIn({
-          uid: parsed.uid,
-          username: parsed.username,
-          profilePic: parsed.profilePic || '',
-          accessToken: parsed.accessToken
-        }))
-        navigate('profile', { replace: true })
-      }
-      setIsLoading(false)
-    }
+    // Invoke code to authenticate user using GitHub
     if (location.pathname === '/oauth/github') {
-      getGitHub()
+      oauthGitHub()
       // console.log(`GH code: ${code}`)
     }
   }, [])

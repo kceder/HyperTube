@@ -14,7 +14,7 @@ const validateToken = (req, res, next) => {
     }
 
     try {
-      jwt.verify(accessToken, process.env.SECRET_JWT_KEY)
+      req.uid = jwt.verify(accessToken, process.env.SECRET_JWT_KEY).sub
       next()
     } catch (error) {
       res.status(403).json({ message: error })

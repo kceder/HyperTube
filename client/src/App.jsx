@@ -6,6 +6,7 @@ import Hero from './components/hero'
 import AuthPage from './pages/auth'
 import OAuthPage from './pages/oauth'
 import SignUpPage from './pages/sign-up'
+import ProfilePage from './pages/profile'
 
 export default function Home() {
   return (
@@ -18,6 +19,10 @@ export default function Home() {
 
           <Route path='sign-up'
             element={<SignUpPage />}
+          />
+
+          <Route path='profile'
+            element={<ProfilePage />}
           />
 
           <Route path='auth'

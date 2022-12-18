@@ -1,19 +1,30 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   ArrowLeftOnRectangleIcon,
-  ArrowRightOnRectangleIcon
+  ArrowRightOnRectangleIcon,
+  UserCircleIcon
 } from '@heroicons/react/24/outline'
 // redux
 import { useSelector, useDispatch } from 'react-redux'
 import { logOut } from '../store/authSlice'
 
 function Header() {
+  const navigate = useNavigate()
   // Redux
   const dispatch = useDispatch()
-  const { isLoggedIn } = useSelector(slices => slices.auth)
+  const { isLoggedIn, profilePic } = useSelector(slices => slices.auth)
 
+  function logoutHandler() {
+    dispatch(logOut())
+    navigate('/', { replace: true })
+  }
   console.log(`header: ${isLoggedIn}`);
+  let imgElem = !profilePic ?
+  <UserCircleIcon className='w-12 hover:text-blue-400' />
+  :
+  <img src={profilePic} alt="" className='rounded-full h-12 w-12 object-cover' crossOrigin='anonymous' />
+  
   return (
     <header className='bg-gray-800 py-4 border-b-[1px] border-gray-700'>
       <div className='flex justify-between items-center max-w-6xl mx-auto'>
@@ -32,9 +43,18 @@ function Header() {
               </Link>
             </li>)
             :
-            (<li onClick={() => dispatch(logOut())}>
-              <ArrowRightOnRectangleIcon className='inline w-10 md:w-12 mr-4 hover:scale-105 hover:text-red-500'/>
-            </li>)}
+            (<>
+              <li>
+                <Link to='/profile'>
+                  {imgElem}
+                  {/* <ArrowLeftOnRectangleIcon className='inline w-10 md:w-12 mr-4 hover:scale-105 hover:text-green-300'/> */}
+                </Link>
+              </li>
+
+              <li onClick={logoutHandler}>
+                <ArrowRightOnRectangleIcon className='inline w-10 md:w-12 mr-4 hover:scale-105 hover:text-red-500'/>
+              </li>
+            </>)}
             {/* User Settings (for logged-in users) */}
             {/* Language Selector (for all folks?) */}
           </ul>

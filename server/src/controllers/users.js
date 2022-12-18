@@ -5,7 +5,7 @@ import formidable from 'formidable'
 import { z } from 'zod'
 
 // To save the pic to the filesystem
-import { savePic } from '/app/src/lib/picUtils.js'
+import { savePic, deletePic } from '/app/src/lib/picUtils.js'
 
 // To hash passwords before saving them to DB
 import { hashPassword } from '/app/src/lib/auth.js'
@@ -13,12 +13,14 @@ import { hashPassword } from '/app/src/lib/auth.js'
 // To peek into the content of user uploaded files
 import { fileTypeFromFile } from 'file-type'
 
-// To create a user, insert profile pic, and check if username already exists
+// To deal with the users table (DB)
 import {
   findByUsername,
   findByEmail,
+  findByUid,
   createUser,
-  writeProfilePic
+  writeProfilePic,
+  updateUserProfile
 } from '/app/src/models/user.js'
 
 const MAX_FILE_SIZE = 500000
@@ -92,23 +94,95 @@ const validationSchema = z
         'Only .jpg, .jpeg, .png and .webp formats are supported.'
       ),
   })
-  
+
+  const validationSchema2 = z
+  .object({
+    userName: z
+      .string()
+      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
+        message: '5-10 upper and lowercase letters, and digits',
+      }),
+    firstName: z
+      .string()
+      .min(1, { message: 'First Name is required' })
+      .max(30, { message: 'Maximum 30 characters' })
+      .regex(/^[a-zA-Z\s]+$/, { message: 'Only letters and spaces' }),
+    lastName: z
+      .string()
+      .min(1, { message: 'Last Name is required' })
+      .max(30, { message: 'Maximum 30 characters' })
+      .regex(/^[a-zA-Z\s]+$/, { message: 'Only letters and spaces' }),
+    email: z
+      .string()
+      .min(1, { message: 'Email is required' })
+      .email({ message: 'Must be a valid email' }),
+    profilePic: z
+      .any()
+      .refine(
+        (file) => !file || file.size <= MAX_FILE_SIZE,
+        `Max image size is 5MB.`
+      )
+      .refine(
+        async (file) => {
+          if (!file) return true // if the user didn't submit a file
+
+          const result = await fileTypeFromFile(file.filepath)
+          if (!result) return false     // if file is not recognized (undefined)
+          const { ext, mime } = result  // if file is recognized
+          // console.log(`File: ${mime}, ${ext}`) // testing
+          if (ACCEPTED_IMAGE_TYPES.includes(mime)) return true
+        },
+        'Only .jpg, .jpeg, .png and .webp formats are supported.'
+      ),
+  })
+
 // Important! We have to disable bodyParser to parse incoming data as a Form
 export const config = { api: { bodyParser: false } }
 
-async function signUpUser(req, res) {
-  if (req.method !== 'POST') {
-    res.setHeader('Allow', 'POST')
-    return res.status(405).json({ error: 'Method not allowed'})
+async function handleProfilePic(oldProfilePic, profilePic, uid) {
+  console.log(`handleProfilePic: ${JSON.stringify(profilePic)}`)
+  let profilePicUrl = ''
+  // Save picture to filesystem
+  if (profilePic) {
+    console.log('Saving to fs ', profilePic.newFilename) // testing
+    try {
+      // savePic returns the URL of the saved pic
+      profilePicUrl = await savePic(profilePic, uid)
+    } catch (error) {
+      // console.log('could not save pic', error) // testing
+      throw new Error(`couldn't save pic: ${error.stack}`)
+    }
+    // Delete Old profile pic (if there's one)
+    if (oldProfilePic) {
+      console.log('oldProfilePic? ', oldProfilePic);
+      try {
+        deletePic(oldProfilePic)
+      } catch (error) {
+        console.log(error)
+      }
+    }
   }
 
+  // Writing the profile picture url to the DB
+  if (profilePicUrl) {
+    try {
+      const result = await writeProfilePic({
+        profilePic: profilePicUrl,
+        uid: uid
+      })
+      console.log(result)
+    } catch (error) {
+      console.log('could not save pic url to DB', error) // testing
+      throw new Error(`could not save pic url to DB: ${error}`)
+    }
+  }
+  return true
+}
+
+async function signUpUser(req, res) {
   const form = new formidable.IncomingForm()
   form.parse(req, async function (err, fields, files) {
-    // console.log(fields) // testing
     const profilePic =  files?.profilePic === undefined ? false : files.profilePic
-    // console.log('it seems we received: ',files.profilePic.originalFilename) // testing
-    // console.log(files.profilePic?.mimetype) // testing
-    // console.log(files.profilePic?.size) // testing
 
     try {
       // Validate user data (zod)
@@ -116,7 +190,6 @@ async function signUpUser(req, res) {
         ...fields,
         profilePic: profilePic
       })
-      // console.log(`parsedUser: ${JSON.stringify(parsedUser)}`) // testing
     } catch (errors) {
       const firstError = JSON.parse(errors)[0].message
       console.log(`Errors parsing User: ${JSON.parse(errors)[0].message}`) // testing
@@ -140,45 +213,113 @@ async function signUpUser(req, res) {
 
       const createdUser = await createUser(newUser)
       uid = createdUser.id
-      // console.log(createdUser)  // testing
     } catch (error) {
-      // console.log(error.stack) // testing
       return res.status(422).json({
         error: `couldn't create account: ${error.stack}`
       })
     }
-    let profilePicUrl = ''
-    // Save picture to filesystem
-    if (profilePic) {
-      // console.log('Saving to fs ', profilePic.newFilename) // testing
-      try {
-        // savePic returns the URL of the saved pic
-        profilePicUrl = await savePic(profilePic, uid)
-      } catch (error) {
-        // console.log('could not save pic', error) // testing
-        return res.status(422).json({
-          error: `couldn't save pic: ${error.stack}`
-        })
-      }
-    }
-
-    // Writing the profile picture url to the DB
-    if (profilePicUrl) {
-      try {
-        const result = await writeProfilePic({
-          profilePic: profilePicUrl,
-          id: uid
-        })
-        console.log(result)
-      } catch (error) {
-        console.log('could not save pic url to DB', error) // testing
-        return res.status(422).json({
-          error: 'could not save user profile to DB'
-        })
-      }
+    // Let's try to write the pic to filesystem and DB
+    try {
+      handleProfilePic(false, profilePic, uid)
+    } catch(error) {
+      return res.status(422).json({
+        error: error
+      })
     }
     res.status(200).json({ message: 'user account successfully created' })
   })
 }
 
-export { signUpUser }
+async function getUser(req, res) {
+  const uid = parseInt(req.params.id)
+  // console.log(`uid: ${uid}, typeof uid: ${typeof uid}`) // testing
+  let user
+  try {
+    user = await findByUid({ uid })
+  } catch (error) {
+    return res.status(400).json({ error: 'something went wrong' })
+  }
+  
+  if (!user)
+    return res.status(400).json({ error: 'user does not exist' })
+
+  delete user.password // don't send the password in any case
+
+  /* If the requested user is not the one in the access token (that the 
+    validateToken middleware hung in the req.uid property) don't send
+    the email. */
+  if (req.uid !== uid) delete user.email
+
+  return res.status(200).json({ user })
+}
+
+async function updateUser(req, res) {
+  const uid = parseInt(req.params.id)
+  /* If the requested user is not the one in the access token (that the 
+    validateToken middleware hung in the req.uid property) don't bother
+    to continue. */
+  if (req.uid !== uid)
+    return res.status(400).json({ error: 'something went wrong' })
+
+  let user
+  try {
+    user = await findByUid({ uid })
+  } catch (error) {
+    return res.status(400).json({ error: 'something went wrong' })
+  }
+
+  if (!user)
+    return res.status(400).json({ error: 'user does not exist' })
+  
+  const form = new formidable.IncomingForm()
+  form.parse(req, async function (err, fields, files) {
+    console.log(`fields: ${JSON.stringify(fields)}`) // testing
+    const profilePic =  files?.profilePic === undefined ? false : files.profilePic
+
+    if (profilePic) { // <======== TESTING!!!!!!
+      console.log('it seems we received: ', profilePic.originalFilename) // testing
+      console.log(profilePic?.mimetype) // testing
+      console.log(profilePic?.size) // testing
+    }
+
+    // Validate user data (zod)
+    try {
+      const parsedUser = await validationSchema2.parseAsync({
+        ...fields,
+        profilePic: profilePic
+      })
+    } catch (errors) {
+      const firstError = JSON.parse(errors)[0].message
+      console.log(`Errors parsing User: ${JSON.parse(errors)[0].message}`) // testing
+      return res.status(400).json({
+        error: firstError
+      })
+    }
+
+    const toBeUpdatedUser = {
+      uid,
+      username: (user.username === fields.userName) ? user.username : fields.userName,
+      firstname: (user.firstname === fields.firstName) ? user.firstname : fields.firstName,
+      lastname: (user.lastname === fields.lastName) ? user.lastname : fields.lastName,
+      email: (user.email === fields.email) ? user.email : fields.email
+    }
+
+    try {
+      await updateUserProfile(toBeUpdatedUser)
+    } catch (error) {
+      return res.status(400).json({ error: 'something went wrong' })
+    }
+    // Let's try to write the new pic to filesystem and DB (and delete old one)
+    try {
+      handleProfilePic(user.profile_pic, profilePic, uid)
+    } catch(error) {
+      return res.status(422).json({
+        error: error
+      })
+    }
+    // If all went OK, let's return a successful response
+    return res.status(200).json({ message: 'user profile successfully updated' })
+  })
+}
+
+export { signUpUser, getUser, updateUser }

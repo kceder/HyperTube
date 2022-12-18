@@ -20,6 +20,16 @@ async function findByEmail({ email }) {
   return user ?? null 
 }
 
+async function findByUid({ uid }) {
+  const query = `SELECT * FROM users WHERE id = $1`
+  const values = [ uid ]
+  const result = await pool.query(query, values)
+
+  console.log('User model - found user', result.rows[0]) // testing
+  const user = result.rows[0]
+  return user ?? null 
+}
+
 async function createUser(user) {
   const {
     username,
@@ -40,11 +50,35 @@ async function createUser(user) {
   return createdUser ?? null 
 }
 
+async function updateUserProfile(user) {
+  const {
+    username,
+    firstname,
+    lastname,
+    email,
+    uid
+  } = user
+  const query = `UPDATE users
+  SET username = $1,
+      firstname = $2,
+      lastname = $3,
+      email = $4
+  WHERE id = $5
+  RETURNING *`
+
+  const values = [ username, firstname, lastname, email, uid ]
+  const result = await pool.query(query, values)
+
+  // console.log('User model - created user',result.rows[0]) // testing
+  const updatedUser = result.rows[0]
+  return updatedUser ?? null 
+}
+
 async function writeProfilePic(user) {
-  const { id, profilePic } = user
+  const { uid, profilePic } = user
   const query = `UPDATE users SET profile_pic = $1 WHERE id = $2`
 
-  const values = [ profilePic, id ]
+  const values = [ profilePic, uid ]
   const result = await pool.query(query, values)
 
   // console.log('User profile Pic inserted: ', result.rows[0]) // testing
@@ -52,4 +86,11 @@ async function writeProfilePic(user) {
   return createdUser ?? null 
 }
 
-export { findByUsername, findByEmail, createUser, writeProfilePic }
+export {
+  findByUsername,
+  findByEmail,
+  findByUid,
+  createUser,
+  updateUserProfile,
+  writeProfilePic
+}
