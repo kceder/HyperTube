@@ -27,7 +27,7 @@ function Hero() {
       </div>
 
       <div className="hidden md:block md:w-full">
-        <img src="/logo.png" alt="mockup" className="w-80 md:mx-auto" />
+        <img src="/assets/logo.png" alt="mockup" className="w-80 md:mx-auto" />
       </div>
     </div>
   );

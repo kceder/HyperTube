@@ -28,7 +28,7 @@ export default function OAuthPage() {
 
     const parsed = await response.json()
     // console.log(`response: ${JSON.stringify(parsed)}`)
-    console.log(`response: ${JSON.stringify(parsed.id)}`) // testing
+    // console.log(`response: ${JSON.stringify(parsed.id)}`) // testing
     if (parsed.error) {
       // Don't log in the user
       setError(parsed.error)

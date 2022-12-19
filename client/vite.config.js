@@ -13,6 +13,7 @@ export default defineConfig({
       }
     },
   },
+  publicDir: '../server/public', // disable before build
   plugins: [
     react(),
   ],

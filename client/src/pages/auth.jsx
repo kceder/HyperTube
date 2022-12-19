@@ -138,7 +138,7 @@ export default function AuthPage() {
       <div className='space-y-4 md:max-w-[80%] mx-auto'>
         <div className='border border-gray-700 rounded-md flex p-4 space-x-4 items-center justify-center hover:cursor-pointer hover:bg-white hover:bg-opacity-20 group'>
           <img
-            src='/42.svg'
+            src='/assets/42.svg'
             alt='github'
             className='inline group-hover:scale-125'
             width={32}
@@ -154,7 +154,7 @@ export default function AuthPage() {
           href={`${import.meta.env.VITE_GITHUB_OAUTH_URL}${import.meta.env.VITE_GITHUB_CLIENT_ID}`}
         >
           <img
-            src='/github.svg'
+            src='/assets/github.svg'
             alt='github'
             className='inline group-hover:scale-125'
             width={32}

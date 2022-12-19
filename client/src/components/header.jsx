@@ -8,9 +8,13 @@ import {
 // redux
 import { useSelector, useDispatch } from 'react-redux'
 import { logOut } from '../store/authSlice'
+import Burger from './burguer'
+import MobileMenu from './mobile-menu'
 
 function Header() {
   const navigate = useNavigate()
+  const [ isOpen, setIsOpen ] = React.useState(false)
+
   // Redux
   const dispatch = useDispatch()
   const { isLoggedIn, profilePic } = useSelector(slices => slices.auth)
@@ -19,12 +23,17 @@ function Header() {
     dispatch(logOut())
     navigate('/', { replace: true })
   }
-  console.log(`header: ${isLoggedIn}`);
+  // console.log(`header: ${isLoggedIn}`);
   let imgElem = !profilePic ?
   <UserCircleIcon className='w-12 hover:text-blue-400' />
   :
-  <img src={profilePic} alt="" className='rounded-full h-12 w-12 object-cover' crossOrigin='anonymous' />
+  <img src={`${profilePic}`} alt="" className='rounded-full h-12 w-12 object-cover' />
   
+  function toggle() {
+    setIsOpen(prev => !prev)
+  }
+  function closeIt() { setIsOpen(false) }
+
   return (
     <header className='bg-gray-800 py-4 border-b-[1px] border-gray-700'>
       <div className='flex justify-between items-center max-w-6xl mx-auto'>
@@ -35,7 +44,7 @@ function Header() {
         </div>
 
         <nav className='text-white'>
-          <ul className='flex space-x-4 text-xl'>
+          <ul className='hidden md:flex space-x-4 text-xl'>
             {!isLoggedIn ?
             (<li>
               <Link to='/auth'>
@@ -58,6 +67,8 @@ function Header() {
             {/* User Settings (for logged-in users) */}
             {/* Language Selector (for all folks?) */}
           </ul>
+          <Burger isOpen={isOpen} toggle={toggle} />
+          {isOpen && <MobileMenu isOpen={isOpen} closeIt={closeIt} />}
         </nav>
       </div>
     </header>

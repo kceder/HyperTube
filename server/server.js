@@ -16,8 +16,9 @@ import { getUsernamesRouter } from './src/routes/usernames.js'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 
-
 const app = express()
+// middleware to serve static files (images, and later our React bundle)
+app.use(express.static('public'))
 
 app.get('/api', (req, res) => {
   res.send('Hello world!\n')

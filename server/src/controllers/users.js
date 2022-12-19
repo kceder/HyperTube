@@ -176,7 +176,7 @@ async function handleProfilePic(oldProfilePic, profilePic, uid) {
       throw new Error(`could not save pic url to DB: ${error}`)
     }
   }
-  return true
+  return profilePicUrl
 }
 
 async function signUpUser(req, res) {
@@ -218,15 +218,19 @@ async function signUpUser(req, res) {
         error: `couldn't create account: ${error.stack}`
       })
     }
+    let profilePicUrl
     // Let's try to write the pic to filesystem and DB
     try {
-      handleProfilePic(false, profilePic, uid)
+      profilePicUrl = handleProfilePic(false, profilePic, uid)
     } catch(error) {
       return res.status(422).json({
         error: error
       })
     }
-    res.status(200).json({ message: 'user account successfully created' })
+    res.status(200).json({
+      message: 'user account successfully created',
+      profilePicUrl: profilePicUrl
+    })
   })
 }
 
@@ -309,16 +313,22 @@ async function updateUser(req, res) {
     } catch (error) {
       return res.status(400).json({ error: 'something went wrong' })
     }
+    
+    let profilePicUrl
     // Let's try to write the new pic to filesystem and DB (and delete old one)
     try {
-      handleProfilePic(user.profile_pic, profilePic, uid)
+      profilePicUrl = await handleProfilePic(user.profile_pic, profilePic, uid)
+      // console.log(`profilePicUrl: ${profilePicUrl}`) // testing
     } catch(error) {
       return res.status(422).json({
         error: error
       })
     }
     // If all went OK, let's return a successful response
-    return res.status(200).json({ message: 'user profile successfully updated' })
+    return res.status(200).json({
+      message: 'user profile successfully updated',
+      profilePicUrl
+    })
   })
 }
 

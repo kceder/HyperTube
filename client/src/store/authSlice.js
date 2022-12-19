@@ -13,7 +13,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logIn: (state, action) => {
-      console.log(action.payload) // testing
+      // console.log(action.payload) // testing
       state.isLoggedIn =  true
       state.uid =         action.payload.uid
       state.username =    action.payload.username
@@ -30,11 +30,12 @@ const authSlice = createSlice({
       localStorage.setItem('hypertube', JSON.stringify(hypertube))
     },
     setProfilePic: (state, action) => {
-      state.profilePic = action.profilePic
+      state.profilePic = action.payload
+      // console.log('store ', action.payload) // testing
 
       // Parse the state stored in local storage (as JSON string)
       const hypertube = JSON.parse(localStorage.getItem('hypertube'))
-      hypertube.profilePic= action.profilePic
+      hypertube.profilePic= action.payload
 
       // Persist to local storage too!
       localStorage.setItem('hypertube', JSON.stringify(hypertube))

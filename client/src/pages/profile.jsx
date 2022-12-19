@@ -1,11 +1,13 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Input from '../components/input'
 import { XCircleIcon } from '@heroicons/react/24/outline'
 // redux
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { setProfilePic } from '../store/authSlice'
 
 const MAX_FILE_SIZE = 500000
 const ACCEPTED_IMAGE_TYPES = [
@@ -59,9 +61,13 @@ export default function ProfilePage() {
     mode: 'all',
     resolver: zodResolver(validationSchema),
   })
-  const { accessToken, uid } = useSelector(slices => slices.auth)
+  const { accessToken, uid, isLoggedIn } = useSelector(slices => slices.auth)
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   React.useEffect(() => {
+    if (!isLoggedIn) navigate('/', { replace: true })
+
     async function getProfile() {
       const response = await fetch(`/api/users/${uid}`, {
         method: 'GET',
@@ -70,16 +76,16 @@ export default function ProfilePage() {
           'Authorization': `Bearer ${accessToken}`,
         }
       })
-      console.log(response)
+      // console.log(response) // testing
       const data = await response.json()
       if (response.ok) {
-        console.log(data.user) // testing
+        // console.log(data.user) // testing
         setValue('userName',  data.user.username)
         setValue('firstName', data.user.firstname)
         setValue('lastName',  data.user.lastname)
         setValue('email',     data.user.email)
       } else {
-        console.log(data)
+        console.log(data) // testing
       }
     }
     getProfile()
@@ -112,8 +118,13 @@ export default function ProfilePage() {
     if (parsed.error) {
       console.log(`profile update failed: ${JSON.stringify(parsed.error)}`) // show some feedback in modal bro!!!
     } else {
-      console.log(`profile update OK: ${JSON.stringify(parsed.message)}`) // show some feedback in modal bro!!!
+      console.log(`profile update OK: ${JSON.stringify(parsed)}`) // show some feedback in modal bro!!!
+
+      // update the profile pic (if there was any in the response)
+      if (parsed.profilePicUrl) dispatch(setProfilePic(parsed.profilePicUrl))
+
       // and redirect
+      navigate('/', { replace: true })
     }
   }
 
