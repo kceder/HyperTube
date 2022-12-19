@@ -322,4 +322,6 @@ async function updateUser(req, res) {
   })
 }
 
+
+
 export { signUpUser, getUser, updateUser }

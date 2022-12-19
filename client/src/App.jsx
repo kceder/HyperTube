@@ -7,6 +7,7 @@ import AuthPage from './pages/auth'
 import OAuthPage from './pages/oauth'
 import SignUpPage from './pages/sign-up'
 import ProfilePage from './pages/profile'
+import ResetPasswordPage from './pages/reset-password'
 
 export default function Home() {
   return (
@@ -31,6 +32,10 @@ export default function Home() {
 
           <Route path='oauth/:provider'
             element={<OAuthPage />}
+          />
+
+          <Route path='reset-password'
+            element={<ResetPasswordPage />}
           />
         </Routes>
       </Layout>

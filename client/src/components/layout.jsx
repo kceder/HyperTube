@@ -6,7 +6,7 @@ function Layout(props) {
       <Header />
 
       <div className='max-w-6xl mx-auto'>
-        <main>{props.children}</main>
+        {props.children}
       </div>
     </div>
   )
