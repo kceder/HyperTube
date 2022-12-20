@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 // redux
 import { useSelector, useDispatch } from 'react-redux'
 import { logIn } from '../store/authSlice'
+import { showNotif } from '../store/notificationsSlice'
 
 const validationSchema = z.object({
   userName: z
@@ -50,6 +51,14 @@ export default function AuthPage() {
     console.log(data.userName, data.password) // testing
 
     async function sendRequest() {
+      dispatch(
+        showNotif({
+          status: 'loading',
+          title: 'authenticating',
+          message:
+            "We're verifying your credentials",
+        }),
+      )
       const result = await fetch('api/sessions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -68,6 +77,15 @@ export default function AuthPage() {
         setValue('userName', '')
         setValue('password', '')
 
+        // Show notification
+        dispatch(
+          showNotif({
+            status: 'success',
+            title: 'success',
+            message:
+              "You're logged in.",
+          }),
+        )
         // set global state
         dispatch(logIn({
           uid: parsed.uid,
