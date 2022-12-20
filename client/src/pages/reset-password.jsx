@@ -3,6 +3,9 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Input from '../components/input'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { showNotif } from '../store/notificationsSlice'
 
 const validationSchema = z.object({
   email: z
@@ -21,19 +24,46 @@ export default function ResetPasswordPage() {
     mode: 'all',
     resolver: zodResolver(validationSchema),
   })
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   async function submitHandler(data) {
     console.log(data) // testing
+    dispatch(
+      showNotif({
+        status: 'loading',
+        title: 'requesting email',
+        message:
+          "We're processing your Password Reset Link request",
+      }),
+    )
 
     const response = await fetch(`/api/users/reset?email=${data.email}`, {
       method: 'GET',
     })
     const parsed = await response.json()
     if (parsed.error) {
-      console.log(`password request failed: ${JSON.stringify(parsed.error)}`) // show some feedback in modal bro!!!
+      // console.log(`password request failed: ${JSON.stringify(parsed.error)}`) // testing!!!
+
+      dispatch(
+        showNotif({
+          status: 'error',
+          title: 'error',
+          message: parsed.error
+        })
+      )
     } else {
-      console.log(`password request OK: ${JSON.stringify(parsed.message)}`) // show some feedback in modal bro!!!
+      // console.log(`password request OK: ${JSON.stringify(parsed.message)}`) // testing!!!
+
+      dispatch(
+        showNotif({
+          status: 'success',
+          title: 'Password Reset Link Sent',
+          message: parsed.message
+        })
+      )
       // and redirect
+      navigate('/', { replace: true })
     }
   }
 

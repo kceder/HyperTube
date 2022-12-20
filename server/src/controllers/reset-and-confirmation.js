@@ -30,7 +30,7 @@ async function getEmail(req, res) {
   // Check that the user exists in our DB
   const user = await findByEmail({ email: req.query.email })
   if (!user) {
-    return res.status(404).json({ error: 'user does not exist' })
+    return res.status(404).json({ error: 'Email does not exist in our DB' })
   }
 
   // Generate email token
@@ -50,14 +50,21 @@ async function getEmail(req, res) {
   
   // Send Account Confirmation Email
   transporter.sendMail(mailOptions, (error, info) => {
-    if (error) console.log(error)
-    else console.log('Email sent: ' + info.response)
+    if (error) {
+      console.log(error) // testing
+      res.status(400).json({
+        error: `Error sending Password Reset Link: ${error}`
+      })
+    }
+    else {
+      console.log('Email sent: ' + info.response)// testing
+      res.status(200).json({
+        message: `Password Reset Link sent to ${req.query.email}`
+      })
+    }
   })
   // Send email with link to form with 2 password fields
 
-  res.status(200).json({
-    message: `password reset to ${req.query.email}`
-  })
 }
 
 export { getEmail }

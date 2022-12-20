@@ -93,9 +93,8 @@ export default function SignUpPage() {
       showNotif({
         status: 'loading',
         title: 'signing up',
-        message:
-          "We're signing you up",
-      }),
+        message: "We're signing you up"
+      })
     )
     console.log(data)
     const formData = new FormData()
@@ -124,7 +123,7 @@ export default function SignUpPage() {
       dispatch(
         showNotif({
           status: 'error',
-          title: 'Woops!',
+          title: 'error',
           message: parsed.error
         }),
       )
