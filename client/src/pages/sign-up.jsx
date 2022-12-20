@@ -3,6 +3,9 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Input from '../components/input'
 import { XCircleIcon } from '@heroicons/react/24/outline'
+import { useDispatch } from 'react-redux'
+import { showNotif } from '../store/notificationsSlice'
+import { useNavigate } from 'react-router-dom'
 
 const MAX_FILE_SIZE = 500000
 const ACCEPTED_IMAGE_TYPES = [
@@ -82,8 +85,18 @@ export default function SignUpPage() {
     mode: 'all',
     resolver: zodResolver(validationSchema),
   })
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   async function submitHandler(data) {
+    dispatch(
+      showNotif({
+        status: 'loading',
+        title: 'signing up',
+        message:
+          "We're signing you up",
+      }),
+    )
     console.log(data)
     const formData = new FormData()
     formData.append('userName', data.userName)
@@ -107,10 +120,25 @@ export default function SignUpPage() {
     })
     const parsed = await response.json()
     if (parsed.error) {
-      console.log(`sign-up failed: ${JSON.stringify(parsed.error)}`) // show some feedback in modal bro!!!
+      console.log(`sign-up failed: ${JSON.stringify(parsed.error)}`) // testing!!!
+      dispatch(
+        showNotif({
+          status: 'error',
+          title: 'Woops!',
+          message: parsed.error
+        }),
+      )
     } else {
-      console.log(`sign-up OK: ${JSON.stringify(parsed.message)}`) // show some feedback in modal bro!!!
+      console.log(`sign-up OK: ${JSON.stringify(parsed.message)}`) // testing!!!
+      dispatch(
+        showNotif({
+          status: 'success',
+          title: 'success',
+          message: parsed.message
+        }),
+      )
       // and redirect
+      navigate('/', { replace: true })
     }
   }
 
