@@ -24,7 +24,7 @@ function Hero() {
       <div className='flex flex-col p-6'>
         <h1
           className='text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl text-white mt-10 text-center md:text-left'
-          onClick={testNotif} // for testing Notifications!
+          // onClick={testNotif} // for testing Notifications!
         >
           Watch movies for free, without the fear of being swatted.
         </h1>

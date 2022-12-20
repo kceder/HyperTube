@@ -24,7 +24,7 @@ function Notification(props) {
       // Cleanup function (so we don't end up with multiple timers on)
       return () => clearTimeout(timer)
     }
-  }, [isOn])
+  }, [isOn, status])
 
   let statusClasses = ''
 

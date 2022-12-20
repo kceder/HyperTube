@@ -4,8 +4,9 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 import Layout from './components/layout'
-import Hero from './components/hero'
+import HomePage from './pages/home'
 import AuthPage from './pages/auth'
+import MoviePage from './pages/movie'
 import OAuthPage from './pages/oauth'
 import SignUpPage from './pages/sign-up'
 import ProfilePage from './pages/profile'
@@ -22,7 +23,12 @@ export default function Home() {
         <Routes>
           <Route
             path='/'
-            element={<Hero />}
+            element={<HomePage />}
+          />
+
+          <Route
+            path='movie/:id'
+            element={<MoviePage />}
           />
 
           <Route
@@ -52,11 +58,6 @@ export default function Home() {
         </Routes>
       </Layout>
       {isOn && <Notification />}
-      {/* {isOn && <Notification
-        title='test'
-        message='testing testing testing testing testing testing testing testing'
-        status='error'
-      />} */}
     </BrowserRouter>
   )
 }
