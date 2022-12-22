@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  isOn: true,
+  isOn: false,
   title: '',
   message: '',
   status: ''
@@ -12,7 +12,7 @@ const notificationsSlice = createSlice({
   initialState,
   reducers: {
     showNotif: (state, action) => {
-      console.log(action.payload) // testing
+      // console.log(action.payload) // testing
       state.isOn =        true
       state.title =       action.payload.title
       state.message =     action.payload.message

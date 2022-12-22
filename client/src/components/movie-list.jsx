@@ -11,7 +11,7 @@ function MovieList(props) {
     <h1>Movie list</h1>
     <ul>
       {dummyList.map(movie => {
-        return (<li className='text-white text-xl'>
+        return (<li key={movie.id} className='text-white text-xl'>
           <Link
             to={`movie/${movie.id}`}
             state={{movie}}

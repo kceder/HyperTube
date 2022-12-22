@@ -204,11 +204,12 @@ async function signUpUser(req, res) {
       const hashed_password = await hashPassword(fields.password)
       
       const newUser = {
-        username: fields.userName,
-        firstname: fields.firstName,
-        lastname: fields.lastName,
-        email: fields.email,
-        hashed_password
+        username:       fields.userName,
+        firstname:      fields.firstName,
+        lastname:       fields.lastName,
+        email:          fields.email,
+        hashed_password,
+        profile_pic:    ''
       }
 
       const createdUser = await createUser(newUser)

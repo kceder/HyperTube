@@ -104,6 +104,13 @@ export default function AuthPage() {
     sendRequest()
   }
 
+  // Let's build the 42 OAuth url string here (it's long AF)
+  let fortyTwoUrl = `${import.meta.env.VITE_FORTY_TWO_OAUTH_BASE_URL}?`
+  fortyTwoUrl += `client_id=${import.meta.env.VITE_FORTY_TWO_CLIENT_ID}&`
+  fortyTwoUrl += `redirect_uri=${import.meta.env.VITE_FORTY_TWO_REDIRECT}&`
+  fortyTwoUrl += `response_type=code&`
+  fortyTwoUrl += `scope=public`
+
   return (
     <div className='text-white max-w-4xl mx-auto pt-10 pb-20 px-2'>
       <h1 className='text-2xl text-center pb-8'>Log in</h1>
@@ -154,7 +161,10 @@ export default function AuthPage() {
       </div>
 
       <div className='space-y-4 md:max-w-[80%] mx-auto'>
-        <div className='border border-gray-700 rounded-md flex p-4 space-x-4 items-center justify-center hover:cursor-pointer hover:bg-white hover:bg-opacity-20 group'>
+        <a
+          className='border border-gray-700 rounded-md flex p-4 space-x-4 items-center justify-center hover:cursor-pointer hover:bg-white hover:bg-opacity-20 group'
+          href={fortyTwoUrl}       
+        >
           <img
             src='/assets/42.svg'
             alt='github'
@@ -165,7 +175,7 @@ export default function AuthPage() {
           <p className='py-3 group-hover:underline group-hover:underline-offset-4'>
             Access using your 42 Account
           </p>
-        </div>
+        </a>
 
         <a
           className='border border-gray-700 rounded-md flex p-4 space-x-4 items-center justify-center hover:cursor-pointer hover:bg-white hover:bg-opacity-20 group'
