@@ -8,6 +8,7 @@ import { XCircleIcon } from '@heroicons/react/24/outline'
 // redux
 import { useDispatch, useSelector } from 'react-redux'
 import { setProfilePic } from '../store/authSlice'
+import { showNotif } from '../store/notificationsSlice'
 
 const MAX_FILE_SIZE = 500000
 const ACCEPTED_IMAGE_TYPES = [
@@ -93,6 +94,14 @@ export default function ProfilePage() {
 
   async function submitHandler(data) {
     // console.log(data) // testing
+    dispatch(
+      showNotif({
+        status: 'loading',
+        title: 'updating profile',
+        message: "We're updating your profile"
+      })
+    )
+
     const formData = new FormData()
     formData.append('userName', data.userName)
     formData.append('firstName', data.firstName)
@@ -116,9 +125,23 @@ export default function ProfilePage() {
     })
     const parsed = await response.json()
     if (parsed.error) {
-      console.log(`profile update failed: ${JSON.stringify(parsed.error)}`) // show some feedback in modal bro!!!
+      // console.log(`profile update failed: ${JSON.stringify(parsed.error)}`) // show some feedback in modal bro!!!
+      dispatch(
+        showNotif({
+          status: 'error',
+          title: 'something went wrong updating your profile',
+          message: parsed.error
+        })
+      )
     } else {
-      console.log(`profile update OK: ${JSON.stringify(parsed)}`) // show some feedback in modal bro!!!
+      // console.log(`profile update OK: ${JSON.stringify(parsed)}`) // show some feedback in modal bro!!!
+      dispatch(
+        showNotif({
+          status: 'success',
+          title: 'success',
+          message: "profile updated"
+        })
+      )
 
       // update the profile pic (if there was any in the response)
       if (parsed.profilePicUrl) dispatch(setProfilePic(parsed.profilePicUrl))
