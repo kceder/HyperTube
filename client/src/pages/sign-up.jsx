@@ -96,7 +96,7 @@ export default function SignUpPage() {
         message: "We're signing you up"
       })
     )
-    console.log(data)
+    // console.log(data)
     const formData = new FormData()
     formData.append('userName', data.userName)
     formData.append('firstName', data.firstName)
@@ -104,7 +104,7 @@ export default function SignUpPage() {
     formData.append('email', data.email)
     formData.append('password', data.password)
 
-    console.log('data.profilePic is an '+ data.profilePic) // testing  
+    // console.log('data.profilePic is an '+ data.profilePic) // testing  
     /* If the user added a profile picture, 'data.profilePic' is a FileList 
       array (truthy value). Otherwise it's a falsey empty string. */
     if (data.profilePic) {
@@ -119,7 +119,7 @@ export default function SignUpPage() {
     })
     const parsed = await response.json()
     if (parsed.error) {
-      console.log(`sign-up failed: ${JSON.stringify(parsed.error)}`) // testing!!!
+      // console.log(`sign-up failed: ${JSON.stringify(parsed.error)}`) // testing!!!
       dispatch(
         showNotif({
           status: 'error',
@@ -128,7 +128,7 @@ export default function SignUpPage() {
         }),
       )
     } else {
-      console.log(`sign-up OK: ${JSON.stringify(parsed.message)}`) // testing!!!
+      // console.log(`sign-up OK: ${JSON.stringify(parsed.message)}`) // testing!!!
       dispatch(
         showNotif({
           status: 'success',

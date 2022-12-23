@@ -4,11 +4,23 @@ import formidable from 'formidable'
 // To validate incoming data
 import { z } from 'zod'
 
+// To hash the Email Tokens before writing them to DB (later to locate them)
+import crypto from 'crypto' // No need to install, included in Node.js
+
 // To save the pic to the filesystem
 import { savePic, deletePic } from '/app/src/lib/picUtils.js'
 
+// To save/delete email tokens
+import {
+  saveToken,
+  deleteTokenByEmail,
+} from '/app/src/models/email-token.js'
+
 // To hash passwords before saving them to DB
 import { hashPassword } from '/app/src/lib/auth.js'
+
+// To send emails
+import { transporter } from '../lib/mailer.js'
 
 // To peek into the content of user uploaded files
 import { fileTypeFromFile } from 'file-type'
@@ -141,6 +153,7 @@ export const config = { api: { bodyParser: false } }
 
 async function handleProfilePic(oldProfilePic, profilePic, uid) {
   console.log(`handleProfilePic: ${JSON.stringify(profilePic)}`)
+  console.log(`handleProfilePic: ${oldProfilePic} - ${uid}`)
   let profilePicUrl = ''
   // Save picture to filesystem
   if (profilePic) {
@@ -181,6 +194,7 @@ async function handleProfilePic(oldProfilePic, profilePic, uid) {
 
 async function signUpUser(req, res) {
   const form = new formidable.IncomingForm()
+
   form.parse(req, async function (err, fields, files) {
     const profilePic =  files?.profilePic === undefined ? false : files.profilePic
 
@@ -192,11 +206,16 @@ async function signUpUser(req, res) {
       })
     } catch (errors) {
       const firstError = JSON.parse(errors)[0].message
-      console.log(`Errors parsing User: ${JSON.parse(errors)[0].message}`) // testing
+      // console.log(`Errors parsing User: ${JSON.parse(errors)[0].message}`) // testing
       return res.status(400).json({
         error: firstError
       })
     }
+
+    // Let's check that the email doesn't exist in our DB
+    const user = await findByEmail({ email: fields.email })
+    if (user)
+      return res.status(400).json({ error: 'email already exists' })
 
     let uid
     // Save user intel to DB
@@ -222,16 +241,58 @@ async function signUpUser(req, res) {
     let profilePicUrl
     // Let's try to write the pic to filesystem and DB
     try {
+      // We pass false as 1st argument because there's no old pic to delete!
       profilePicUrl = handleProfilePic(false, profilePic, uid)
     } catch(error) {
       return res.status(422).json({
         error: error
       })
     }
-    res.status(200).json({
-      message: 'user account successfully created',
-      profilePicUrl: profilePicUrl
+
+    // DELETE ANY PREEXISTING TOKEN! (clumsy user who signs up again)
+    await deleteTokenByEmail({ email: fields.email })
+
+    // Generate Email Token Hash
+    const emailTokenHash = crypto.randomBytes(16).toString('hex')
+
+    const unixtimeInSeconds = Math.floor(Date.now() / 1000)
+    // console.log(unixtimeInSeconds + eval(process.env.EMAIL_TOKEN_EXP)) // test
+
+    // Save the Email token to DB
+    const emailTokenCreated = saveToken({
+      email: fields.email,
+      token_hash: emailTokenHash,
+      expires_at: unixtimeInSeconds + eval(process.env.EMAIL_TOKEN_EXP) // 2 days
     })
+
+    // Set the email options,
+    const mailOptions = {
+      from: process.env.WEBADMIN_EMAIL_ADDRESS,
+      to: fields.email,
+      subject: 'Confirm your HyperTube account',
+      html: `<h1>Welcome to HyperTube!</h1>
+      <p>
+      Please, click <a href="http://localhost/confirm-account?email=${fields.email}&token=${emailTokenHash}" >here</a> to confirm your account!
+      </p>`
+    }
+
+    // Send Account Confirmation Email
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error) // testing
+        res.status(400).json({
+          error: `Error sending Account Confirmation Link: ${error}`
+        })
+      }
+      else {
+        console.log('Email sent: ' + info.response)// testing
+        res.status(200).json({
+          message: `Account Confirmation Link sent to ${req.query.email}`
+        })
+      }
+    })
+
+    res.status(200).json({ message: 'user account successfully created' })
   })
 }
 

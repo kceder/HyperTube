@@ -23,6 +23,12 @@ async function login(req, res) {
     return res.status(401).json({ error: 'wrong credentials' })
   }
 
+  if (!user.confirmed) {
+    return res.status(401).json({
+      error: 'please, confirm your account before logging in'
+    })
+  }
+
   // Generate the access_token
   const accessToken = jwt.sign({
     sub:    user.id

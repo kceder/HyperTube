@@ -48,7 +48,7 @@ export default function AuthPage() {
   }, [])
 
   async function submitHandler(data) {
-    console.log(data.userName, data.password) // testing
+    // console.log(data.userName, data.password) // testing
 
     async function sendRequest() {
       dispatch(
@@ -70,7 +70,7 @@ export default function AuthPage() {
       })
       // console.log(result) // testing
       const parsed = await result.json()
-      console.log(parsed) // testing
+      // console.log(parsed) // testing
 
       if (!parsed.error) {
         // Let's clear the input fields (unnecessary if we redirect...)
