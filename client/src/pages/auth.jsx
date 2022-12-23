@@ -151,7 +151,7 @@ export default function AuthPage() {
 
       <div className='flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0 md:max-w-[80%] mx-auto pt-8 px-6'>
         <Link to='/sign-up' className='hover:scale-110 hover:cursor-pointer hover:underline hover:underline-offset-4'>Create Account?</Link>
-        <Link to='/reset-password' className='hover:scale-110 hover:cursor-pointer hover:underline hover:underline-offset-4'>Forgot your Password?</Link>
+        <Link to='/forgot-password' className='hover:scale-110 hover:cursor-pointer hover:underline hover:underline-offset-4'>Forgot your Password?</Link>
       </div>
 
       <div className='inline-flex justify-center items-center w-full space-x-2 my-6'>

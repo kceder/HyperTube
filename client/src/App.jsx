@@ -10,7 +10,7 @@ import MoviePage from './pages/movie'
 import OAuthPage from './pages/oauth'
 import SignUpPage from './pages/sign-up'
 import ProfilePage from './pages/profile'
-import ResetPasswordPage from './pages/reset-password'
+import ForgotPasswordPage from './pages/forgot-password'
 import Notification from './components/notification'
 
 export default function Home() {
@@ -52,8 +52,8 @@ export default function Home() {
           />
 
           <Route
-            path='reset-password'
-            element={<ResetPasswordPage />}
+            path='forgot-password'
+            element={<ForgotPasswordPage />}
           />
         </Routes>
       </Layout>

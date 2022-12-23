@@ -14,7 +14,7 @@ const validationSchema = z.object({
     .email({ message: 'Must be a valid email' }),
 })
 
-export default function ResetPasswordPage() {
+export default function ForgotPasswordPage() {
   const {
     register,
     handleSubmit,
@@ -38,9 +38,7 @@ export default function ResetPasswordPage() {
       }),
     )
 
-    const response = await fetch(`/api/users/reset?email=${data.email}`, {
-      method: 'GET',
-    })
+    const response = await fetch(`/api/forgot-password?email=${data.email}`)
     const parsed = await response.json()
     if (parsed.error) {
       // console.log(`password request failed: ${JSON.stringify(parsed.error)}`) // testing!!!
@@ -69,7 +67,7 @@ export default function ResetPasswordPage() {
 
   return (
     <div className='text-white max-w-3xl mx-auto pt-10 pb-20 px-2'>
-      <h1 className='text-2xl text-center pb-8'>Request Password Reset Link</h1>
+      <h1 className='text-2xl text-center pb-8'>Request a Password Reset Email</h1>
 
       <form
         onSubmit={handleSubmit(submitHandler)}

@@ -11,6 +11,7 @@ import express from 'express'
 import { getUsersRouter } from './src/routes/users.js'
 import { getSessionsRouter } from './src/routes/sessions.js'
 import { getUsernamesRouter } from './src/routes/usernames.js'
+import { getPasswordsRouter } from './src/routes/passwords.js'
 
 // Middleware
 import cors from 'cors'
@@ -34,7 +35,10 @@ app.use('/api', getUsersRouter())
 // Routes for creating user sessions, deleting them...
 app.use('/api', getSessionsRouter())
 
-// Route for checking usernames (useful when signing up)
+// Route for resetting passwords and requesting reset-password emails
+app.use('/api', getPasswordsRouter())
+
+// Route for checking usernames (useful for conventional sign up)
 app.use('/api', getUsernamesRouter())
 
 //Listen port

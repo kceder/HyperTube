@@ -10,7 +10,15 @@ CREATE TABLE IF NOT EXISTS users (
 	lastname VARCHAR(30) DEFAULT '',
 	email VARCHAR(255) NOT NULL,
 	password VARCHAR(255) DEFAULT '',
+	confirmed BOOLEAN DEFAULT false,
 	profile_pic VARCHAR(255) DEFAULT ''
+);
+
+CREATE TABLE IF NOT EXISTS email_tokens (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    token_hash VARCHAR(32) NOT NULL,
+    expires_at BIGINT NOT NULL
 );
 
 -- Hashed password is Asdf1
