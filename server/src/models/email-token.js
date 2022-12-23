@@ -28,9 +28,11 @@ async function findTokenByEmail({ email }) {
   const values = [ email ]
   const result = await pool.query(query, values)
 
-  console.log('Token model - ', result) // testing
-  // const user = result.rows[0]
-  // return user ?? null 
+  // console.log('Token model - ', result) // testing
+  if (result.rows.length)
+    return result.rows[0]
+  // If no email was found:
+  return false
 }
 
 export {

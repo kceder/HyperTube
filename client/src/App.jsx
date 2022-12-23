@@ -11,6 +11,7 @@ import OAuthPage from './pages/oauth'
 import SignUpPage from './pages/sign-up'
 import ProfilePage from './pages/profile'
 import ForgotPasswordPage from './pages/forgot-password'
+import ResetPasswordPage from './pages/reset-password'
 import Notification from './components/notification'
 
 export default function Home() {
@@ -54,6 +55,11 @@ export default function Home() {
           <Route
             path='forgot-password'
             element={<ForgotPasswordPage />}
+          />
+
+          <Route
+            path='reset-password'
+            element={<ResetPasswordPage />}
           />
         </Routes>
       </Layout>

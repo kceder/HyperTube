@@ -83,6 +83,20 @@ async function updateUserProfile(user) {
   return updatedUser ?? null 
 }
 
+async function updatePasswordByEmail({ email, password }) {
+  const query = `UPDATE users
+  SET password = $1
+  WHERE email = $2
+  RETURNING *`
+
+  const values = [ password, email ]
+  const result = await pool.query(query, values)
+
+  // console.log('User model - updated password',result.rows[0]) // testing
+  const updatedUser = result.rows[0]
+  return updatedUser ?? null 
+}
+
 async function writeProfilePic(user) {
   const { uid, profilePic } = user
   const query = `UPDATE users SET profile_pic = $1 WHERE id = $2`
@@ -101,5 +115,6 @@ export {
   findByUid,
   createUser,
   updateUserProfile,
+  updatePasswordByEmail,
   writeProfilePic
 }

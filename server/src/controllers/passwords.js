@@ -4,14 +4,21 @@ import { z } from 'zod'
 // To hash the Email Tokens before writing them to DB (later to locate them)
 import crypto from 'crypto' // No need to install, included in Node.js
 
+// To hash passwords before saving them to DB
+import { hashPassword } from '/app/src/lib/auth.js'
+
 // To send emails
 import { transporter } from '../lib/mailer.js'
 
 // To deal with the users table (DB)
-import { findByEmail } from '/app/src/models/user.js'
+import { findByEmail, updatePasswordByEmail } from '/app/src/models/user.js'
 
 // To save/delete email tokens
-import { saveToken, deleteTokenByEmail } from '/app/src/models/email-token.js'
+import {
+  saveToken,
+  deleteTokenByEmail,
+  findTokenByEmail
+} from '/app/src/models/email-token.js'
 
 /**
  * This function receives the user's email in the query string and validates it.
@@ -120,8 +127,74 @@ async function requestPasswordResetEmail(req, res) {
  * @returns 
  */
 async function resetPassword(req, res) {
-  const { email, token, password, password_confirmation } = req.query
-  console.log(email, token, password, password_confirmation)
+  const { email, token, password, password_confirmation } = req.body
+
+  const validationSchema = z.object({
+    email: z
+      .string()
+      .min(1, { message: 'Email is required' })
+      .email({ message: 'Must be a valid email' }),
+    password: z
+      .string()
+      .min(5, { message: 'Between 5-10 characters' })
+      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
+        message: 'Upper and lowercase letters, and digits',
+      }),
+    password_confirmation: z
+      .string()
+      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
+        message: 'Upper and lowercase letters, and digits',
+      })
+  })
+  .refine((data) => data.password === data.password_confirmation, {
+    path: ['password_confirmation'],
+    message: "Password don't match",
+  })
+
+  const valid = validationSchema.safeParse({
+    password,
+    password_confirmation,
+    email
+  })
+
+  // If validation fails, we send cryptic response (shenanigans)
+  if (!valid.success) {
+    return res.status(400).json({
+      error: `bad request`
+    })
+  }
+  // console.log(`valid schema? ${JSON.stringify(valid)}`) // testing
+
+  const result = await findTokenByEmail({ email })
+  console.log(result) // testing
+
+  // If the token doesn't match the one in the DB
+  if (!result || result.token_hash !== token)
+    return res.status(400).json({
+      error: `invalid token`
+    })
+
+  const unixtimeInSeconds = Math.floor(Date.now() / 1000)
+
+  // Check if the token is expired
+  if (result.expires_at < unixtimeInSeconds)
+    return res.status(400).json({
+      error: `your token has expired`
+    })
+
+  // Delete the token anyways
+  await deleteTokenByEmail({ email })
+
+  // Let's hash the password before writing it to the DB
+  const pwd_hash = await hashPassword(password)
+
+  // Update the user's password
+  await updatePasswordByEmail({ email, password: pwd_hash })
+  
+  // Send successful response
+  return res.status(200).json({
+    message: `your password has been updated`
+  })
 }
 
 export { requestPasswordResetEmail, resetPassword }
