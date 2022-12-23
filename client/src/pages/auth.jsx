@@ -97,8 +97,15 @@ export default function AuthPage() {
         // And redirect the user to the main page
         navigate('/', { replace: true })
       } else {
-        // If the 'error' property was false, let's print the login error
-        console.log(`Error: ${parsed.message}`)
+        // Show notification
+        dispatch(
+          showNotif({
+            status: 'error',
+            title: 'error',
+            message: parsed.error
+          })
+        )
+        setValue('password', '')
       }
     }
     sendRequest()

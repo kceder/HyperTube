@@ -14,19 +14,13 @@ async function login(req, res) {
 
   // if the user doesn't exist...
   if (!user) {
-    return res.status(401).json({
-      message: 'user does not exist',
-      error: true,
-    })
+    return res.status(401).json({ error: 'user does not exist' })
   }
 
   const passwordMatch = await verifyPassword(req.body.password, user.password)
   // if the passwords don't match...
   if (!passwordMatch) {
-    return res.status(401).json({
-      message: 'wrong credentials',
-      error: true
-    })
+    return res.status(401).json({ error: 'wrong credentials' })
   }
 
   // Generate the access_token
