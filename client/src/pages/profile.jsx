@@ -18,14 +18,32 @@ const ACCEPTED_IMAGE_TYPES = [
   'image/webp',
 ]
 
-const validationSchema = z
+export default function ProfilePage() {
+  const { accessToken, uid, isLoggedIn } = useSelector(slices => slices.auth)
+  const validationSchema = z
   .object({
     userName: z
       .string()
       .min(1, { message: 'Username is required' })
       .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
         message: '5-10 upper and lowercase letters, and digits',
-      }),
+      })
+      .refine(
+        async (userName) => {
+          const resp = await fetch(`/api/usernames`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username: userName, uid: uid })
+          })
+          const data = await resp.json()
+          const usernameExists = data.message
+          // console.log('usernameExists? '+ usernameExists)
+          return !usernameExists
+        },
+        { message: 'Username already taken' }
+      ),
     firstName: z
       .string()
       .min(1, { message: 'First Name is required' })
@@ -52,7 +70,6 @@ const validationSchema = z
       ),
   })
 
-export default function ProfilePage() {
   const {
     register,
     handleSubmit,
@@ -62,7 +79,6 @@ export default function ProfilePage() {
     mode: 'all',
     resolver: zodResolver(validationSchema),
   })
-  const { accessToken, uid, isLoggedIn } = useSelector(slices => slices.auth)
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
