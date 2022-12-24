@@ -340,14 +340,14 @@ async function updateUser(req, res) {
   
   const form = new formidable.IncomingForm()
   form.parse(req, async function (err, fields, files) {
-    console.log(`fields: ${JSON.stringify(fields)}`) // testing
+    // console.log(`fields: ${JSON.stringify(fields)}`) // testing
     const profilePic =  files?.profilePic === undefined ? false : files.profilePic
 
-    if (profilePic) { // <======== TESTING!!!!!!
-      console.log('it seems we received: ', profilePic.originalFilename) // testing
-      console.log(profilePic?.mimetype) // testing
-      console.log(profilePic?.size) // testing
-    }
+    // if (profilePic) { // <======== TESTING!!!!!!
+    //   console.log('it seems we received: ', profilePic.originalFilename) // testing
+    //   console.log(profilePic?.mimetype) // testing
+    //   console.log(profilePic?.size) // testing
+    // }
 
     // Validate user data (zod)
     try {
@@ -357,18 +357,75 @@ async function updateUser(req, res) {
       })
     } catch (errors) {
       const firstError = JSON.parse(errors)[0].message
-      console.log(`Errors parsing User: ${JSON.parse(errors)[0].message}`) // testing
+      // console.log(`Errors parsing User: ${JSON.parse(errors)[0].message}`) // testing
       return res.status(400).json({
         error: firstError
       })
     }
 
+    // By default, users updating their profiles have confirmed their accounts
+    let confirmValue = true
+    // If the user changed her email
+    if (user.email !== fields.email) {
+      // Check that the new email is not in use by other user.
+      const newEmailExists = await findByEmail({ email: fields.email })
+      console.log(newEmailExists)
+      if (newEmailExists) {
+        return res.status(401).json({
+          error: 'sorry, that email is already taken'
+        })
+      }
+      // If the new email is available, we gotta set 'confirmed' to false.
+      confirmValue = false
+    }
+
+    // If the user changed her email, we have to send her a new confirmation link
+    if (confirmValue === false) {
+      // DELETE ANY PREEXISTING TOKEN! (clumsy user who signs up again)
+      await deleteTokenByEmail({ email: fields.email })
+
+      // Generate Email Token Hash
+      const emailTokenHash = crypto.randomBytes(16).toString('hex')
+
+      const unixtimeInSeconds = Math.floor(Date.now() / 1000)
+      // console.log(unixtimeInSeconds + eval(process.env.EMAIL_TOKEN_EXP)) // test
+
+      // Save the Email token to DB
+      const emailTokenCreated = saveToken({
+        email: fields.email,
+        token_hash: emailTokenHash,
+        expires_at: unixtimeInSeconds + eval(process.env.EMAIL_TOKEN_EXP) // 2 days
+      })
+
+      // Set the email options,
+      const mailOptions = {
+        from: process.env.WEBADMIN_EMAIL_ADDRESS,
+        to: fields.email,
+        subject: 'Confirm your HyperTube account',
+        html: `<h1>Welcome to HyperTube!</h1>
+        <p>
+        Please, click <a href="http://localhost/confirm-account?email=${fields.email}&token=${emailTokenHash}" >here</a> to confirm your account!
+        </p>`
+      }
+
+      // Send Account Confirmation Email
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.log(error) // testing
+          return res.status(400).json({
+            error: `Error sending Account Confirmation Link: ${error}`
+          })
+        }
+      })
+    }
+    
     const toBeUpdatedUser = {
       uid,
       username: (user.username === fields.userName) ? user.username : fields.userName,
       firstname: (user.firstname === fields.firstName) ? user.firstname : fields.firstName,
       lastname: (user.lastname === fields.lastName) ? user.lastname : fields.lastName,
-      email: (user.email === fields.email) ? user.email : fields.email
+      email: (user.email === fields.email) ? user.email : fields.email,
+      confirmed: confirmValue
     }
 
     try {
@@ -390,6 +447,7 @@ async function updateUser(req, res) {
     // If all went OK, let's return a successful response
     return res.status(200).json({
       message: 'user profile successfully updated',
+      confirmed: confirmValue,
       profilePicUrl
     })
   })

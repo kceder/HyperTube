@@ -7,7 +7,7 @@ import Input from '../components/input'
 import { XCircleIcon } from '@heroicons/react/24/outline'
 // redux
 import { useDispatch, useSelector } from 'react-redux'
-import { setProfilePic } from '../store/authSlice'
+import { setProfilePic, logOut } from '../store/authSlice'
 import { showNotif } from '../store/notificationsSlice'
 
 const MAX_FILE_SIZE = 500000
@@ -134,6 +134,25 @@ export default function ProfilePage() {
         })
       )
     } else {
+      // logout the user if the email was changed
+      if (parsed.confirmed === false) {
+        dispatch(
+          showNotif({
+            status: 'success',
+            title: 'success',
+            message: "please confirm your new email"
+          })
+        )
+        dispatch(logOut())
+        // redirect after 3 seconds
+        const timer = setTimeout(() => {
+          navigate('/', { replace: true })
+        }, 1500)
+
+        // Cleanup function (so we don't end up with multiple timers on)
+        return () => clearTimeout(timer)
+      }
+
       // console.log(`profile update OK: ${JSON.stringify(parsed)}`) // show some feedback in modal bro!!!
       dispatch(
         showNotif({
@@ -146,8 +165,13 @@ export default function ProfilePage() {
       // update the profile pic (if there was any in the response)
       if (parsed.profilePicUrl) dispatch(setProfilePic(parsed.profilePicUrl))
 
-      // and redirect
-      navigate('/', { replace: true })
+      // redirect after 3 seconds
+      const timer = setTimeout(() => {
+        navigate('/', { replace: true })
+      }, 3000)
+  
+      // Cleanup function (so we don't end up with multiple timers on)
+      return () => clearTimeout(timer)
     }
   }
 

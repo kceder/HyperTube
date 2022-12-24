@@ -25,7 +25,7 @@ async function findByUid({ uid }) {
   const values = [ uid ]
   const result = await pool.query(query, values)
 
-  console.log('User model - found user', result.rows[0]) // testing
+  // console.log('User model - found user', result.rows[0]) // testing
   const user = result.rows[0]
   return user ?? null 
 }
@@ -67,17 +67,19 @@ async function updateUserProfile(user) {
     firstname,
     lastname,
     email,
+    confirmed,
     uid
   } = user
   const query = `UPDATE users
-  SET username = $1,
+  SET username =  $1,
       firstname = $2,
-      lastname = $3,
-      email = $4
-  WHERE id = $5
+      lastname =  $3,
+      email =     $4,
+      confirmed = $5
+  WHERE id = $6
   RETURNING *`
 
-  const values = [ username, firstname, lastname, email, uid ]
+  const values = [ username, firstname, lastname, email, confirmed, uid ]
   const result = await pool.query(query, values)
 
   // console.log('User model - created user',result.rows[0]) // testing
