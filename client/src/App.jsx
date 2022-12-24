@@ -12,6 +12,7 @@ import SignUpPage from './pages/sign-up'
 import ProfilePage from './pages/profile'
 import ForgotPasswordPage from './pages/forgot-password'
 import ResetPasswordPage from './pages/reset-password'
+import RequestConfirmationPage from './pages/request-confirmation'
 import ConfirmAccountPage from './pages/confirm-account'
 import Notification from './components/notification'
 
@@ -51,6 +52,11 @@ export default function Home() {
           <Route
             path='oauth/:provider'
             element={<OAuthPage />}
+          />
+
+          <Route
+            path='request-confirmation'
+            element={<RequestConfirmationPage />}
           />
 
           <Route

@@ -156,12 +156,15 @@ export default function AuthPage() {
         </button>
       </form>
 
-      <div className='flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0 md:max-w-[80%] mx-auto pt-8 px-6'>
-        <Link to='/sign-up' className='hover:scale-110 hover:cursor-pointer hover:underline hover:underline-offset-4'>Create Account?</Link>
-        <Link to='/forgot-password' className='hover:scale-110 hover:cursor-pointer hover:underline hover:underline-offset-4'>Forgot your Password?</Link>
+      <div className='flex flex-col space-y-6 md:flex-row md:items-center md:justify-between md:space-y-0 md:max-w-[80%] mx-auto pt-8 px-6 text-center'>
+        <Link to='/sign-up' className='hover:scale-110 hover:cursor-pointer hover:underline hover:underline-offset-4 md:self-start'>Create Account?</Link>
+        <div className='flex flex-col space-y-6 md:text-right'>
+          <Link to='/forgot-password' className='hover:scale-110 hover:cursor-pointer hover:underline hover:underline-offset-4'>Forgot your Password?</Link>
+          <Link to='/request-confirmation' className='hover:scale-110 hover:cursor-pointer hover:underline hover:underline-offset-4'>Need Confirmation Email?</Link>
+        </div>
       </div>
 
-      <div className='inline-flex justify-center items-center w-full space-x-2 my-6'>
+      <div className='inline-flex justify-center items-center w-full space-x-2 my-4'>
         <hr className='inline my-8 w-[40%] h-1 bg-gray-200 rounded border-0 dark:bg-gray-700' />
         <p>or</p>
         <hr className='inline my-8 w-[40%] h-1 bg-gray-200 rounded border-0 dark:bg-gray-700' />

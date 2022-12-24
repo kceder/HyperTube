@@ -4,11 +4,17 @@ import {
   getUser,
   updateUser
 } from '../controllers/users.js'
-import { confirmUserAccount } from '../controllers/confirmation.js'
+import {
+  requestConfirmation,
+  confirmUserAccount
+} from '../controllers/confirmation.js'
 import { validateToken } from '../middlewares/validateToken.js'
 
 function getUsersRouter() {
   const router = express.Router()
+
+  // GET /api/users/confirm   ==> confirm user account.
+  router.get('/users/confirm', requestConfirmation)
 
   // POST /api/users/confirm   ==> confirm user account.
   router.post('/users/confirm', confirmUserAccount)
