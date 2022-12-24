@@ -37,11 +37,12 @@ async function createUser(user) {
     lastname,
     email,
     hashed_password,
-    profile_pic
+    profile_pic,
+    confirmed
   } = user
   const query = `INSERT INTO users
-  (username, firstname, lastname, email, password, profile_pic)
-  VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`
+  (username, firstname, lastname, email, password, profile_pic, confirmed)
+  VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`
 
   const values = [
     username,
@@ -49,7 +50,8 @@ async function createUser(user) {
     lastname,
     email,
     hashed_password,
-    profile_pic
+    profile_pic,
+    confirmed
   ]
 
   const result = await pool.query(query, values)

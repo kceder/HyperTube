@@ -228,7 +228,8 @@ async function signUpUser(req, res) {
         lastname:       fields.lastName,
         email:          fields.email,
         hashed_password,
-        profile_pic:    ''
+        profile_pic:    '',
+        confirmed:      false
       }
 
       const createdUser = await createUser(newUser)

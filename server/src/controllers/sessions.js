@@ -112,9 +112,10 @@ async function oauthGitHub(req, res) {
     const newUser = {
       username,
       email,
-      firstname: 'Anonymous',
-      lastname: '',
-      password: ''
+      firstname:  'Anonymous',
+      lastname:   '',
+      password:   '',
+      confirmed:  true
     }
     console.log(`creating user...`) // testing
     const createdUser = await createUser(newUser)
@@ -228,7 +229,8 @@ async function oauth42(req, res) {
       lastname:         user42.lastname,
       profile_pic:      user42.profilePic,
       // No password needed when OAuthing, so an empty string will do!
-      password:  ''
+      password:         '',
+      confirmed:        true
     }
     // console.log(`creating user...`) // testing
     const createdUser = await createUser(newUser)
