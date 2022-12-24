@@ -10,14 +10,19 @@ const allowedCharacters = '1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQ
 const nanoid = customAlphabet(allowedCharacters, 10)
 
 async function login(req, res) {
-  const user = await findByUsername({ username: req.body.username })
+  // user data has been validated by middleware
+  const { username, password } = req.body
+  const user = await findByUsername({ username })
 
   // if the user doesn't exist...
   if (!user) {
     return res.status(401).json({ error: 'user does not exist' })
   }
 
-  const passwordMatch = await verifyPassword(req.body.password, user.password)
+  /*  Must use null-coallescing operator (??) in case the user password does
+    not exist, i.e., it's null (for example when she signed up using OAuth) */
+  const passwordMatch = await verifyPassword(password, user.password ?? '')
+
   // if the passwords don't match...
   if (!passwordMatch) {
     return res.status(401).json({ error: 'wrong credentials' })

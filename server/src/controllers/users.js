@@ -152,8 +152,8 @@ const validationSchema = z
 export const config = { api: { bodyParser: false } }
 
 async function handleProfilePic(oldProfilePic, profilePic, uid) {
-  console.log(`handleProfilePic: ${JSON.stringify(profilePic)}`)
-  console.log(`handleProfilePic: ${oldProfilePic} - ${uid}`)
+  // console.log(`handleProfilePic: ${JSON.stringify(profilePic)}`) // testing
+  // console.log(`handleProfilePic: ${oldProfilePic} - ${uid}`) // testing
   let profilePicUrl = ''
   // Save picture to filesystem
   if (profilePic) {
@@ -167,7 +167,7 @@ async function handleProfilePic(oldProfilePic, profilePic, uid) {
     }
     // Delete Old profile pic (if there's one)
     if (oldProfilePic) {
-      console.log('oldProfilePic? ', oldProfilePic);
+      // console.log('oldProfilePic? ', oldProfilePic) // testing
       try {
         deletePic(oldProfilePic)
       } catch (error) {

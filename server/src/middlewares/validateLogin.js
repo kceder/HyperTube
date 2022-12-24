@@ -16,7 +16,7 @@ const validationSchema = z.object({
 })
 
 function validateLogin(req, res, next) {
-  console.log(`validateLogin middleware: ${JSON.stringify(req.body)}`)
+  // console.log(`validateLogin middleware: ${JSON.stringify(req.body)}`) // testing
   try {
     validationSchema.parse({
       userName: req.body.username,
@@ -24,8 +24,8 @@ function validateLogin(req, res, next) {
     })
     next()
   } catch (error) {
-    console.log(`validateLogin middleware: ${JSON.stringify(error)}`) // testing
-    return res.status(200).json({ message: 'bad request' })
+    // console.log(`validateLogin middleware: ${JSON.stringify(error)}`) // testing
+    return res.status(400).json({ error: 'bad request' })
   } 
 }
 
