@@ -343,12 +343,6 @@ async function updateUser(req, res) {
     // console.log(`fields: ${JSON.stringify(fields)}`) // testing
     const profilePic =  files?.profilePic === undefined ? false : files.profilePic
 
-    // if (profilePic) { // <======== TESTING!!!!!!
-    //   console.log('it seems we received: ', profilePic.originalFilename) // testing
-    //   console.log(profilePic?.mimetype) // testing
-    //   console.log(profilePic?.size) // testing
-    // }
-
     // Validate user data (zod)
     try {
       const parsedUser = await validationSchema2.parseAsync({
@@ -363,13 +357,28 @@ async function updateUser(req, res) {
       })
     }
 
+    // If the user changed her username
+    if (user.username !== fields.userName) {
+      // console.log(`comparing ${user.username} to ${fields.userName}`) // testing
+      // Check that the new username is not in use by other user.
+      const newUsernameExists = await findByUsername({
+        username: fields.userName
+      })
+
+      if (newUsernameExists) {
+        return res.status(401).json({
+          error: 'sorry, that username is already taken'
+        })
+      }
+    }
+
     // By default, users updating their profiles have confirmed their accounts
     let confirmValue = true
     // If the user changed her email
     if (user.email !== fields.email) {
       // Check that the new email is not in use by other user.
       const newEmailExists = await findByEmail({ email: fields.email })
-      console.log(newEmailExists)
+      // console.log(newEmailExists) // testing
       if (newEmailExists) {
         return res.status(401).json({
           error: 'sorry, that email is already taken'
