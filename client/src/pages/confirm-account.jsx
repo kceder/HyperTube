@@ -17,17 +17,63 @@ export default function ConfirmAccountPage() {
   const [searchParams] = useSearchParams()
   const email = searchParams.get('email')
   const token = searchParams.get('token')
-  console.log(email, token) // testing
+  // console.log(email, token) // testing
 
   async function requestConfirmation() {
-    const response = await fetch('/api/confirm-account')
+    setIsLoading(true)
+    dispatch(
+      showNotif({
+        status: 'loading',
+        title: 'confirming your account',
+        message:
+          "We're processing your Account Confirmation",
+      }),
+    )
+    const response = await fetch('/api/users/confirm', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email, token })
+    })
+    const data = await response.json()
+    if (data.error) {
+      setError(data.error)
+
+      dispatch(
+        showNotif({
+          status: 'error',
+          title: 'error',
+          message: data.error
+        }),
+      )
+    } else {
+      dispatch(
+        showNotif({
+          status: 'success',
+          title: 'success',
+          message:
+            "Your Account has been Confirmed. You can log in.",
+        }),
+      )
+    }
+    setIsLoading(false)
+    // console.log(data) // testing
   }
 
   React.useEffect(() => {
     if (isLoggedIn) navigate('/', { replace: true })
 
     requestConfirmation()
-  }, [])
+
+    // redirect after 3 seconds
+    const timer = setTimeout(() => {
+      navigate('/', { replace: true })
+    }, 3000)
+
+    // Cleanup function (so we don't end up with multiple timers on)
+    return () => clearTimeout(timer)
+  }, [isLoggedIn])
 
   if (isLoading) {
     // Show the notification too!!

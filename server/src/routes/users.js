@@ -4,11 +4,15 @@ import {
   getUser,
   updateUser
 } from '../controllers/users.js'
+import { confirmUserAccount } from '../controllers/confirmation.js'
 import { validateToken } from '../middlewares/validateToken.js'
 
 function getUsersRouter() {
   const router = express.Router()
 
+  // POST /api/users/confirm   ==> confirm user account.
+  router.post('/users/confirm', confirmUserAccount)
+  
   // GET /api/users/:id   ==> get user profile.
   router.get('/users/:id', validateToken, getUser)
   
