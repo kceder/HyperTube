@@ -39,7 +39,7 @@ async function login(req, res) {
     uid:          user.id,
     username:     user.username,
     accessToken:  accessToken,
-    profilePic:   user.profilePic
+    profilePic:   user.profile_pic
   })
 }
 
