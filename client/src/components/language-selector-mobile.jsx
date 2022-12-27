@@ -5,21 +5,29 @@ import spanish from '../assets/spanish.png'
 import english from '../assets/english.png'
 // import { Collapse } from 'react-collapse'
 // Redux
-// import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { setActiveLanguage } from '../store/languageSlice'
 
 function LanguageSelectorMobile(props) {
-  const [lang, setLang] = React.useState('en') // later this is gonna be global state
+  const { activeLanguage } = useSelector(slices => slices.language)
+  const dispatch = useDispatch()
+
+  // const [lang, setLang] = React.useState('en') // later this is gonna be global state
 
   let imgFlag
-  if (lang === 'en') imgFlag = english
-  if (lang === 'it') imgFlag = italian
-  if (lang === 'fi') imgFlag = finnish
+  if (activeLanguage === 'en') imgFlag = english
+  if (activeLanguage === 'it') imgFlag = italian
+  if (activeLanguage === 'fi') imgFlag = finnish
 
-  console.log('mobile',lang);
+  // console.log('mobile', activeLanguage) // testing
+
   function changeLanguage(e) {
     const chosenLanguage = e.currentTarget.getAttribute('data-id')
-    console.log(`user changed language to: ${chosenLanguage}`)
-    setLang(chosenLanguage) // set the language state
+
+    // console.log(`user changed language to: ${chosenLanguage}`) // testing
+
+    dispatch(setActiveLanguage(chosenLanguage))
+    // setLang(chosenLanguage) // set the language state
     props.closeIt()         // close the mobile menu
   }
 
@@ -32,7 +40,7 @@ function LanguageSelectorMobile(props) {
       >
         <img
           src={english}
-          className={`w-10 h-10 rounded-full border-2 border-gray-700 p-1 ${lang === 'en' && ' border-white'}`}
+          className={`w-10 h-10 rounded-full border-2 border-gray-700 p-1 ${activeLanguage === 'en' && ' border-white'}`}
         />
       </div>
 
@@ -43,7 +51,7 @@ function LanguageSelectorMobile(props) {
       >
         <img
           src={italian}
-          className={`w-10 h-10 rounded-full border-2 border-gray-700 p-1 ${lang === 'it' && ' border-white'}`}
+          className={`w-10 h-10 rounded-full border-2 border-gray-700 p-1 ${activeLanguage === 'it' && ' border-white'}`}
         />
       </div>
 
@@ -54,7 +62,7 @@ function LanguageSelectorMobile(props) {
       >
         <img
           src={finnish}
-          className={`w-10 h-10 rounded-full border-2 border-gray-700 p-1 ${lang === 'fi' && ' border-white'}`}
+          className={`w-10 h-10 rounded-full border-2 border-gray-700 p-1 ${activeLanguage === 'fi' && ' border-white'}`}
         />
       </div>
     </div>
