@@ -10,6 +10,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { logOut } from '../store/authSlice'
 import Burger from './burguer'
 import MobileMenu from './mobile-menu'
+import LanguageSelector from './language-selector'
 
 function Header() {
   const navigate = useNavigate()
@@ -44,7 +45,11 @@ function Header() {
         </div>
 
         <nav className='text-white'>
-          <ul className='hidden md:flex space-x-4 text-xl'>
+          <ul className='hidden md:flex space-x-4 text-xl items-center'>
+            {/* Language Selector (for all folks?) */}
+            <li>
+              <LanguageSelector />
+            </li>
             {!isLoggedIn ?
             (<li>
               <Link to='/auth'>
@@ -65,7 +70,6 @@ function Header() {
               </li>
             </>)}
             {/* User Settings (for logged-in users) */}
-            {/* Language Selector (for all folks?) */}
           </ul>
           <Burger isOpen={isOpen} toggle={toggle} />
           {isOpen && <MobileMenu isOpen={isOpen} closeIt={closeIt} />}
