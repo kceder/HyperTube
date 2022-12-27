@@ -1,0 +1,9 @@
+{
+    "title": "Watch movies for free, without the fear of being swatted.",
+    "messages": {
+        "login": {
+            "success": "You have successfully logged in!",
+            "error": "There was some problem logging you in!"
+        }
+    }
+}

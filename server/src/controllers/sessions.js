@@ -30,7 +30,8 @@ async function login(req, res) {
 
   if (!user.confirmed) {
     return res.status(401).json({
-      error: 'please, confirm your account before logging in'
+      // error: 'please, confirm your account before logging in'
+      error: 'messages.login.error'
     })
   }
 
@@ -40,7 +41,7 @@ async function login(req, res) {
   }, process.env.SECRET_JWT_KEY, { expiresIn: process.env.ACCESS_TOKEN_EXP })
 
   res.status(200).json({
-    message:      'successfully logged in',
+    message:      'messages.login.success',
     uid:          user.id,
     username:     user.username,
     accessToken:  accessToken,

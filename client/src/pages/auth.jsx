@@ -10,6 +10,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { logIn } from '../store/authSlice'
 import { showNotif } from '../store/notificationsSlice'
 
+import t from '../i18n/i18n'
+
 const validationSchema = z.object({
   userName: z
     .string()
@@ -26,6 +28,8 @@ const validationSchema = z.object({
 })
 
 export default function AuthPage() {
+  const { activeLanguage } = useSelector(slices => slices.language)
+
   const {
     register,
     handleSubmit,
@@ -76,14 +80,14 @@ export default function AuthPage() {
         // Let's clear the input fields (unnecessary if we redirect...)
         setValue('userName', '')
         setValue('password', '')
-
+        console.log(parsed.message)
         // Show notification
         dispatch(
           showNotif({
             status: 'success',
             title: 'success',
             message:
-              "You're logged in.",
+              t(activeLanguage, parsed.message),
           }),
         )
         // set global state

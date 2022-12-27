@@ -1,24 +1,12 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import t from '../i18n/i18n'
+// redux
+import { useSelector } from 'react-redux'
 
-// testing notifications (click on the Hero's paragraph ;-)
-// import { useNavigate } from 'react-router-dom'
-// import { useDispatch } from 'react-redux'
-// import { showNotif } from '../store/notificationsSlice'
 function Hero() {
-  // const dispatch = useDispatch()
-  // const navigate = useNavigate()
-  // function testNotif(params) {
-  //   dispatch(
-  //     showNotif({
-  //       status: 'loading',
-  //       title: 'authenticating your ass',
-  //       message:
-  //         'hooray hooray hooray hooray hooray hooray hooray hooray hooray hooray hooray hooray hooray hooray ',
-  //     }),
-  //   )
-  //   navigate('auth', {replace: true})
-  // }
+  const { activeLanguage } = useSelector(slices => slices.language)
+
   return (
     <div className='grid md:grid-cols-2 place-items-center max-w-4xl py-20 mx-auto'>
       <div className='flex flex-col p-6'>
@@ -26,7 +14,8 @@ function Hero() {
           className='text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl text-white mt-10 text-center md:text-left'
           // onClick={testNotif} // for testing Notifications!
         >
-          Watch movies for free, without the fear of being swatted.
+          {/* Watch movies for free, without the fear of being swatted. */}
+          {t(activeLanguage, 'title')}
         </h1>
 
         <div className='flex mx-auto pt-10'>
