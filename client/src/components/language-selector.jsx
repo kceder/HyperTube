@@ -4,22 +4,28 @@ import italian from '../assets/italian.png'
 import spanish from '../assets/spanish.png'
 import english from '../assets/english.png'
 import { Collapse } from 'react-collapse'
+
 // Redux
-// import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { setActiveLanguage } from '../store/languageSlice'
 
 function LanguageSelector(props) {
   const [isOpen, setIsOpen] = React.useState(false)
-  const [lang, setLang] = React.useState('en') // later this is gonna be global state
+  const { activeLanguage } = useSelector(slices => slices.language)
+  const dispatch = useDispatch()
+  // const [lang, setLang] = React.useState('en') // later this is gonna be global state
 
   let imgFlag
-  if (lang === 'en') imgFlag = english
-  if (lang === 'it') imgFlag = italian
-  if (lang === 'fi') imgFlag = finnish
+  if (activeLanguage === 'en') imgFlag = english
+  if (activeLanguage === 'it') imgFlag = italian
+  if (activeLanguage === 'fi') imgFlag = finnish
 
   function changeLanguage(e) {
     const chosenLanguage = e.currentTarget.getAttribute('data-id')
-    console.log(`user changed language to: ${chosenLanguage}`)
-    setLang(chosenLanguage) // set the language state
+    // console.log(`user changed language to: ${chosenLanguage}`) // testing
+    // setLang(chosenLanguage) // set the language local state
+    dispatch(setActiveLanguage(chosenLanguage))
+
     setIsOpen(false)        // collapse the component
   }
 
@@ -36,7 +42,7 @@ function LanguageSelector(props) {
           className=''
         >
           <div
-            className={`cursor-pointer ${lang === 'en' && ' hidden'} pt-3`}
+            className={`cursor-pointer ${activeLanguage === 'en' && ' hidden'} pt-3`}
             data-id='en'
             onClick={(e) => changeLanguage(e)}
           >
@@ -47,7 +53,7 @@ function LanguageSelector(props) {
           </div>
 
           <div
-            className={`cursor-pointer ${lang === 'it' && ' hidden'} pt-3`}
+            className={`cursor-pointer ${activeLanguage === 'it' && ' hidden'} pt-3`}
             data-id='it'
             onClick={(e) => changeLanguage(e)}
           >
@@ -58,7 +64,7 @@ function LanguageSelector(props) {
           </div>
 
           <div
-            className={`cursor-pointer ${lang === 'fi' && ' hidden'} pt-3`}
+            className={`cursor-pointer ${activeLanguage === 'fi' && ' hidden'} pt-3`}
             data-id='fi'
             onClick={(e) => changeLanguage(e)}
           >

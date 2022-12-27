@@ -3,7 +3,7 @@ import finnish from '../assets/finnish.png'
 import italian from '../assets/italian.png'
 import spanish from '../assets/spanish.png'
 import english from '../assets/english.png'
-// import { Collapse } from 'react-collapse'
+
 // Redux
 import { useSelector, useDispatch } from 'react-redux'
 import { setActiveLanguage } from '../store/languageSlice'
