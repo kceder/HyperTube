@@ -12,6 +12,9 @@ import {
   UsersIcon
 } from '@heroicons/react/24/outline'
 
+// components
+import LanguageSelectorMobile from './language-selector-mobile.jsx'
+
 import { useSelector, useDispatch } from 'react-redux'
 import { logOut } from '../store/authSlice.js'
 
@@ -76,6 +79,7 @@ function MobileMenu(props) {
           </Link>
         </>
       )}
+      <LanguageSelectorMobile closeIt={props.closeIt} />
     </div>
   )
 }
