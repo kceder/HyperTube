@@ -61,7 +61,6 @@ export default function AuthPage() {
       dispatch(
         showNotif({
           status: 'loading',
-          title: 'authenticating',
           message: t(activeLanguage, 'logInPage.notification.loading')
         }),
       )
@@ -87,7 +86,6 @@ export default function AuthPage() {
         dispatch(
           showNotif({
             status: 'success',
-            title: 'success',
             message: t(activeLanguage, 'logInPage.notification.success')
           }),
         )
@@ -108,7 +106,6 @@ export default function AuthPage() {
         dispatch(
           showNotif({
             status: 'error',
-            title: 'error',
             message: t(activeLanguage, 'logInPage.notification.error')
           })
         )

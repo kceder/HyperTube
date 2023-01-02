@@ -97,7 +97,6 @@ export default function SignUpPage() {
     dispatch(
       showNotif({
         status: 'loading',
-        title: 'signing up',
         message: t(activeLanguage, 'signUpPage.notification.loading')
       })
     )
@@ -128,7 +127,6 @@ export default function SignUpPage() {
       dispatch(
         showNotif({
           status: 'error',
-          title: 'error',
           message: t(activeLanguage, 'signUpPage.notification.error')
         })
       )
@@ -137,7 +135,6 @@ export default function SignUpPage() {
       dispatch(
         showNotif({
           status: 'success',
-          title: 'success',
           message: t(activeLanguage, 'signUpPage.notification.success')
         })
       )
