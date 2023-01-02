@@ -3,9 +3,12 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Input from '../components/input'
 import { XCircleIcon } from '@heroicons/react/24/outline'
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { showNotif } from '../store/notificationsSlice'
 import { useNavigate } from 'react-router-dom'
+
+// homemade i18n
+import t from '../i18n/i18n'
 
 const MAX_FILE_SIZE = 500000
 const ACCEPTED_IMAGE_TYPES = [
@@ -15,66 +18,68 @@ const ACCEPTED_IMAGE_TYPES = [
   'image/webp',
 ]
 
-const validationSchema = z
-  .object({
-    userName: z
-      .string()
-      .min(1, { message: 'Username is required' })
-      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
-        message: '5-10 upper and lowercase letters, and digits',
-      })
-      .refine(
-        async (userName) => {
-          const resp = await fetch(`/api/usernames?username=${userName}`)
-          const data = await resp.json()
-          const usernameExists = data.message
-          // console.log('usernameExists? '+ usernameExists)
-          return !usernameExists
-        },
-        { message: 'Username already taken' }
-      ),
-    firstName: z
-      .string()
-      .min(1, { message: 'First Name is required' })
-      .max(30, { message: 'Maximum 30 characters' })
-      .regex(/^(?=.*[^\W_])[\w ]*$/, { message: 'Only letters and space' }),
-    lastName: z
-      .string()
-      .min(1, { message: 'Last Name is required' })
-      .max(30, { message: 'Maximum 30 characters' })
-      .regex(/^(?=.*[^\W_])[\w ]*$/, { message: 'Only letters and space' }),
-    email: z
-      .string()
-      .min(1, { message: 'Email is required' })
-      .email({ message: 'Must be a valid email' }),
-    password: z
-      .string()
-      .min(5, { message: 'Between 5-10 characters' })
-      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
-        message: 'Upper and lowercase letters, and digits',
-      }),
-    confirmPassword: z
-      .string()
-      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
-        message: 'Upper and lowercase letters, and digits',
-      }),
-    profilePic: z
-      .any()
-      .refine(
-        (files) => files?.length === 0 || files?.[0]?.size <= MAX_FILE_SIZE,
-        `Max image size is 5MB.`
-      )
-      .refine(
-        (files) => files?.length === 0 || ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-        'Only .jpg, .jpeg, .png and .webp formats are supported.'
-      ),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    path: ['confirmPassword'],
-    message: "Password don't match",
-  })
-
 export default function SignUpPage() {
+  const { activeLanguage } = useSelector(slices => slices.language)
+  
+  const validationSchema = z
+    .object({
+      userName: z
+        .string()
+        .min(1, { message: t(activeLanguage, 'signUpPage.usernameInput.min') })
+        .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
+          message: t(activeLanguage, 'signUpPage.userNameInput.regexWarning')
+        })
+        .refine(
+          async (userName) => {
+            const resp = await fetch(`/api/usernames?username=${userName}`)
+            const data = await resp.json()
+            const usernameExists = data.message
+            // console.log('usernameExists? '+ usernameExists)
+            return !usernameExists
+          },
+          { message: t(activeLanguage, 'signUpPage.userNameInput.alreadyExists') }
+        ),
+      firstName: z
+        .string()
+        .min(1, { message: t(activeLanguage, 'signUpPage.firstNameInput.minWarning') })
+        .max(30, { message: t(activeLanguage, 'signUpPage.firstNameInput.maxWarning') })
+        .regex(/^[A-Za-z\ ]*$/, { message: t(activeLanguage, 'signUpPage.firstNameInput.regexWarning') }),
+      lastName: z
+        .string()
+        .min(1, { message: t(activeLanguage, 'signUpPage.lastNameInput.minWarning') })
+        .max(30, { message: t(activeLanguage, 'signUpPage.lastNameInput.maxWarning') })
+        .regex(/^[A-Za-z\ ]*$/, { message: t(activeLanguage, 'signUpPage.lastNameInput.regexWarning') }),
+      email: z
+        .string()
+        .min(1, { message: t(activeLanguage, 'signUpPage.emailInput.minWarning') })
+        .email({ message: t(activeLanguage, 'signUpPage.emailInput.validEmailWarning') }),
+      password: z
+        .string()
+        .min(5, { message: t(activeLanguage, 'signUpPage.passwordInput.minWarning') })
+        .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
+          message: t(activeLanguage, 'signUpPage.passwordInput.regexWarning')
+        }),
+      confirmPassword: z
+        .string()
+        .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
+          message: t(activeLanguage, 'signUpPage.confirmPasswordInput.regexWarning')
+        }),
+      profilePic: z
+        .any()
+        .refine(
+          (files) => files?.length === 0 || files?.[0]?.size <= MAX_FILE_SIZE,
+          t(activeLanguage, 'signUpPage.pictureInput.maxSizeWarning')
+        )
+        .refine(
+          (files) => files?.length === 0 || ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+          t(activeLanguage, 'signUpPage.pictureInput.filetypeWarning')
+        ),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      path: ['confirmPassword'],
+      message: t(activeLanguage, 'signUpPage.confirmPasswordInput.matchWarning')
+    })
+
   const {
     register,
     handleSubmit,
@@ -93,7 +98,7 @@ export default function SignUpPage() {
       showNotif({
         status: 'loading',
         title: 'signing up',
-        message: "We're signing you up"
+        message: t(activeLanguage, 'signUpPage.notification.loading')
       })
     )
     // console.log(data)
@@ -124,8 +129,8 @@ export default function SignUpPage() {
         showNotif({
           status: 'error',
           title: 'error',
-          message: parsed.error
-        }),
+          message: t(activeLanguage, 'signUpPage.notification.error')
+        })
       )
     } else {
       // console.log(`sign-up OK: ${JSON.stringify(parsed.message)}`) // testing!!!
@@ -133,8 +138,8 @@ export default function SignUpPage() {
         showNotif({
           status: 'success',
           title: 'success',
-          message: parsed.message
-        }),
+          message: t(activeLanguage, 'signUpPage.notification.success')
+        })
       )
       // and redirect
       navigate('/', { replace: true })
@@ -145,7 +150,9 @@ export default function SignUpPage() {
   // console.log(errors?.userName?.message) // testing
   return (
     <div className='text-white max-w-4xl mx-auto pt-10 pb-20 px-2'>
-      <h1 className='text-2xl text-center pb-8'>Sign Up</h1>
+      <h1 className='text-2xl text-center pb-8'>
+      {t(activeLanguage, 'signUpPage.title')}
+      </h1>
 
       <form
         onSubmit={handleSubmit(submitHandler)}
@@ -154,7 +161,7 @@ export default function SignUpPage() {
         <Input
           id='userName'
           type='text'
-          label='Username'
+          label={t(activeLanguage, 'signUpPage.userNameInput.label')}
           register={register}
           registerOptions={{ required: true }}
           errors={errors}
@@ -164,7 +171,7 @@ export default function SignUpPage() {
         <Input
           id='firstName'
           type='text'
-          label='First Name'
+          label={t(activeLanguage, 'signUpPage.firstNameInput.label')}
           register={register}
           registerOptions={{ required: false }}
           errors={errors}
@@ -174,7 +181,7 @@ export default function SignUpPage() {
         <Input
           id='lastName'
           type='text'
-          label='Last Name'
+          label={t(activeLanguage, 'signUpPage.lastNameInput.label')}
           register={register}
           registerOptions={{ required: false }}
           errors={errors}
@@ -184,7 +191,7 @@ export default function SignUpPage() {
         <Input
           id='email'
           type='email'
-          label='Email'
+          label={t(activeLanguage, 'signUpPage.emailInput.label')}
           register={register}
           registerOptions={{ required: true }}
           errors={errors}
@@ -194,7 +201,7 @@ export default function SignUpPage() {
         <Input
           id='password'
           type='password'
-          label='Password'
+          label={t(activeLanguage, 'signUpPage.passwordInput.label')}
           register={register}
           registerOptions={{ required: true }}
           errors={errors}
@@ -204,7 +211,7 @@ export default function SignUpPage() {
         <Input
           id='confirmPassword'
           type='password'
-          label='Confirm Password'
+          label={t(activeLanguage, 'signUpPage.confirmPasswordInput.label')}
           register={register}
           registerOptions={{ required: true }}
           errors={errors}
@@ -215,7 +222,7 @@ export default function SignUpPage() {
           <Input
             id='profilePic'
             type='file'
-            label='Profile Picture'
+            label={t(activeLanguage, 'signUpPage.pictureInput.label')}
             register={register}
             registerOptions={{ required: false }}
             errors={errors}
@@ -230,7 +237,9 @@ export default function SignUpPage() {
           >
             <div className='group'>
               <XCircleIcon className='inline w-4 mx-1 -mt-1 group-hover:text-red-500' />
-              <span className='group-hover:text-white'>clear pic</span>
+              <span className='group-hover:text-white'>
+              {t(activeLanguage, 'signUpPage.pictureInput.clearPic')}
+              </span>
             </div>
           </button>
         </div>
@@ -240,7 +249,10 @@ export default function SignUpPage() {
           disabled={!isValid}
           className={`p-3 border-[1px] border-slate-500 rounded-md hover:enabled:bg-white hover:enabled:bg-opacity-20 disabled:cursor-not-allowed w-full`}
         >
-          {isValid ? 'Submit' : 'Please, fill the form'}
+          {isValid ?
+          t(activeLanguage, 'signUpPage.submitBtn.submitForm')
+          :
+          t(activeLanguage, 'signUpPage.submitBtn.fillForm')}
         </button>
       </form>
     </div>
