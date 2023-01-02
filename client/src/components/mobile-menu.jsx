@@ -19,7 +19,7 @@ import LanguageSelectorMobile from './language-selector-mobile.jsx'
 import { useSelector, useDispatch } from 'react-redux'
 import { logOut } from '../store/authSlice.js'
 
-// homemade i18
+// homemade i18n
 import t from '../i18n/i18n'
 
 function MobileMenu(props) {

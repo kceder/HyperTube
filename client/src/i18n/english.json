@@ -1,16 +1,38 @@
 {
-    "heroPage": {
-        "title": "Watch movies for free, without the fear of being swatted.",
-        "logInBtn": "Log In",
-        "signUpBtn": "Sign Up"
-    },
     "mobileMenu": {
         "logInBtn": "Log In",
         "logOutBtn": "Log Out",
         "signUpBtn": "Sign Up"
     },
-    "messages": {
-        "login": {
+    "heroPage": {
+        "title": "Watch movies for free, without the fear of being swatted.",
+        "logInBtn": "Log In",
+        "signUpBtn": "Sign Up"
+    },
+    "logInPage": {
+        "title": "Log In",
+        "usernameInput": {
+            "label": "Username",
+            "minWarning": "Username is required",
+            "regexWarning": "5-10 upper and lowercase letters, and digits"
+        },
+        "passwordInput": {
+            "label": "Password",
+            "minWarning": "Between 5-10 characters",
+            "regexWarning": "Upper and lowercase letters, and digits"
+        },
+        "submitBtn": {
+            "fillForm": "Please, fill the form",
+            "submitForm": "Submit"
+        },
+        "createAccount": "Create Account",
+        "forgotPassword": "Forgot Your Password?",
+        "confirmationEmail": "Need Confirmation Email?",
+        "or": "or",
+        "42Access": "Access using your 42 Account",
+        "GHAccess": "Access using your GitHub Account",
+        "notification": {
+            "loading": "We're verifying your credentials",
             "success": "You have successfully logged in!",
             "error": "There was some problem logging you in!"
         }

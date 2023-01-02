@@ -1,7 +1,7 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 
-// homemade i18
+// homemade i18n
 import t from '../i18n/i18n'
 
 // redux

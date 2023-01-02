@@ -10,25 +10,28 @@ import { useSelector, useDispatch } from 'react-redux'
 import { logIn } from '../store/authSlice'
 import { showNotif } from '../store/notificationsSlice'
 
+// homemade i18n
 import t from '../i18n/i18n'
-
-const validationSchema = z.object({
-  userName: z
-    .string()
-    .min(1, { message: 'Username is required' })
-    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
-      message: '5-10 upper and lowercase letters, and digits',
-    }),
-  password: z
-    .string()
-    .min(5, { message: 'Between 5-10 characters' })
-    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
-      message: 'Upper and lowercase letters, and digits',
-    }),
-})
 
 export default function AuthPage() {
   const { activeLanguage } = useSelector(slices => slices.language)
+  
+  const validationSchema = z.object({
+    userName: z
+      .string()
+      .min(1, { message: t(activeLanguage, 'logInPage.usernameInput.min') })
+      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
+        // message: '5-10 upper and lowercase letters, and digits',
+        message: t(activeLanguage, 'logInPage.usernameInput.regex')
+      }),
+    password: z
+      .string()
+      .min(5, { message: t(activeLanguage, 'logInPage.passwordInput.min') })
+      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
+        // message: 'Upper and lowercase letters, and digits'
+        message: t(activeLanguage, 'logInPage.passwordInput.regex')
+      }),
+  })
 
   const {
     register,
@@ -59,8 +62,7 @@ export default function AuthPage() {
         showNotif({
           status: 'loading',
           title: 'authenticating',
-          message:
-            "We're verifying your credentials",
+          message: t(activeLanguage, 'logInPage.notification.loading')
         }),
       )
       const result = await fetch('api/sessions', {
@@ -86,8 +88,7 @@ export default function AuthPage() {
           showNotif({
             status: 'success',
             title: 'success',
-            message:
-              t(activeLanguage, parsed.message),
+            message: t(activeLanguage, 'logInPage.notification.success')
           }),
         )
         // set global state
@@ -101,12 +102,14 @@ export default function AuthPage() {
         // And redirect the user to the main page
         navigate('/', { replace: true })
       } else {
+        // console.log(parsed.error) // testing
+
         // Show notification
         dispatch(
           showNotif({
             status: 'error',
             title: 'error',
-            message: parsed.error
+            message: t(activeLanguage, 'logInPage.notification.error')
           })
         )
         setValue('password', '')
@@ -124,7 +127,9 @@ export default function AuthPage() {
 
   return (
     <div className='text-white max-w-4xl mx-auto pt-10 pb-20 px-2'>
-      <h1 className='text-2xl text-center pb-8'>Log in</h1>
+      <h1 className='text-2xl text-center pb-8'>
+        {t(activeLanguage, 'logInPage.title')}
+      </h1>
 
       <form
         onSubmit={handleSubmit(submitHandler)}
@@ -134,7 +139,7 @@ export default function AuthPage() {
         <Input
           id='userName'
           type='text'
-          label='Username'
+          label={t(activeLanguage, 'logInPage.usernameInput.label')}
           register={register}
           registerOptions={{ required: true }}
           errors={errors}
@@ -144,7 +149,7 @@ export default function AuthPage() {
         <Input
           id='password'
           type='password'
-          label='Password'
+          label={t(activeLanguage, 'logInPage.passwordInput.label')}
           register={register}
           registerOptions={{ required: true }}
           errors={errors}
@@ -156,7 +161,10 @@ export default function AuthPage() {
           disabled={!isValid}
           className={`p-3 border-[1px] border-slate-500 rounded-md hover:enabled:bg-white hover:enabled:bg-opacity-20 disabled:cursor-not-allowed w-[90%]`}
         >
-          {isValid ? 'Log In' : 'Please, fill the form'}
+          {isValid ?
+          t(activeLanguage, 'logInPage.submitBtn.submitForm')
+          : 
+          t(activeLanguage, 'logInPage.submitBtn.fillForm')}
         </button>
       </form>
 
@@ -187,7 +195,7 @@ export default function AuthPage() {
             height={32}
           />
           <p className='py-3 group-hover:underline group-hover:underline-offset-4'>
-            Access using your 42 Account
+            {t(activeLanguage, 'logInPage.42Access')}
           </p>
         </a>
 
@@ -203,7 +211,7 @@ export default function AuthPage() {
             height={32}
           />
           <p className='py-3 group-hover:underline group-hover:underline-offset-4'>
-            Access using your Github Account
+          {t(activeLanguage, 'logInPage.GHAccess')}
           </p>
         </a>
       </div>
