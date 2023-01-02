@@ -15,11 +15,16 @@ import {
 // components
 import LanguageSelectorMobile from './language-selector-mobile.jsx'
 
+// redux
 import { useSelector, useDispatch } from 'react-redux'
 import { logOut } from '../store/authSlice.js'
 
+// homemade i18
+import t from '../i18n/i18n'
+
 function MobileMenu(props) {
   const { isLoggedIn } = useSelector(slices => slices.auth)
+  const { activeLanguage } = useSelector(slices => slices.language)
   const dispatch = useDispatch()
 
   function logoutHandler() {
@@ -57,7 +62,7 @@ function MobileMenu(props) {
             onClick={logoutHandler}
           >
             <ArrowRightOnRectangleIcon className='inline text-red-500 w-6 -mt-1 mr-2 hover:cursor-pointer' />
-            log out
+            {t(activeLanguage, 'mobileMenu.logOutBtn')}
           </Link>
         </>
       ) : (
@@ -67,7 +72,7 @@ function MobileMenu(props) {
             className='hover:text-pink-500 pt-6 pl-4'
           >
             <ArrowLeftOnRectangleIcon className='inline text-green-500 w-6 -mt-1 mr-2' />
-            login
+            {t(activeLanguage, 'mobileMenu.logInBtn')}
           </Link>
 
           <Link
@@ -75,7 +80,7 @@ function MobileMenu(props) {
             className='hover:text-pink-500 pt-6 pl-4'
           >
             <UserPlusIcon className='inline text-orange-500 w-6 -mt-1 mr-2' />
-            signup
+            {t(activeLanguage, 'mobileMenu.signUpBtn')}
           </Link>
         </>
       )}

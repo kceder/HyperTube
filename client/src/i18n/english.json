@@ -1,5 +1,14 @@
 {
-    "title": "Watch movies for free, without the fear of being swatted.",
+    "heroPage": {
+        "title": "Watch movies for free, without the fear of being swatted.",
+        "logInBtn": "Log In",
+        "signUpBtn": "Sign Up"
+    },
+    "mobileMenu": {
+        "logInBtn": "Log In",
+        "logOutBtn": "Log Out",
+        "signUpBtn": "Sign Up"
+    },
     "messages": {
         "login": {
             "success": "You have successfully logged in!",

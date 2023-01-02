@@ -1,6 +1,9 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+
+// homemade i18
 import t from '../i18n/i18n'
+
 // redux
 import { useSelector } from 'react-redux'
 
@@ -15,7 +18,7 @@ function Hero() {
           // onClick={testNotif} // for testing Notifications!
         >
           {/* Watch movies for free, without the fear of being swatted. */}
-          {t(activeLanguage, 'title')}
+          {t(activeLanguage, 'heroPage.title')}
         </h1>
 
         <div className='flex mx-auto pt-10'>
@@ -23,14 +26,14 @@ function Hero() {
             to='/auth'
             className='inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 hover:underline hover:scale-110'
           >
-            Log in
+            {t(activeLanguage, 'heroPage.logInBtn')}
           </NavLink>
 
           <NavLink
             to='/sign-up'
             className='inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-white border border-gray-300 rounded-lg hover:bg-white hover:bg-opacity-20 focus:ring-4 focus:ring-gray-100'
           >
-            Sign up
+            {t(activeLanguage, 'heroPage.signUpBtn')}
           </NavLink>
         </div>
       </div>
