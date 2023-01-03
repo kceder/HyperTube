@@ -75,7 +75,9 @@
         },
         "pictureInput": {
             "label": "Profile Picture",
-            "clearPic": "Clear Pic",
+            "btnLabel": "choose a pic",
+            "clearPicLabel": "clear pic",
+            "noFilePlaceholder": "No File Selected",
             "maxSizeWarning": "Max image size is 5MB.",
             "filetypeWarning": "Only .jpg, .jpeg, .png and .webp formats are supported."
         },
@@ -86,7 +88,52 @@
         "notification": {
             "loading": "We're Signing You Up",
             "success": "You have successfully Signed Up!",
+            "successConfirm": "Success! Confirm your Email before logging in again",
             "error": "There was some problem Signing You Up!"
+        }
+    },
+    "profilePage": {
+        "title": "profile settings",
+        "userNameInput": {
+            "label": "Username",
+            "minWarning": "Username is required",
+            "regexWarning": "5-10 upper and lowercase letters, and digits",
+            "alreadyExists": "Username already Exists"
+        },
+        "firstNameInput": {
+            "label": "First Name",
+            "minWarning": "First Name is required",
+            "maxWarning": "Maximum 30 characters",
+            "regexWarning": "Only letters and space"
+        },
+        "lastNameInput": {
+            "label": "Last Name",
+            "minWarning": "Last Name is required",
+            "maxWarning": "Maximum 30 characters",
+            "regexWarning": "Only letters and space"
+        },
+        "emailInput": {
+            "label": "Email",
+            "minWarning": "Email is required",
+            "validEmailWarning": "Must be a valid email"
+        },
+        "pictureInput": {
+            "label": "profile picture",
+            "btnLabel": "choose a picture",
+            "clearPicLabel": "clear pic",
+            "noFilePlaceholder": "No File Selected",
+            "maxSizeWarning": "Max image size is 5MB.",
+            "filetypeWarning": "Only .jpg, .jpeg, .png and .webp formats are supported."
+        },
+        "submitBtn": {
+            "fillForm": "Please, fill the form",
+            "submitForm": "Submit"
+        },
+        "notification": {
+            "loading": "We're Submitting Your Updates",
+            "success": "Your Profile have been Updated successfully!",
+            "successConfirm": "Success! Confirm your Email before logging in again",
+            "error": "There was some problem Updating Your Profile!"
         }
     },
     "forgotPasswordPage": {

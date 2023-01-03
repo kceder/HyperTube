@@ -1,5 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+
+// form and form validation
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -13,6 +15,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setProfilePic, logOut } from '../store/authSlice'
 import { showNotif } from '../store/notificationsSlice'
 
+// homemade i18n
+import t from '../i18n/i18n'
+
 const MAX_FILE_SIZE = 500000
 const ACCEPTED_IMAGE_TYPES = [
   'image/jpeg',
@@ -22,14 +27,16 @@ const ACCEPTED_IMAGE_TYPES = [
 ]
 
 export default function ProfilePage() {
+  const { activeLanguage } = useSelector(slices => slices.language)
+
   const { accessToken, uid, isLoggedIn } = useSelector(slices => slices.auth)
   const validationSchema = z
   .object({
     userName: z
       .string()
-      .min(1, { message: 'Username is required' })
+      .min(1, { message: t(activeLanguage, 'profilePage.usernameInput.minWarning') })
       .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
-        message: '5-10 upper and lowercase letters, and digits',
+        message: t(activeLanguage, 'profilePage.usernameInput.regexWarning')
       })
       .refine(
         async (userName) => {
@@ -45,31 +52,33 @@ export default function ProfilePage() {
           // console.log('usernameExists? '+ usernameExists)
           return !usernameExists
         },
-        { message: 'Username already taken' }
+        { message: t(activeLanguage, 'profilePage.userNameInput.alreadyExists') }
       ),
     firstName: z
       .string()
-      .min(1, { message: 'First Name is required' })
-      .max(30, { message: 'Maximum 30 characters' })
-      .regex(/^(?=.*[^\W_])[\w ]*$/, { message: 'Only letters and space' }),
+      .min(1, { message: t(activeLanguage, 'profilePage.firstNameInput.minWarning') })
+      .max(30, { message: t(activeLanguage, 'profilePage.firstNameInput.maxWarning') })
+      .regex(/^(?=.*[^\W_])[\w ]*$/, { message:  t(activeLanguage, 'profilePage.firstNameInput.regexWarning') }),
     lastName: z
       .string()
-      .min(1, { message: 'Last Name is required' })
-      .max(30, { message: 'Maximum 30 characters' })
-      .regex(/^(?=.*[^\W_])[\w ]*$/, { message: 'Only letters and space' }),
+      .min(1, { message:  t(activeLanguage, 'profilePage.lastNameInput.minWarning') })
+      .max(30, { message:  t(activeLanguage, 'profilePage.lastNameInput.maxWarning') })
+      .regex(/^(?=.*[^\W_])[\w ]*$/, {
+        message: t(activeLanguage, 'profilePage.lastNameInput.regexWarning')
+      }),
     email: z
       .string()
-      .min(1, { message: 'Email is required' })
-      .email({ message: 'Must be a valid email' }),
+      .min(1, { message:  t(activeLanguage, 'profilePage.emailInput.minWarning') })
+      .email({ message:  t(activeLanguage, 'profilePage.emailInput.validEmailWarning') }),
     profilePic: z
       .any()
       .refine(
         (files) => files?.length === 0 || files?.[0]?.size <= MAX_FILE_SIZE,
-        `Max image size is 5MB.`
+        t(activeLanguage, 'profilePage.pictureInput.maxSizeWarning')
       )
       .refine(
         (files) => files?.length === 0 || ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-        'Only .jpg, .jpeg, .png and .webp formats are supported.'
+        t(activeLanguage, 'profilePage.pictureInput.filetypeWarning')
       ),
   })
 
@@ -116,8 +125,7 @@ export default function ProfilePage() {
     dispatch(
       showNotif({
         status: 'loading',
-        title: 'updating profile',
-        message: "We're updating your profile"
+        message: t(activeLanguage, 'profilePage.notification.loading')
       })
     )
 
@@ -148,8 +156,7 @@ export default function ProfilePage() {
       dispatch(
         showNotif({
           status: 'error',
-          title: 'something went wrong updating your profile',
-          message: parsed.error
+          message: t(activeLanguage, 'profilePage.notification.error')
         })
       )
     } else {
@@ -158,8 +165,7 @@ export default function ProfilePage() {
         dispatch(
           showNotif({
             status: 'success',
-            title: 'success',
-            message: "please confirm your new email"
+            message: t(activeLanguage, 'profilePage.notification.successConfirm')
           })
         )
         dispatch(logOut())
@@ -176,8 +182,7 @@ export default function ProfilePage() {
       dispatch(
         showNotif({
           status: 'success',
-          title: 'success',
-          message: "profile updated"
+          message: t(activeLanguage, 'profilePage.notification.success')
         })
       )
 
@@ -196,7 +201,9 @@ export default function ProfilePage() {
 
   return (
     <div className='text-white max-w-4xl mx-auto pt-10 pb-20 px-2'>
-      <h1 className='text-2xl text-center pb-8'>Profile Settings</h1>
+      <h1 className='text-2xl text-center pb-8 capitalize'>
+        {t(activeLanguage, 'profilePage.title')}
+      </h1>
 
       <form
         onSubmit={handleSubmit(submitHandler)}
@@ -205,7 +212,7 @@ export default function ProfilePage() {
         <Input
           id='userName'
           type='text'
-          label='Username'
+          label={t(activeLanguage, 'profilePage.userNameInput.label')}
           register={register}
           registerOptions={{ required: true }}
           errors={errors}
@@ -215,7 +222,7 @@ export default function ProfilePage() {
         <Input
           id='firstName'
           type='text'
-          label='First Name'
+          label={t(activeLanguage, 'profilePage.firstNameInput.label')}
           register={register}
           registerOptions={{ required: false }}
           errors={errors}
@@ -225,7 +232,7 @@ export default function ProfilePage() {
         <Input
           id='lastName'
           type='text'
-          label='Last Name'
+          label={t(activeLanguage, 'profilePage.lastNameInput.label')}
           register={register}
           registerOptions={{ required: false }}
           errors={errors}
@@ -235,7 +242,7 @@ export default function ProfilePage() {
         <Input
           id='email'
           type='email'
-          label='Email'
+          label={t(activeLanguage, 'profilePage.emailInput.label')}
           register={register}
           registerOptions={{ required: true }}
           errors={errors}
@@ -243,23 +250,23 @@ export default function ProfilePage() {
         />
 
         <InputFile
-          label='profile pic'
-          inputId='profilePic'
-          filenameBoxId='picFile'
-          btnLabel='select a pic'
-          clearPicLabel='clear pic'
+          label={t(activeLanguage, 'profilePage.pictureInput.label')}
+          inputId='profilePic' // to avoid 'id' collisions with other elements
+          noFilePlaceholder={t(activeLanguage, 'profilePage.pictureInput.noFilePlaceholder')}
+          btnLabel={t(activeLanguage, 'profilePage.pictureInput.btnLabel')}
+          clearPicLabel={t(activeLanguage, 'profilePage.pictureInput.clearPicLabel')}
           register={register}
           registerOptions={{ required: false }}
           errors={errors}
           setValue={setValue}
-          isRequired={false} // for showing the asterisk
+          isRequired={false} // for showing (or not) the asterisk
         />
 
         <button
           type='submit'
           className={`p-3 border-[1px] border-slate-500 rounded-md hover:enabled:bg-white hover:enabled:bg-opacity-20 w-full`}
         >
-          Submit
+          {t(activeLanguage, 'profilePage.submitBtn.submitForm')}
         </button>
       </form>
     </div>

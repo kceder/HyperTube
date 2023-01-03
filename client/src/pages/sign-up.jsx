@@ -30,7 +30,7 @@ export default function SignUpPage() {
     .object({
       userName: z
         .string()
-        .min(1, { message: t(activeLanguage, 'signUpPage.usernameInput.min') })
+        .min(1, { message: t(activeLanguage, 'signUpPage.userNameInput.minWarning') })
         .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
           message: t(activeLanguage, 'signUpPage.userNameInput.regexWarning')
         })
@@ -235,11 +235,11 @@ export default function SignUpPage() {
         />
 
         <InputFile
-          label='profile pic'
+          label={t(activeLanguage, 'signUpPage.pictureInput.label')}
           inputId='profilePic'
-          filenameBoxId='picFile'
-          btnLabel='select a pic'
-          clearPicLabel='clear pic'
+          noFilePlaceholder={t(activeLanguage, 'signUpPage.pictureInput.noFilePlaceholder')}
+          btnLabel={t(activeLanguage, 'signUpPage.pictureInput.btnLabel')}
+          clearPicLabel={t(activeLanguage, 'signUpPage.pictureInput.clearPicLabel')}
           register={register}
           registerOptions={{ required: false }}
           errors={errors}

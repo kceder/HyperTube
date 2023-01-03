@@ -5,7 +5,6 @@ function InputFile(props) {
   const {
     label,
     inputId,
-    filenameBoxId,
     inputLabel,
     btnLabel,
     clearPicLabel,
@@ -13,10 +12,11 @@ function InputFile(props) {
     registerOptions,
     errors,
     setValue,
+    noFilePlaceholder,
     isRequired
   } =  props
 
-  const [filename, setFilename] = React.useState('No file selected')
+  const [filename, setFilename] = React.useState(noFilePlaceholder)
 
   function handleUploadFile(e) {
     e.preventDefault()
@@ -60,7 +60,7 @@ function InputFile(props) {
         {btnLabel}
       </button>
 
-      <p id={filenameBoxId} className='bg-white border border-white w-[65%] p-3 rounded-r-md text-slate-700 truncate'>
+      <p className='bg-white border border-white w-[65%] p-3 rounded-r-md text-slate-700 truncate'>
         {filename}
       </p>
 
@@ -70,7 +70,7 @@ function InputFile(props) {
       >
         <div className='group'>
           <XCircleIcon className='inline w-4 mx-1 -mt-1 group-hover:text-red-500' />
-          <span className='group-hover:text-white'>
+          <span className='group-hover:text-white capitalize'>
           {clearPicLabel}
           </span>
         </div>
