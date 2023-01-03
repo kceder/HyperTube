@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Input from '../components/input'
+import InputFile from '../components/input-file'
 import { XCircleIcon } from '@heroicons/react/24/outline'
 import { useSelector, useDispatch } from 'react-redux'
 import { showNotif } from '../store/notificationsSlice'
@@ -67,13 +68,28 @@ export default function SignUpPage() {
       profilePic: z
         .any()
         .refine(
-          (files) => files?.length === 0 || files?.[0]?.size <= MAX_FILE_SIZE,
+          (files) => {
+            console.log('file list',files, files.length)
+            if (files.length === 0)
+              return true
+            else if (files.length && files[0].size <= MAX_FILE_SIZE)
+              return true
+            else
+              return false
+          },
           t(activeLanguage, 'signUpPage.pictureInput.maxSizeWarning')
         )
         .refine(
-          (files) => files?.length === 0 || ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+          (files) => {
+            if (files.length === 0)
+              return true
+            else if (files.length && ACCEPTED_IMAGE_TYPES.includes(files[0].type))
+              return true
+            else
+              return false
+          },
           t(activeLanguage, 'signUpPage.pictureInput.filetypeWarning')
-        ),
+        )
     })
     .refine((data) => data.password === data.confirmPassword, {
       path: ['confirmPassword'],
@@ -111,10 +127,10 @@ export default function SignUpPage() {
     // console.log('data.profilePic is an '+ data.profilePic) // testing  
     /* If the user added a profile picture, 'data.profilePic' is a FileList 
       array (truthy value). Otherwise it's a falsey empty string. */
-    if (data.profilePic) {
+    if (data.profilePic[0]) {
       // Add the profile pic at the end of the form.
       formData.append('profilePic', data.profilePic[0])
-      // console.log(data.profilePic[0]) // testing
+      // console.log('submitting',data.profilePic[0]) // testing
     }
     
     const response = await fetch('/api/users', {
@@ -123,7 +139,7 @@ export default function SignUpPage() {
     })
     const parsed = await response.json()
     if (parsed.error) {
-      // console.log(`sign-up failed: ${JSON.stringify(parsed.error)}`) // testing!!!
+      console.log(`sign-up failed: ${JSON.stringify(parsed.error)}`) // testing!!!
       dispatch(
         showNotif({
           status: 'error',
@@ -143,8 +159,8 @@ export default function SignUpPage() {
     }
   }
 
-  // console.log(watch('userName')) // we can watch input content on 'change' events
-  // console.log(errors?.userName?.message) // testing
+  // console.log(watch('profilePic')) // we can watch input content on 'change' events
+  // console.log(errors) // testing
   return (
     <div className='text-white max-w-4xl mx-auto pt-10 pb-20 px-2'>
       <h1 className='text-2xl text-center pb-8'>
@@ -215,31 +231,18 @@ export default function SignUpPage() {
           isRequired={true}
         />
 
-        <div className='relative'>
-          <Input
-            id='profilePic'
-            type='file'
-            label={t(activeLanguage, 'signUpPage.pictureInput.label')}
-            register={register}
-            registerOptions={{ required: false }}
-            errors={errors}
-            isRequired={false}
-          />
-          <button
-            className='absolute top-2 right-4 text-gray-400'
-            onClick={(e) => {
-              e.preventDefault()
-              setValue('profilePic', '')
-            }}
-          >
-            <div className='group'>
-              <XCircleIcon className='inline w-4 mx-1 -mt-1 group-hover:text-red-500' />
-              <span className='group-hover:text-white'>
-              {t(activeLanguage, 'signUpPage.pictureInput.clearPic')}
-              </span>
-            </div>
-          </button>
-        </div>
+        <InputFile
+          label='profile pic'
+          inputId='profilePic'
+          filenameBoxId='picFile'
+          btnLabel='select a pic'
+          clearPicLabel='clear pic'
+          register={register}
+          registerOptions={{ required: false }}
+          errors={errors}
+          setValue={setValue}
+          isRequired={false} // for showing the asterisk
+        />
 
         <button
           type='submit'
