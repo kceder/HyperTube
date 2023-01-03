@@ -3,8 +3,11 @@ import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+
+// components
 import Input from '../components/input'
-import { XCircleIcon } from '@heroicons/react/24/outline'
+import InputFile from '../components/input-file'
+
 // redux
 import { useDispatch, useSelector } from 'react-redux'
 import { setProfilePic, logOut } from '../store/authSlice'
@@ -239,29 +242,18 @@ export default function ProfilePage() {
           isRequired={true}
         />
 
-        <div className='relative'>
-          <Input
-            id='profilePic'
-            type='file'
-            label='Profile Picture'
-            register={register}
-            registerOptions={{ required: false }}
-            errors={errors}
-            isRequired={false}
-          />
-          <button
-            className='absolute top-2 right-4 text-gray-400'
-            onClick={(e) => {
-              e.preventDefault()
-              setValue('profilePic', '')
-            }}
-          >
-            <div className='group'>
-              <XCircleIcon className='inline w-4 mx-1 -mt-1 group-hover:text-red-500' />
-              <span className='group-hover:text-white'>clear pic</span>
-            </div>
-          </button>
-        </div>
+        <InputFile
+          label='profile pic'
+          inputId='profilePic'
+          filenameBoxId='picFile'
+          btnLabel='select a pic'
+          clearPicLabel='clear pic'
+          register={register}
+          registerOptions={{ required: false }}
+          errors={errors}
+          setValue={setValue}
+          isRequired={false} // for showing the asterisk
+        />
 
         <button
           type='submit'

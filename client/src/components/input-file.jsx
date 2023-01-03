@@ -12,7 +12,8 @@ function InputFile(props) {
     register,
     registerOptions,
     errors,
-    setValue
+    setValue,
+    isRequired
   } =  props
 
   const [filename, setFilename] = React.useState('No file selected')
@@ -39,7 +40,9 @@ function InputFile(props) {
 
   return (
     <div className='relative flex flex-col w-full pb-20'>
-    <label className='text-2xl pb-2 capitalize ml-2'>{label}</label>
+    <label className='text-2xl pb-2 capitalize ml-2'>
+      {label}{isRequired && <sup className="text-sm">*</sup>}
+    </label>
     <div className="flex items-center">
       <input
         style={{display: 'none'}}

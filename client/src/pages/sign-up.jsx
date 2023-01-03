@@ -1,9 +1,13 @@
+// form and form validation
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+
+// components
 import Input from '../components/input'
 import InputFile from '../components/input-file'
-import { XCircleIcon } from '@heroicons/react/24/outline'
+
+// redux
 import { useSelector, useDispatch } from 'react-redux'
 import { showNotif } from '../store/notificationsSlice'
 import { useNavigate } from 'react-router-dom'
@@ -124,7 +128,6 @@ export default function SignUpPage() {
     formData.append('email', data.email)
     formData.append('password', data.password)
 
-    // console.log('data.profilePic is an '+ data.profilePic) // testing  
     /* If the user added a profile picture, 'data.profilePic' is a FileList 
       array (truthy value). Otherwise it's a falsey empty string. */
     if (data.profilePic[0]) {
@@ -178,7 +181,7 @@ export default function SignUpPage() {
           register={register}
           registerOptions={{ required: true }}
           errors={errors}
-          isRequired={true}
+          isRequired={true}  // for showing the asterisk
         />
 
         <Input
