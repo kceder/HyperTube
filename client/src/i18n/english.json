@@ -88,5 +88,20 @@
             "success": "You have successfully Signed Up!",
             "error": "There was some problem Signing You Up!"
         }
+    },
+    "forgotPasswordPage": {
+        "title": "Request a Password Reset Email",
+        "emailInput": {
+            "label": "Email",
+            "placeholder": "Enter your Email",
+            "minWarning": "Email is required",
+            "validEmailWarning": "Must be a valid email"
+        },
+        "submitBtn": "Submit",
+        "messages": {
+            "loading": "Requesting Confirmation Email",
+            "success": "Success! Your Confirmation Email is on the way",
+            "error": "Woops! There was some problem processing your Request"
+        }
     }
 }

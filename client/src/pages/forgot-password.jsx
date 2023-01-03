@@ -3,18 +3,21 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Input from '../components/input'
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { showNotif } from '../store/notificationsSlice'
 
-const validationSchema = z.object({
-  email: z
-    .string()
-    .min(1, { message: 'Email is required' })
-    .email({ message: 'Must be a valid email' }),
-})
+// homemade i18n
+import t from '../i18n/i18n'
 
 export default function ForgotPasswordPage() {
+  const { activeLanguage } = useSelector(slices => slices.language)
+  const validationSchema = z.object({
+    email: z
+      .string()
+      .min(1, { message: t(activeLanguage, 'forgotPasswordPage.emailInput.minWarning') })
+      .email({ message: t(activeLanguage, 'forgotPasswordPage.emailInput.validEmailWarning') }),
+  })
   const {
     register,
     handleSubmit,
@@ -32,9 +35,8 @@ export default function ForgotPasswordPage() {
     dispatch(
       showNotif({
         status: 'loading',
-        title: 'requesting email',
         message:
-          "We're processing your Password Reset Link request",
+        t(activeLanguage, 'forgotPasswordPage.messages.loading')
       }),
     )
 
@@ -46,8 +48,7 @@ export default function ForgotPasswordPage() {
       dispatch(
         showNotif({
           status: 'error',
-          title: 'error',
-          message: parsed.error
+          message: t(activeLanguage, 'forgotPasswordPage.messages.error')
         })
       )
     } else {
@@ -56,8 +57,7 @@ export default function ForgotPasswordPage() {
       dispatch(
         showNotif({
           status: 'success',
-          title: 'Password Reset Link Sent',
-          message: parsed.message
+          message: t(activeLanguage, 'forgotPasswordPage.messages.success')
         })
       )
       // and redirect
@@ -67,7 +67,9 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className='text-white max-w-3xl mx-auto pt-10 pb-20 px-2'>
-      <h1 className='text-2xl text-center pb-8'>Request a Password Reset Email</h1>
+      <h1 className='text-2xl text-center pb-8'>
+        {t(activeLanguage, 'forgotPasswordPage.title')}
+      </h1>
 
       <form
         onSubmit={handleSubmit(submitHandler)}
@@ -76,18 +78,19 @@ export default function ForgotPasswordPage() {
         <Input
           id='email'
           type='email'
-          label='Email'
+          label={t(activeLanguage, 'forgotPasswordPage.emailInput.label')}
           register={register}
           registerOptions={{ required: true }}
           errors={errors}
           isRequired={true}
+          placeholder={t(activeLanguage, 'forgotPasswordPage.emailInput.placeholder')}
         />
 
         <button
           type='submit'
           className={`p-3 border-[1px] border-slate-500 rounded-md hover:enabled:bg-white hover:enabled:bg-opacity-20 w-full`}
         >
-          Submit
+          {t(activeLanguage, 'forgotPasswordPage.submitBtn')}
         </button>
       </form>
     </div>

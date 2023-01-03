@@ -12,7 +12,7 @@ function Input(props) {
           type={props.type}
           label={props.label}
           className='bg-gray-50 border border-gray-300 rounded-md px-4 py-1 text-gray-900 text-2xl max-w-xs md:max-w-md placeholder:text-gray-300 min-w-full'
-          placeholder={`Enter your ${props.label}`}
+          placeholder={props.placeholder}
           {...props.register(props.id, props.registerOptions)}
         />
       </div>
