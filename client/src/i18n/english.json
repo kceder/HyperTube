@@ -150,5 +150,28 @@
             "success": "Success! Your Confirmation Email is on the way",
             "error": "Woops! There was some problem processing your Request"
         }
+    },
+    "confirmAccountPage": {
+        "title": "account confirmation",
+        "notification": {
+            "loading": "We're processing your Account Confirmation",
+            "error": "Something went wrong processing your Account Confirmation",
+            "success": "Your Account has been Confirmed. You can log in."
+        }
+    },
+    "requestConfirmationLinkPage": {
+        "title": "request a confirmation link",
+        "emailInput": {
+            "label": "email",
+            "placeholder": "enter your email",
+            "minWarning": "Email is required",
+            "validEmailWarning": "Must be a Valid Email"
+        },
+        "submitBtn": "Submit",
+        "notification": {
+            "loading": "We're processing your Confirmation Link request",
+            "error": "Something went wrong processing your Account Confirmation",
+            "success": "Confirmation Link sent. Check your inbox ;-)"
+        }
     }
 }

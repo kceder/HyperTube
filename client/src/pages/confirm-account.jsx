@@ -2,11 +2,17 @@ import React from 'react'
 
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
+
 // redux
 import { useSelector, useDispatch } from 'react-redux'
 import { showNotif } from '../store/notificationsSlice'
 
+// homemade i18n
+import t from '../i18n/i18n'
+
 export default function ConfirmAccountPage() {
+  const { activeLanguage } = useSelector(slices => slices.language)
+
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { isLoggedIn } = useSelector(slices => slices.auth)
@@ -24,10 +30,8 @@ export default function ConfirmAccountPage() {
     dispatch(
       showNotif({
         status: 'loading',
-        title: 'confirming your account',
-        message:
-          "We're processing your Account Confirmation",
-      }),
+        message: t(activeLanguage, 'confirmAccountPage.notification.loading')
+      })
     )
     const response = await fetch('/api/users/confirm', {
       method: 'POST',
@@ -44,16 +48,14 @@ export default function ConfirmAccountPage() {
         showNotif({
           status: 'error',
           title: 'error',
-          message: data.error
+          message: t(activeLanguage, 'confirmAccountPage.notification.error')
         }),
       )
     } else {
       dispatch(
         showNotif({
           status: 'success',
-          title: 'success',
-          message:
-            "Your Account has been Confirmed. You can log in.",
+          message: t(activeLanguage, 'confirmAccountPage.notification.success')
         }),
       )
     }
@@ -88,14 +90,18 @@ export default function ConfirmAccountPage() {
     // Show the notification!!
     return (
       <div className="flex h-[80vh] items-center justify-center">
-        <p className='text-white text-2xl'>{error}</p>
+        <p className='text-white text-2xl'>
+          {t(activeLanguage, 'confirmAccountPage.notification.error')}
+        </p>
       </div>
     )
   }
 
   return (
     <div className='text-white max-w-4xl mx-auto pt-10 pb-20 px-2'>
-      <h1 className='text-2xl text-center pb-8'>Account Confirmation</h1>
+      <h1 className='text-2xl text-center pb-8 capitalize'>
+        {t(activeLanguage, 'confirmAccountPage.title')}
+      </h1>
     </div>
   )
 }

@@ -1,20 +1,35 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
+
+// form validation
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+
+// components
 import Input from '../components/input'
-import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+
+// redux
+import { useSelector, useDispatch } from 'react-redux'
 import { showNotif } from '../store/notificationsSlice'
 
-const validationSchema = z.object({
-  email: z
-    .string()
-    .min(1, { message: 'Email is required' })
-    .email({ message: 'Must be a valid email' }),
-})
+// homemade i18n
+import t from '../i18n/i18n'
 
 export default function RequestConfirmationPage() {
+  const { activeLanguage } = useSelector(slices => slices.language)
+  
+  const validationSchema = z.object({
+    email: z
+      .string()
+      .min(1, {
+        message: t(activeLanguage, 'requestConfirmationLinkPage.emailInput.minWarning')
+      })
+      .email({
+        message: t(activeLanguage, 'requestConfirmationLinkPage.emailInput.validEmailWarning')
+      })
+  })
+
   const {
     register,
     handleSubmit,
@@ -32,9 +47,8 @@ export default function RequestConfirmationPage() {
     dispatch(
       showNotif({
         status: 'loading',
-        title: 'requesting email',
         message:
-          "We're processing your Confirmation Link request",
+        t(activeLanguage, 'requestConfirmationLinkPage.notification.loading')
       }),
     )
 
@@ -46,8 +60,7 @@ export default function RequestConfirmationPage() {
       dispatch(
         showNotif({
           status: 'error',
-          title: 'error',
-          message: parsed.error
+          message: t(activeLanguage, 'requestConfirmationLinkPage.notification.error')
         })
       )
     } else {
@@ -56,8 +69,7 @@ export default function RequestConfirmationPage() {
       dispatch(
         showNotif({
           status: 'success',
-          title: 'Confirmation Link Sent',
-          message: parsed.message
+          message: t(activeLanguage, 'requestConfirmationLinkPage.notification.success')
         })
       )
     }
@@ -72,7 +84,9 @@ export default function RequestConfirmationPage() {
 
   return (
     <div className='text-white max-w-3xl mx-auto pt-10 pb-20 px-2'>
-      <h1 className='text-2xl text-center pb-8'>Request a Comfirmation Link</h1>
+      <h1 className='text-2xl text-center pb-8 capitalize'>
+        {t(activeLanguage, 'requestConfirmationLinkPage.title')}
+      </h1>
 
       <form
         onSubmit={handleSubmit(submitHandler)}
@@ -81,7 +95,8 @@ export default function RequestConfirmationPage() {
         <Input
           id='email'
           type='email'
-          label='Email'
+          label={t(activeLanguage, 'requestConfirmationLinkPage.emailInput.label')}
+          placeholder={t(activeLanguage, 'requestConfirmationLinkPage.emailInput.placeholder')}
           register={register}
           registerOptions={{ required: true }}
           errors={errors}
@@ -92,7 +107,7 @@ export default function RequestConfirmationPage() {
           type='submit'
           className={`p-3 border-[1px] border-slate-500 rounded-md hover:enabled:bg-white hover:enabled:bg-opacity-20 w-full`}
         >
-          Submit
+          {t(activeLanguage, 'requestConfirmationLinkPage.submitBtn')}
         </button>
       </form>
     </div>
