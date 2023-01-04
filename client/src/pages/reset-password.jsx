@@ -19,17 +19,16 @@ import t from '../i18n/i18n'
 export default function ResetPasswordPage() {
   const { activeLanguage } = useSelector(slices => slices.language)
 
-
-const validationSchema = z.object({
-  password: z
-    .string()
-    .min(5, {
-      message: t(activeLanguage, 'resetPasswordPage.passwordInput.regexWarning')
-    })
-    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
-      message: t(activeLanguage, 'resetPasswordPage.passwordInput.regexWarning')
-      // 'Upper and lowercase letters, and digits',
-    }),
+  const validationSchema = z.object({
+    password: z
+      .string()
+      .min(5, {
+        message: t(activeLanguage, 'resetPasswordPage.passwordInput.regexWarning')
+      })
+      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
+        message: t(activeLanguage, 'resetPasswordPage.passwordInput.regexWarning')
+        // 'Upper and lowercase letters, and digits',
+      }),
     password_confirmation: z
       .string()
       .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {

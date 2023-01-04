@@ -195,5 +195,25 @@
             "error": "Something went wrong processing your Account Confirmation",
             "success": "Confirmation Link sent. Check your inbox ;-)"
         }
+    },
+    "OAuthPage": {
+        "42": {
+            "title": "42 open authentication",
+            "notification": {
+                "loading": "We're processing your 42 OAuth request",
+                "error": "Something went wrong processing your request",
+                "successNewUser": "Successfully Signed Up via 42",
+                "success": "Successfully Authenticated via 42"
+            }
+        },
+        "GH": {
+            "title": "GitHub open authentication",
+            "notification": {
+                "loading": "We're processing your GitHub OAuth request",
+                "error": "Something went wrong processing your request",
+                "successNewUser": "Successfully Signed Up via GitHub",
+                "success": "Successfully Authenticated via GitHub"
+            }
+        }
     }
 }

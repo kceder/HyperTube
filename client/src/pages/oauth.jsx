@@ -1,13 +1,19 @@
 import React from 'react'
 
-import { useNavigate, useParams, useSearchParams, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
+
 // redux
 import { useSelector, useDispatch } from 'react-redux'
 import { logIn } from '../store/authSlice'
 import { showNotif } from '../store/notificationsSlice'
 
+// homemade i18n
+import t from '../i18n/i18n'
+
 export default function OAuthPage() {
+  const { activeLanguage } = useSelector(slices => slices.language)
+
   const location = useLocation()
   const navigate = useNavigate()
   const searchParams = new URLSearchParams(document.location.search)
@@ -22,8 +28,7 @@ export default function OAuthPage() {
     dispatch(
       showNotif({
         status: 'loading',
-        title: 'GitHub OAuth',
-        message: "We're authenticating you"
+        message: t(activeLanguage, 'OAuthPage.GH.notification.loading')
       })
     )
 
@@ -45,8 +50,7 @@ export default function OAuthPage() {
       dispatch(
         showNotif({
           status: 'error',
-          title: 'GitHub OAuth',
-          message: parsed.error
+          message: t(activeLanguage, 'OAuthPage.GH.notification.error')
         })
       )
 
@@ -58,8 +62,7 @@ export default function OAuthPage() {
       dispatch(
         showNotif({
           status: 'success',
-          title: 'Signed Up Successfully',
-          message: 'Using GitHub OAuth'
+          message: t(activeLanguage, 'OAuthPage.GH.notification.successNewUser')
         })
       )
 
@@ -77,8 +80,7 @@ export default function OAuthPage() {
       dispatch(
         showNotif({
           status: 'success',
-          title: 'Logged In Successfully',
-          message: 'Using GitHub OAuth'
+          message: t(activeLanguage, 'OAuthPage.GH.notification.success')
         })
       )
 
@@ -98,8 +100,7 @@ export default function OAuthPage() {
     dispatch(
       showNotif({
         status: 'loading',
-        title: '42 OAuth',
-        message: "We're authenticating you"
+        message: t(activeLanguage, 'OAuthPage.42.notification.loading')
       })
     )
 
@@ -121,21 +122,20 @@ export default function OAuthPage() {
       dispatch(
         showNotif({
           status: 'error',
-          title: 'woops',
-          message: parsed.error
+          message:  t(activeLanguage, 'OAuthPage.42.notification.error')
         })
       )
 
       // Redirect after 3 seconds
-      setTimeout(() => { 
-        navigate('/', { replace: true })
-      }, 3000)
+      // setTimeout(() => { 
+      //   navigate('/', { replace: true })
+      // }, 3000)
     } else if (parsed.newUser) {
       dispatch(
         showNotif({
           status: 'success',
           title: 'signed up successfully',
-          message: "The answer is 42!"
+          message:  t(activeLanguage, 'OAuthPage.42.notification.successNewUser')
         })
       )
 
@@ -155,7 +155,7 @@ export default function OAuthPage() {
         showNotif({
           status: 'success',
           title: 'logged in successfully',
-          message: "The answer is 42!"
+          message:  t(activeLanguage, 'OAuthPage.42.notification.success')
         })
       )
 
@@ -196,14 +196,22 @@ export default function OAuthPage() {
     // Show the notification!!
     return (
       <div className="flex h-[80vh] items-center justify-center">
-        <p className='text-white text-2xl'>{error}</p>
+        <p className='text-white text-2xl'>
+          { t(activeLanguage, 'OAuthPage.GH.notification.error')}
+        </p>
       </div>
     )
   }
 
   return (
     <div className='text-white max-w-4xl mx-auto pt-10 pb-20 px-2'>
-      <h1 className='text-2xl text-center pb-8'>OAuth Stuff</h1>
+      <h1 className='text-2xl text-center pb-8 capitalize'>
+        {location.pathname === '/oauth/github' ? 
+          t(activeLanguage, 'OAuthPage.GH.title')
+        :
+          t(activeLanguage, 'OAuthPage.42.title')
+        }
+      </h1>
     </div>
   )
 }
