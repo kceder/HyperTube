@@ -1,31 +1,46 @@
 import React from 'react'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+
+// form validation
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+
+// components
 import Input from '../components/input'
-import { useDispatch } from 'react-redux'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+
+// redux
+import { useSelector, useDispatch } from 'react-redux'
 import { showNotif } from '../store/notificationsSlice'
+
+// homemade i18n
+import t from '../i18n/i18n'
+
+export default function ResetPasswordPage() {
+  const { activeLanguage } = useSelector(slices => slices.language)
+
 
 const validationSchema = z.object({
   password: z
-  .string()
-  .min(5, { message: 'Between 5-10 characters' })
-  .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
-    message: 'Upper and lowercase letters, and digits',
-  }),
-  password_confirmation: z
     .string()
-    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
-      message: 'Upper and lowercase letters, and digits',
+    .min(5, {
+      message: t(activeLanguage, 'resetPasswordPage.passwordInput.regexWarning')
     })
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
+      message: t(activeLanguage, 'resetPasswordPage.passwordInput.regexWarning')
+      // 'Upper and lowercase letters, and digits',
+    }),
+    password_confirmation: z
+      .string()
+      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
+        message: t(activeLanguage, 'resetPasswordPage.confirmPasswordInput.regexWarning')
+      })
   })
-.refine((data) => data.password === data.password_confirmation, {
-  path: ['password_confirmation'],
-  message: "Password don't match",
-})
+  .refine((data) => data.password === data.password_confirmation, {
+    path: ['password_confirmation'],
+    message: t(activeLanguage, 'resetPasswordPage.confirmPasswordInput.noMatchWarning')
+  })
 
-export default function ResetPasswordPage() {
   const {
     register,
     handleSubmit,
@@ -46,9 +61,8 @@ export default function ResetPasswordPage() {
     dispatch(
       showNotif({
         status: 'loading',
-        title: 'updating password',
         message:
-          "We're processing your Password Update request",
+          t(activeLanguage, 'resetPasswordPage.notification.loading')
       }),
     )
 
@@ -71,8 +85,7 @@ export default function ResetPasswordPage() {
       dispatch(
         showNotif({
           status: 'error',
-          title: 'error',
-          message: parsed.error
+          message: t(activeLanguage, 'resetPasswordPage.notification.error')
         })
       )
 
@@ -84,8 +97,7 @@ export default function ResetPasswordPage() {
       dispatch(
         showNotif({
           status: 'success',
-          title: 'Password has been Updated',
-          message: parsed.message
+          message: t(activeLanguage, 'resetPasswordPage.notification.success')
         })
       )
 
@@ -96,7 +108,9 @@ export default function ResetPasswordPage() {
 
   return (
     <div className='text-white max-w-3xl mx-auto pt-10 pb-20 px-2'>
-      <h1 className='text-2xl text-center pb-8'>Enter your New Password</h1>
+      <h1 className='text-2xl text-center pb-8'>
+        {t(activeLanguage, 'resetPasswordPage.title')}
+      </h1>
 
       <form
         onSubmit={handleSubmit(submitHandler)}
@@ -105,7 +119,7 @@ export default function ResetPasswordPage() {
         <Input
           id='password'
           type='password'
-          label='Password'
+          label={t(activeLanguage, 'resetPasswordPage.passwordInput.label')}
           register={register}
           registerOptions={{ required: true }}
           errors={errors}
@@ -115,7 +129,7 @@ export default function ResetPasswordPage() {
         <Input
           id='password_confirmation'
           type='password'
-          label='Password Confirmation'
+          label={t(activeLanguage, 'resetPasswordPage.confirmPasswordInput.label')}
           register={register}
           registerOptions={{ required: true }}
           errors={errors}
@@ -126,7 +140,7 @@ export default function ResetPasswordPage() {
           type='submit'
           className={`p-3 border-[1px] border-slate-500 rounded-md hover:enabled:bg-white hover:enabled:bg-opacity-20 w-full`}
         >
-          Submit
+          {t(activeLanguage, 'resetPasswordPage.submitBtn')}
         </button>
       </form>
     </div>

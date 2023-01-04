@@ -151,6 +151,28 @@
             "error": "Woops! There was some problem processing your Request"
         }
     },
+    "resetPasswordPage": {
+        "title": "Enter your New Password",
+        "passwordInput": {
+            "label": "password",
+            "placeholder": "your new password",
+            "minWarning": "Between 5-10 characters",
+            "regexWarning": "Upper and lowercase letters, and digits"
+        },
+        "confirmPasswordInput": {
+            "label": "confirm password",
+            "placeholder": "confirm your new password",
+            "minWarning": "Between 5-10 characters",
+            "regexWarning": "Upper and lowercase letters, and digits",
+            "noMatchWarning": "Passwords don't match"
+        },
+        "submitBtn": "Submit",
+        "notification": {
+            "loading": "We're processing your Password Update request",
+            "error": "Something went wrong updating your Password",
+            "success": "Password has been successfully Updated"
+        }
+    },
     "confirmAccountPage": {
         "title": "account confirmation",
         "notification": {
