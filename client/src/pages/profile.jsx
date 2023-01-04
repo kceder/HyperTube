@@ -34,9 +34,9 @@ export default function ProfilePage() {
   .object({
     userName: z
       .string()
-      .min(1, { message: t(activeLanguage, 'profilePage.usernameInput.minWarning') })
+      .min(1, { message: t(activeLanguage, 'profilePage.userNameInput.minWarning') })
       .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
-        message: t(activeLanguage, 'profilePage.usernameInput.regexWarning')
+        message: t(activeLanguage, 'profilePage.userNameInput.regexWarning')
       })
       .refine(
         async (userName) => {

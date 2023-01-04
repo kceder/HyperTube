@@ -127,9 +127,9 @@ export default function OAuthPage() {
       )
 
       // Redirect after 3 seconds
-      // setTimeout(() => { 
-      //   navigate('/', { replace: true })
-      // }, 3000)
+      setTimeout(() => { 
+        navigate('/', { replace: true })
+      }, 3000)
     } else if (parsed.newUser) {
       dispatch(
         showNotif({
