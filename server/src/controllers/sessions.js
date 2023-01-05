@@ -29,9 +29,8 @@ async function login(req, res) {
   }
 
   if (!user.confirmed) {
-    return res.status(401).json({
-      // For logging purposes. Messages are i18n'ed in front-end
-      error: 'please, confirm your account before logging in'
+    return res.status(200).json({
+      unconfirmed: true
     })
   }
 

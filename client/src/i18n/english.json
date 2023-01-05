@@ -34,6 +34,7 @@
         "notification": {
             "loading": "We're verifying your credentials",
             "success": "You have successfully logged in!",
+            "unconfirmed": "Please, confirm your account before logging in!",
             "error": "There was some problem logging you in!"
         }
     },
