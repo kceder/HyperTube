@@ -7,12 +7,15 @@ import pool from '/app/src/lib/db.js'
 
 async function getListMovies(req, res) {
   console.log('req.query',JSON.stringify(req.query))
+  // return res.status(200).json()
+  const { page } = req.query
   try {
     const ytsBaseUrl = 'https://yts.mx/api/v2/list_movies.json'
 
     // Build the query here
     const minimum_rating = 8 // replace 8 for IMDbRating in the query
-    const url = `${ytsBaseUrl}?` + `minimum_rating=${minimum_rating}`
+    const url = `${ytsBaseUrl}?` + `minimum_rating=${minimum_rating}` +
+    `&page=${+page}`
 
     const response = await fetch(url)
     const { data } = await response.json()
