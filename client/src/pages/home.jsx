@@ -10,10 +10,10 @@ import { useSelector } from 'react-redux'
 function HomePage() {
   const { isLoggedIn } = useSelector(slices => slices.auth)
 
-  if (isLoggedIn)
+  // if (isLoggedIn)
     return <MovieList />
-  else
-    return <Hero />
+  // else
+  //   return <Hero />
 }
 
 export default HomePage

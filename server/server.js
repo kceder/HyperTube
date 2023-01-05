@@ -12,12 +12,14 @@ import { getUsersRouter } from './src/routes/users.js'
 import { getSessionsRouter } from './src/routes/sessions.js'
 import { getUsernamesRouter } from './src/routes/usernames.js'
 import { getPasswordsRouter } from './src/routes/passwords.js'
+import { getMoviesRouter } from './src/routes/movies.js'
 
 // Middleware
 import cors from 'cors'
 import bodyParser from 'body-parser'
 
 const app = express()
+
 // middleware to serve static files (images, and later our React bundle)
 app.use(express.static('public'))
 
@@ -40,6 +42,9 @@ app.use('/api', getPasswordsRouter())
 
 // Route for checking usernames (useful for conventional sign up)
 app.use('/api', getUsernamesRouter())
+
+// Route for movies (list of them, and individual ones)
+app.use('/api', getMoviesRouter())
 
 //Listen port
 const PORT = 3000
