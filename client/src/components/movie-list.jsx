@@ -1,19 +1,24 @@
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import React from 'react'
-import { batch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import MovieCard from './movie-card'
+import SideBar from './sidebar'
 
-const dummy_query = {
-  title: 'gone with the wind', // testing
-  genres: ['action'],
-  IMdbRating: 2,
-  prodYearLo: 1999,
-  prodYearHi: 2017
-}
+// const dummy_query = {
+//   title: 'gone with the wind', // testing
+//   genres: ['action'],
+//   IMdbRating: 2,
+//   prodYearLo: 1999,
+//   prodYearHi: 2017
+// }
 
 function MovieList(props) {
+  const [isVisible, setIsVisible] = React.useState(true)
   const [isLoading, setIsLoading] = React.useState(false)
   const [movieList, setMovieList] = React.useState([])
+  const [pageNumber, setPageNumber] = React.useState(1)
+
+  // To Do: move query state into a custom hook
   const [query, setQuery] = React.useState({
     title: '',
     genres: [],
@@ -21,10 +26,9 @@ function MovieList(props) {
     prodYearLow: '',
     prodYearHi: ''
   })
-  const [pageNumber, setPageNumber] = React.useState(1)
 
-  /* 'hasMore' will be set to 'true' during the first request (assuming there are
-    movies) and to 'false' when the request returns no movies. */
+  /* 'hasMore' will be set to 'true' during the first request (assuming
+    there are movies) and to 'false' when the request returns no movies. */
   const [hasMore, setHasMore] = React.useState(false)
 
   async function fetchMovies(cb) {
@@ -79,36 +83,49 @@ function MovieList(props) {
       if (component) observer.current.observe(component)
     }, [isLoading])
 
-  return (
-  <div className='text-white max-w-4xl mx-auto pt-10 pb-20 px-2'>
-    <ul className='grid grid-cols-1 md:grid-cols-4 gap-4'>
-      {movieList.length > 0 && movieList.map((movie, idx) => {
-        if (idx === movieList.length - 1) { // <== Last Movie
-          return (<li key={movie.imdbId} ref={lastMovie} className='col-span-1'>
-            <Link
-              to={`movie/${movie.imdbId}`}
-              state={{movie}}
-            >
-              <MovieCard movie={movie} />
-            </Link>
-          </li>)
-        } else {
-          return (<li key={movie.imdbId} className='col-span-1'>
-            <Link
-              to={`movie/${movie.imdbId}`}
-              state={{movie}}
-            >
-              <MovieCard movie={movie} />
-            </Link>
-          </li>)
-        }
-      })}
-    </ul>
+  function toggleSideBar() {
+    console.log('clicked');
+    setIsVisible(prev => !prev)
+  }
 
-    {isLoading && <p className='text-white text-center text-2xl pt-20'>
-      spinner goes here...
-    </p>}
-  </div>
-  )
+  return (<>
+    <SideBar isVisible={isVisible} clickHandler={toggleSideBar} />
+
+    <div className={`text-white max-w-4xl mx-auto pb-20 px-2`}>
+      {/* The paragraph below toggles the Advanced Search side-bar */}
+      <p onClick={toggleSideBar} className='text-white cursor-pointer text-center py-4 hover:scale-110'>
+        <MagnifyingGlassIcon className='inline w-6'/>
+        <span className='ml-3 capitalize'>advanced search</span>
+      </p>
+
+      <ul className='grid grid-cols-1 md:grid-cols-4 gap-4'>
+        {movieList.length > 0 && movieList.map((movie, idx) => {
+          if (idx === movieList.length - 1) { // <== Last Movie
+            return (<li key={`movie.imdbId ${idx}`} ref={lastMovie} className='col-span-1'>
+              <Link
+                to={`movie/${movie.imdbId}`}
+                state={{movie}}
+              >
+                <MovieCard movie={movie} />
+              </Link>
+            </li>)
+          } else {
+            return (<li key={`movie.imdbId ${idx}`} className='col-span-1'>
+              <Link
+                to={`movie/${movie.imdbId}`}
+                state={{movie}}
+              >
+                <MovieCard movie={movie} />
+              </Link>
+            </li>)
+          }
+        })}
+      </ul>
+
+      {isLoading && <p className='text-white text-center text-2xl pt-20'>
+        spinner goes here...
+      </p>}
+    </div>
+  </>)
 }
 export default MovieList
