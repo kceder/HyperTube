@@ -4,14 +4,6 @@ import { Link } from 'react-router-dom'
 import MovieCard from './movie-card'
 import SideBar from './sidebar'
 
-// const dummy_query = {
-//   title: 'gone with the wind', // testing
-//   genres: ['action'],
-//   IMdbRating: 2,
-//   prodYearLo: 1999,
-//   prodYearHi: 2017
-// }
-
 function MovieList(props) {
   const [isVisible, setIsVisible] = React.useState(true)
   const [isLoading, setIsLoading] = React.useState(false)
@@ -19,13 +11,14 @@ function MovieList(props) {
   const [pageNumber, setPageNumber] = React.useState(1)
 
   // To Do: move query state into a custom hook
-  const [query, setQuery] = React.useState({
-    title: '',
-    genres: [],
-    imdbRating: '',
-    prodYearLow: '',
-    prodYearHi: ''
-  })
+  // const [query, setQuery] = React.useState({
+  //   title: '',
+  //   genres: [],
+  //   imdbRating: '',
+  //   prodYearLow: '',
+  //   prodYearHi: ''
+  // })
+  const [minImdbRating, setMinImdbRating] = React.useState(0)
 
   /* 'hasMore' will be set to 'true' during the first request (assuming
     there are movies) and to 'false' when the request returns no movies. */
@@ -89,7 +82,12 @@ function MovieList(props) {
   }
 
   return (<>
-    <SideBar isVisible={isVisible} clickHandler={toggleSideBar} />
+    <SideBar
+      isVisible={isVisible}
+      clickHandler={toggleSideBar}
+      minImdbRating={minImdbRating}
+      setMinImdbRating={setMinImdbRating}
+    />
 
     <div className={`text-white max-w-4xl mx-auto pb-20 px-2`}>
       {/* The paragraph below toggles the Advanced Search side-bar */}

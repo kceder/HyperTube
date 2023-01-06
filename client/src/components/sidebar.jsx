@@ -1,12 +1,19 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { ChevronDoubleLeftIcon } from '@heroicons/react/24/outline'
+import MinRatingRangeSlider from './min-rating-range-slider'
 
 function SideBar(props) {
-  const { isVisible, clickHandler } = props
+  const {
+    isVisible,
+    clickHandler,
+    minImdbRating,
+    setMinImdbRating
+  } = props
 
   return ReactDOM.createPortal(
     <>
+      {/* Sidebar */}
       <div
         className={`fixed top-0 right-0 h-full w-full z-50 ease-in-out duration-500 ${
           isVisible ? '-translate-x-0' : '-translate-x-full'
@@ -14,6 +21,7 @@ function SideBar(props) {
       >
         {/* CONTENT */}
         <div className={`h-full w-full md:w-[50%] bg-slate-500`}>
+          {/* Header */}
           <div className='flex justify-between items-center p-4 text-2xl text-white'>
             <p className='capitalize'>advanced search</p>
 
@@ -22,10 +30,16 @@ function SideBar(props) {
               onClick={clickHandler}
             />
           </div>
+
           <hr />
+
           <div className='p-4'>
-            form for sorting and filtering go here...
-          </div>
+            <MinRatingRangeSlider
+              label='Minimum Rating'
+              value={minImdbRating}
+              changeHandler={e => setMinImdbRating(e.target.value)}
+            />
+          </div> 
         </div>
       </div>
 
