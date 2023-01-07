@@ -18,7 +18,9 @@ function MovieList(props) {
   //   prodYearLow: '',
   //   prodYearHi: ''
   // })
+  /** States for the query */
   const [minImdbRating, setMinImdbRating] = React.useState(0)
+  const [genre, setGenre] = React.useState('All')
 
   /* 'hasMore' will be set to 'true' during the first request (assuming
     there are movies) and to 'false' when the request returns no movies. */
@@ -87,6 +89,8 @@ function MovieList(props) {
       clickHandler={toggleSideBar}
       minImdbRating={minImdbRating}
       setMinImdbRating={setMinImdbRating}
+      genre={genre}
+      setGenre={setGenre}
     />
 
     <div className={`text-white max-w-4xl mx-auto pb-20 px-2`}>
