@@ -1,24 +1,47 @@
 import pool from '/app/src/lib/db.js'
 
-// const dummyList = [
-//   { id: 1, title: 'movie one', director: 'John Dummy'},
-//   { id: 2, title: 'movie two', director: 'Bob Dummy'},
-// ]
-
 async function getListMovies(req, res) {
   console.log('req.query',JSON.stringify(req.query))
-  // return res.status(200).json()
-  const { page } = req.query
+
+  // Destructure the query
+  const {
+    page,
+    minimum_rating,
+    genre,
+    query_term
+  } = req.query
   try {
     const ytsBaseUrl = 'https://yts.mx/api/v2/list_movies.json'
 
     // Build the query here
-    const minimum_rating = 8 // replace 8 for IMDbRating in the query
-    const url = `${ytsBaseUrl}?` + `minimum_rating=${minimum_rating}` +
-    `&page=${+page}`
+    let url = `${ytsBaseUrl}?` + `&page=${+page}`
+    if (+minimum_rating > 0) {
+      // console.log('added minimum_rating', minimum_rating, typeof minimum_rating)
+      url += `&minimum_rating=${+minimum_rating}`
+    }
+
+    if (genre !== 'all' && genre !== 'null') {
+      // console.log('added genre', genre, typeof genre)
+      url += `&genre=${genre}`
+    }
+
+    if (query_term && query_term !== '' && query_term !== 'null') {
+      // console.log('added query_term', query_term, typeof query_term)
+      url += `&query_term=${query_term}`
+    }
 
     const response = await fetch(url)
     const { data } = await response.json()
+    
+    if (data.movie_count === 0) {
+      // console.log(data) //  testing
+      
+      return res.status(200).json({
+        params: req.query,
+        error: 'no movies found'
+      })
+    }
+
     const movies = data.movies.map(m => ({
       // consider extracting more info here
       title:      m.title,
@@ -30,11 +53,8 @@ async function getListMovies(req, res) {
       genres:     m.genres,
       torrents:   m.torrents
     }))
-    console.log(data)
-    return res.status(200).json({
-      params: req.query,
-      movies: movies
-    })
+    // console.log(movies)
+    return res.status(200).json({ movies })
   } catch (error) {
     console.log(error)
   }
