@@ -32,7 +32,7 @@ function LanguageSelectorMobile(props) {
   }
 
   return (
-    <div className='flex justify-evenly'>
+    <div className='flex justify-evenly pt-4'>
       <div
         className={`cursor-pointer pt-3`}
         data-id='en'

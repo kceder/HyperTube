@@ -86,7 +86,7 @@ function SideBar(props) {
 
       {isVisible && (
         <div
-          className={`fixed top-0 right-0 w-full h-full bg-black bg-opacity-70 z-40 transition-opacity ease-in-out duration-800`}
+          className={`fixed top-0 right-0 w-full h-full bg-black bg-opacity-70 backdrop-blur-sm z-40 transition-opacity ease-in-out duration-800`}
         ></div>
       )}
     </>,

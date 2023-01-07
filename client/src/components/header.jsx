@@ -36,7 +36,7 @@ function Header() {
   function closeIt() { setIsOpen(false) }
 
   return (
-    <header className='bg-gray-800 py-4 border-b-[1px] border-gray-700'>
+    <header className='bg-gray-800 py-4 h-20 border-b-[1px] border-gray-700'>
       <div className='flex justify-between items-center max-w-6xl mx-auto'>
         <div className={`pl-3`}>
           <Link to='/' className='text-white text-4xl md:text-5xl font-leagueGothic'>
