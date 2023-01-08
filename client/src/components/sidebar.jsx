@@ -9,7 +9,18 @@ import {
 import MinRatingRangeSlider from './min-rating-range-slider'
 import Select from 'react-select'
 
-const genres = [
+const sortByOptions = [
+  { value: 'title', label: 'Title' },
+  { value: 'year', label: 'Year' },
+  { value: 'rating', label: 'Rating' }
+]
+
+const orderByOptions = [
+  { value: 'asc', label: 'Ascending' },
+  { value: 'desc', label: 'Descending' }
+]
+
+const genreOptions = [
   { value: 'action', label: 'Action' },
   { value: 'adult', label: 'Adult' },
   { value: 'adventure', label: 'Adventure' },
@@ -51,28 +62,24 @@ function SideBar(props) {
     queryTerm,
     setQueryTerm,
     submitQuery,
+    sortBy,
+    setSortBy,
+    orderBy,
+    setOrderBy
   } = props
   const [queryTermError, setQueryTermError] = React.useState('')
-  const [genreObject, setGenreObject] = React.useState(null)
+
 
   React.useEffect(() => {
-    const regex = /^[a-zA-Z]*$/
-
-    if (regex.test(queryTerm) || queryTerm > 30) {
+    const regex = /^[a-zA-Z\s]*$/
+    if (!queryTerm ||
+        queryTerm?.trim() === '' ||
+        (regex.test(queryTerm?.trim()) && queryTerm?.trim().length < 30))
+    {
       setQueryTermError(null)
     } else
-      setQueryTermError('Only one word (Max. 30 upper and lowercase letters)') // use translation here
+      setQueryTermError('Only letters and spaces (Max. 30)') // use translation here
   }, [queryTerm])
-
-  function genreChangeHandler(e) {
-    console.log(e?.value)
-    setGenreObject(e)
-    if (e && e.value) setGenre(e.value)
-  }
-
-  React.useEffect(() => {
-    if (genreObject === null) setGenre('all')
-  }, [genreObject])
 
   return ReactDOM.createPortal(
     <>
@@ -97,6 +104,27 @@ function SideBar(props) {
           <hr className='pb-4' />
 
           <div className='flex flex-col p-4 space-y-8'>
+            <div className='grid grid-cols-2 gap-2'>
+              <div>
+                <p className='text-white text-xl mb-3'>Sort by</p>
+                <Select
+                  value={sortBy}
+                  onChange={e => setSortBy(e)}
+                  options={sortByOptions}
+                  isClearable={true}
+                />
+              </div>
+              <div>
+                <p className='text-white text-xl mb-3'>Order</p>
+                <Select
+                  value={orderBy}
+                  onChange={e => setOrderBy(e)}
+                  options={orderByOptions}
+                  isClearable={true}
+                />
+              </div>
+            </div>
+
             <MinRatingRangeSlider
               label='Minimum Rating'
               value={minImdbRating}
@@ -104,17 +132,17 @@ function SideBar(props) {
             />
 
             <div>
-              <p className='text-white text-2xl mb-3'>Select Genre</p>
+              <p className='text-white text-xl mb-3'>Select Genre</p>
               <Select
-                value={genreObject}
-                onChange={genreChangeHandler}
-                options={genres}
+                value={genre}
+                onChange={e => setGenre(e)}
+                options={genreOptions}
                 isClearable={true}
               />
             </div>
 
-            <div className='flex flex-col w-full relative pb-20'>
-              <label className='text-2xl font-medium text-white pb-2 capitalize align-left'>
+            <div className='flex flex-col w-full relative pb-14'>
+              <label className='text-xl font-medium text-white pb-2 capitalize align-left'>
                 query term
               </label>
 
@@ -150,7 +178,7 @@ function SideBar(props) {
         ></div>
       )}
     </>,
-    document.getElementById('overlays'),
+    document.getElementById('overlays')
   )
 }
 
