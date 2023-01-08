@@ -16,9 +16,10 @@ function MovieCard(props) {
       src={coverUrl}
       alt={title}
       className='w-96' 
-      onError={(e) => (e.target.onerror = null)(
+      onError={(e) => {
+        e.target.onerror = null
         e.target.src=notFound
-      )}
+      }}
     />
     <p className='truncate py-2 text-center'>{title} </p>
     <hr />
