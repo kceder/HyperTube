@@ -139,7 +139,7 @@ export default function AuthPage() {
 
       <form
         onSubmit={handleSubmit(submitHandler)}
-        className='space-y-4 flex flex-col items-center md:max-w-[80%] mx-auto'
+        className='space-y-4 flex flex-col items-center w-full mx-auto'
         id='login'
       >
         <Input
@@ -165,7 +165,7 @@ export default function AuthPage() {
         <button
           type='submit'
           disabled={!isValid}
-          className={`p-3 border-[1px] border-slate-500 rounded-md hover:enabled:bg-white hover:enabled:bg-opacity-20 disabled:cursor-not-allowed w-[90%]`}
+          className={`p-3 border-[1px] border-slate-500 rounded-md hover:enabled:bg-white hover:enabled:bg-opacity-20 disabled:cursor-not-allowed w-full`}
         >
           {isValid ?
           t(activeLanguage, 'logInPage.submitBtn.submitForm')
@@ -174,7 +174,7 @@ export default function AuthPage() {
         </button>
       </form>
 
-      <div className='flex flex-col space-y-6 md:flex-row md:items-center md:justify-between md:space-y-0 md:max-w-[80%] mx-auto pt-8 px-6 text-center'>
+      <div className='flex flex-col space-y-6 md:flex-row md:items-center md:justify-between md:space-y-0 md:w-full mx-auto pt-8 text-center'>
         <Link to='/sign-up' className='hover:scale-110 hover:cursor-pointer hover:underline hover:underline-offset-4 md:self-start'>Create Account?</Link>
         <div className='flex flex-col space-y-6 md:text-right'>
           <Link to='/forgot-password' className='hover:scale-110 hover:cursor-pointer hover:underline hover:underline-offset-4'>Forgot your Password?</Link>
@@ -188,7 +188,7 @@ export default function AuthPage() {
         <hr className='inline my-8 w-[40%] h-1 bg-gray-200 rounded border-0 dark:bg-gray-700' />
       </div>
 
-      <div className='space-y-4 md:max-w-[80%] mx-auto'>
+      <div className='space-y-4 md:w-full mx-auto'>
         <a
           className='border border-gray-700 rounded-md flex p-4 space-x-4 items-center justify-center hover:cursor-pointer hover:bg-white hover:bg-opacity-20 group'
           href={fortyTwoUrl}       

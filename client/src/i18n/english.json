@@ -76,7 +76,7 @@
         },
         "pictureInput": {
             "label": "Profile Picture",
-            "btnLabel": "choose a pic",
+            "btnLabel": "choose",
             "clearPicLabel": "clear pic",
             "noFilePlaceholder": "No File Selected",
             "maxSizeWarning": "Max image size is 5MB.",
@@ -120,7 +120,7 @@
         },
         "pictureInput": {
             "label": "profile picture",
-            "btnLabel": "choose a picture",
+            "btnLabel": "choose",
             "clearPicLabel": "clear pic",
             "noFilePlaceholder": "No File Selected",
             "maxSizeWarning": "Max image size is 5MB.",
