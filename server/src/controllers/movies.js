@@ -98,6 +98,12 @@ async function getMovie(req, res) {
 
       console.log(data) // testing
 
+      /* Here it's needed to add logic for:
+        - Using the info in data.torrents, download the movie to our filesystem,
+        only if it doesn't already exist.
+        - Make it available to the user, so it starts streaming when she clicks
+        on the play button.
+      */
       return res.status(200).json(data.movie)
     } catch (error) {
       return res.status(200).json({
