@@ -78,4 +78,32 @@ async function getListMovies(req, res) {
   }
 }
 
-export { getListMovies }
+async function getMovie(req, res) {
+    // Destructure the query
+    const { language } = req.query  // The language of the UI (needed for subtitles)
+    const { id } = req.params       // The imdb id of the movie (needed for querying the yts API)
+
+    const ytsBaseUrl = 'https://yts.mx/api/v2/movie_details.json'
+
+    console.log(language, id) // testing
+
+    try {
+      const response = await fetch(ytsBaseUrl + '?' + new URLSearchParams({
+        imdb_id: id,
+        with_images: true,
+        with_cast: true
+      }))
+
+      const { data } = await response.json() // Destructure the data property
+
+      console.log(data) // testing
+
+      return res.status(200).json(data.movie)
+    } catch (error) {
+      return res.status(200).json({
+        error: error
+      })
+    }
+}
+
+export { getListMovies, getMovie }

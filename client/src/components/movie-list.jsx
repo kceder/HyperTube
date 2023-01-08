@@ -131,7 +131,7 @@ function MovieList(props) {
             if (idx === movieList.length - 1) { // <== Last Movie
               return (<li key={`${movie.imdbId}${idx}`} ref={lastMovie} className='col-span-1'>
                 <Link
-                  to={`movie/${movie.imdbId}`}
+                  to={`movies/${movie.imdbId}`}
                   state={{movie}}
                 >
                   <MovieCard movie={movie} />
@@ -140,7 +140,7 @@ function MovieList(props) {
             } else {
               return (<li key={`movie.imdbId ${idx}`} className='col-span-1'>
                 <Link
-                  to={`movie/${movie.imdbId}`}
+                  to={`movies/${movie.imdbId}`}
                   state={{movie}}
                 >
                   <MovieCard movie={movie} />

@@ -30,7 +30,7 @@ export default function Home() {
           />
 
           <Route
-            path='movie/:id'
+            path='movies/:id'
             element={<MoviePage />}
           />
 
