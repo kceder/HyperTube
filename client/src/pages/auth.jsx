@@ -190,7 +190,7 @@ export default function AuthPage() {
 
       <div className='space-y-4 md:w-full mx-auto'>
         <a
-          className='border border-gray-700 rounded-md flex p-4 space-x-4 items-center justify-center hover:cursor-pointer hover:bg-white hover:bg-opacity-20 group'
+          className='border border-slate-500 rounded-md flex p-4 space-x-4 items-center justify-center hover:cursor-pointer hover:bg-white hover:bg-opacity-20 group'
           href={fortyTwoUrl}       
         >
           <img
@@ -206,7 +206,7 @@ export default function AuthPage() {
         </a>
 
         <a
-          className='border border-gray-700 rounded-md flex p-4 space-x-4 items-center justify-center hover:cursor-pointer hover:bg-white hover:bg-opacity-20 group'
+          className='border border-slate-500 rounded-md flex p-4 space-x-4 items-center justify-center hover:cursor-pointer hover:bg-white hover:bg-opacity-20 group'
           href={`${import.meta.env.VITE_GITHUB_OAUTH_URL}${import.meta.env.VITE_GITHUB_CLIENT_ID}`}
         >
           <img

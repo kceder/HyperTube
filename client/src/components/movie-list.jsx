@@ -4,7 +4,15 @@ import { Link } from 'react-router-dom'
 import MovieCard from './movie-card'
 import SideBar from './sidebar'
 
+// Redux
+import { useSelector } from 'react-redux'
+
+// homemade i18n
+import t from '../i18n/i18n'
+
 function MovieList(props) {
+  const { activeLanguage } = useSelector(slices => slices.language)  // redux
+
   const [isVisible, setIsVisible] = React.useState(false) // Sidebar
   const [isLoading, setIsLoading] = React.useState(false)
   const [movieList, setMovieList] = React.useState([])
@@ -37,7 +45,8 @@ function MovieList(props) {
       const data = await response.json()
   
       if (data.error === 'no movies found') {
-        setError(':-( no movies found') // ADD TRANSLATION HERE
+        setError(t(activeLanguage, 'movieListPage.noMoviesFound')) // ADD TRANSLATION HERE
+        setIsLoading(false)
         return console.log(data.error)
       }
 
@@ -119,12 +128,14 @@ function MovieList(props) {
       {/* The paragraph below toggles the Advanced Search side-bar */}
       <p onClick={() => setIsVisible(true)} className='text-white cursor-pointer text-center py-4 hover:scale-110'>
         <MagnifyingGlassIcon className='inline w-6'/>
-        <span className='ml-3 capitalize'>advanced search</span>
+        <span className='ml-3 capitalize'>
+          {t(activeLanguage, 'movieListPage.advancedSearch')}
+        </span>
       </p>
 
       {/* List of Movies */}
       {error ? 
-        <p className='text-white text-2xl text-center'>{error}</p>
+        <p className='text-white text-2xl text-center capitalize'>{error}</p>
       :
         <ul className='grid grid-cols-1 md:grid-cols-4 gap-4'>
           {movieList.length > 0 && movieList.map((movie, idx) => {
@@ -151,7 +162,7 @@ function MovieList(props) {
         </ul>}
 
       {!isLoading && !error && !hasMore && <p className='text-white text-center text-2xl pt-20'>
-        No more movies
+        {t(activeLanguage, 'movieListPage.noMoreMovies')}
       </p>}
 
       {isLoading && <p className='text-white text-center text-2xl pt-20'>

@@ -9,6 +9,11 @@
         "logInBtn": "Log In",
         "signUpBtn": "Sign Up"
     },
+    "movieListPage": {
+        "advancedSearch": "advanced search",
+        "noMoreMovies": "no more movies",
+        "noMoviesFound": "no movies found"
+    },
     "logInPage": {
         "title": "Log In",
         "usernameInput": {
