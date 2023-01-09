@@ -14,6 +14,19 @@
         "noMoreMovies": "no more movies",
         "noMoviesFound": "no movies found"
     },
+    "sideBar": {
+        "advancedSearch": "advanced search",
+        "sortBy": "sort by",
+        "sortByPlaceholder": "Select",
+        "orderBy": "order by",
+        "orderByPlaceholder": "Select",
+        "minimumRating": "minimum rating",
+        "selectGenre": "select genre",
+        "genrePlaceholder": "'All' By Default",
+        "queryTerm": "query term",
+        "queryTermPlaceholder": "Search In Title",
+        "submitFilter": "submit filter"
+    },
     "logInPage": {
         "title": "Log In",
         "usernameInput": {

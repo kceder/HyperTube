@@ -9,6 +9,12 @@ import {
 import MinRatingRangeSlider from './min-rating-range-slider'
 import Select from 'react-select'
 
+// Redux
+import { useSelector } from 'react-redux'
+
+// homemade i18n
+import t from '../i18n/i18n'
+
 const sortByOptions = [
   { value: 'title', label: 'Title' },
   { value: 'year', label: 'Year' },
@@ -52,6 +58,8 @@ const genreOptions = [
 ]
 
 function SideBar(props) {
+  const { activeLanguage } = useSelector(slices => slices.language)  // redux
+
   const {
     isVisible,
     clickHandler,
@@ -93,7 +101,9 @@ function SideBar(props) {
         <div className={`h-full w-full md:w-[50%] bg-slate-500`}>
           {/* Header */}
           <div className='flex justify-between items-center p-4 text-2xl text-white'>
-            <p className='capitalize'>advanced search</p>
+            <p className='capitalize'>
+              {t(activeLanguage, 'sideBar.advancedSearch')}
+            </p>
 
             <ChevronDoubleLeftIcon
               className='w-10 hover:cursor-pointer hover:scale-110'
@@ -106,56 +116,65 @@ function SideBar(props) {
           <div className='flex flex-col p-4 space-y-8'>
             <div className='grid grid-cols-2 gap-2'>
               <div>
-                <p className='text-white text-xl mb-3'>Sort by</p>
+                <p className='text-white text-xl mb-3 capitalize'>
+                {t(activeLanguage, 'sideBar.sortBy')}
+                </p>
                 <Select
                   value={sortBy}
                   onChange={e => setSortBy(e)}
                   options={sortByOptions}
                   isClearable={true}
+                  placeholder={t(activeLanguage, 'sideBar.sortByPlaceholder')}
                 />
               </div>
               <div>
-                <p className='text-white text-xl mb-3'>Order</p>
+                <p className='text-white text-xl mb-3 capitalize'>
+                  {t(activeLanguage, 'sideBar.orderBy')}
+                </p>
                 <Select
                   value={orderBy}
                   onChange={e => setOrderBy(e)}
                   options={orderByOptions}
                   isClearable={true}
+                  placeholder={t(activeLanguage, 'sideBar.orderByPlaceholder')}
                 />
               </div>
             </div>
 
             <MinRatingRangeSlider
-              label='Minimum Rating'
+              label={t(activeLanguage, 'sideBar.minimumRating')}
               value={minImdbRating}
               changeHandler={(e) => setMinImdbRating(e.target.value)}
             />
 
             <div>
-              <p className='text-white text-xl mb-3'>Select Genre</p>
+              <p className='text-white text-xl mb-3 capitalize'>
+              {t(activeLanguage, 'sideBar.selectGenre')}
+              </p>
               <Select
                 value={genre}
                 onChange={e => setGenre(e)}
                 options={genreOptions}
                 isClearable={true}
+                placeholder={t(activeLanguage, 'sideBar.genrePlaceholder')}
               />
             </div>
 
             <div className='flex flex-col w-full relative pb-14'>
               <label className='text-xl font-medium text-white pb-2 capitalize align-left'>
-                query term
+              {t(activeLanguage, 'sideBar.queryTerm')}
               </label>
 
               <input
                 id='query-term'
                 type='text'
-                className='bg-gray-50 border border-gray-300 rounded-md px-4 py-1 text-gray-900 text-2xl max-w-xs md:max-w-md placeholder:text-gray-300 min-w-full'
-                placeholder='Search by term'
+                className='bg-gray-50 border border-gray-300 rounded-md px-4 py-1 text-gray-900 text-xl max-w-xs md:max-w-md placeholder:text-gray-300 min-w-full'
+                placeholder={t(activeLanguage, 'sideBar.queryTermPlaceholder')}
                 onChange={e => setQueryTerm(e.target.value)}
               />
 
               {queryTermError && (
-                <p className='absolute top-24 left-2 text-white'>
+                <p className='absolute top-24 left-2 text-white capitalize'>
                   <HandRaisedIcon className='inline w-5 -mt-1 mx-2' />
                   {queryTermError}
                 </p>
@@ -163,10 +182,10 @@ function SideBar(props) {
             </div>
 
             <button
-              className='text-white border rounded-md p-4 hover:bg-white hover:bg-opacity-30'
+              className='capitalize text-white border rounded-md p-4 hover:bg-white hover:bg-opacity-30'
               onClick={submitQuery}
             >
-              Submit Filter
+              {t(activeLanguage, 'sideBar.submitFilter')}
             </button>
           </div>
         </div>
