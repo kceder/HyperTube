@@ -1,4 +1,5 @@
 import pool from '/app/src/lib/db.js'
+import { downloadTorrent } from '/app/src/lib/downloadTorrent.js'
 
 async function getListMovies(req, res) {
   // Destructure the query
@@ -85,7 +86,7 @@ async function getMovie(req, res) {
 
     const ytsBaseUrl = 'https://yts.mx/api/v2/movie_details.json'
 
-    console.log(language, id) // testing
+    console.log('Client sent - Language:', language, `(Imdb-id${id})`) // testing
 
     try {
       const response = await fetch(ytsBaseUrl + '?' + new URLSearchParams({
@@ -96,7 +97,8 @@ async function getMovie(req, res) {
 
       const { data } = await response.json() // Destructure the data property
 
-      console.log(data) // testing
+      // console.log(data.movie) // testing
+      downloadTorrent(data.movie) // for now it prints the magnet link
 
       /* Here it's needed to add logic for:
         - Using the info in data.torrents, download the movie to our filesystem,
