@@ -1,15 +1,16 @@
 import pool from "../lib/db.js"
 
 async function findMovie({ quality, imdb_id }) {
+  console.log('downloads received',quality, imdb_id)
   const query = `SELECT * FROM downloads
   WHERE imdb_id = $1
   AND quality = $2`
-  const values = [ quality, imdb_id ]
+  const values = [ imdb_id, quality ]
   const result = await pool.query(query, values)
 
-  // console.log('Movie model - found movie',result.rows[0]) // testing
+  console.log('Movie model - found movie', result.rows[0]) // testing
   const movie = result.rows[0]
-  return user ?? null 
+  return movie ?? null 
 }
 
 async function saveMovie(movie) {
@@ -48,10 +49,10 @@ async function saveMovie(movie) {
   return savedMovie ?? null 
 }
 
-async function updateMovie({ imdb_id, quality }) {
+async function setCompleteMovie(movie) {
   const { imdb_id, quality } = movie
   const query = `UPDATE downloads
-  SET completed =  true,
+  SET completed =  true
   WHERE imdb_id = $1
   AND quality = $2
   RETURNING *`
@@ -67,5 +68,5 @@ async function updateMovie({ imdb_id, quality }) {
 export {
   findMovie,
   saveMovie,
-  updateMovie
+  setCompleteMovie
 }

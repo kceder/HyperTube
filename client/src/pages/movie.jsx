@@ -57,12 +57,17 @@ function MoviePage() {
       </>}
       <p>Choose a quality:</p>
       <ul>
-        {qualities.map(q => (
-          <li className='text-white text-xl'>{q.quality}</li>
+        {qualities.map((q, idx) => (
+          <li
+            key={idx}
+            className='text-white text-xl'
+          >
+            {q.quality}
+          </li>
         ))}
       </ul>
       {/* <ReactPlayer url={`/api/streams/${imdbId}${quality.quality}/${quality.hash}`} config={ */}
-      <ReactPlayer url={`/api/streams/${imdbId}/${quality.quality}`} config={
+      <ReactPlayer url={`/api/streams/${imdbId}/${quality.quality}/${quality.hash}`} config={
         {}
       } controls={true}/>
 
