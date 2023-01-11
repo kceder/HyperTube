@@ -5,6 +5,9 @@ import fs from 'fs'
 async function getStream(req, res) {
   try {
     const range = req.headers.range
+    const { id, quality, hash } = req.params
+    console.log(id, quality, hash)
+
     const start = Number(range.replace(/\D/g, ''))
     console.log(`range: ${range}, start: ${start}`) // testing
     console.log(typeof start);
@@ -16,7 +19,8 @@ async function getStream(req, res) {
     }
 
     // Hardcode it for now
-    const videoPath = '/app/public/movies/tt23806336/willSisters.mp4'
+    // const videoPath = `/app/public/movies/tt23806336/willSisters.mp4`
+    const videoPath = `/app/public/movies/${id}/${quality}/*.mp4`
     const videoSize = fs.statSync(videoPath).size
     console.log(`videoSize: ${videoSize} bytes`)
     const CHUNK_SIZE = 10 ** 6 // 1MB

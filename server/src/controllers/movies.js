@@ -81,7 +81,7 @@ async function getListMovies(req, res) {
 
 async function getMovie(req, res) {
     // Destructure the query
-    const { language } = req.query  // The language of the UI (needed for subtitles)
+    const { language, hash, quality } = req.query  // The language of the UI (needed for subtitles)
     const { id } = req.params       // The imdb id of the movie (needed for querying the yts API)
 
     const ytsBaseUrl = 'https://yts.mx/api/v2/movie_details.json'
@@ -97,14 +97,18 @@ async function getMovie(req, res) {
       }))
 
       const { data } = await response.json() // Destructure the data property
-      // console.log(data.movie) // testing
+      console.log(data.movie) // testing
 
       // Here we check our DB for the existence of the video file (and if it's completed)
       // 1. If it exists, we start streaming it.
 
       // 2. If it doesn't, we download it using the BitTorrent protocol (and also streaming it from there).
-      downloadTorrent(data.movie) // for now it prints the magnet link
-
+      downloadTorrent({
+        title: data.movie.title,
+        imdb_code: data.movie.imdb_code,
+        hash,
+        quality
+      })
 
       return res.status(200).json(data.movie)
     } catch (error) {

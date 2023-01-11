@@ -8,6 +8,14 @@ function MoviePage() {
   const { activeLanguage } = useSelector(slices => slices.language)
   const [ isLoading, setIsloading ] = React.useState(null)
   const [ movie, setMovie ] = React.useState(null)
+  const location = useLocation() // needed to parse the imdb id from React URL
+
+  const { torrents } = location.state.movie
+  const qualities = torrents.map(t => ({ quality: t.quality, hash: t.hash }))
+
+  const [ quality, setQuality ] = React.useState(qualities[0])
+  console.log(quality)
+  // get the array of torrents (include several qualities)
 
   // Protected route: redirect to home page if user's not logged in
   // DISABLE IT DURING DEVELOPMENT!!
@@ -18,8 +26,6 @@ function MoviePage() {
   //   if (!isLoggedIn) navigate('/', { replace: true })
   // }, [isLoggedIn])
 
-  const location = useLocation() // needed to parse the imdb id from React URL
-
   console.log(location.pathname) // testing
   const imdbId = location.pathname.split('/').pop()
 
@@ -29,7 +35,9 @@ function MoviePage() {
     console.log(imdbId)
     async function fetchMovie() {
       const response = await fetch(url + '?' + new URLSearchParams({
-        language: activeLanguage
+        language: activeLanguage,
+        hash:     quality.hash,
+        quality:  quality.quality
       }))
 
       const data = await response.json()
@@ -47,7 +55,14 @@ function MoviePage() {
         <h1 className='text-2xl text-white'>{movie.title}</h1>
         <p className='text-xl text-white'>{movie.year}</p>
       </>}
-      <ReactPlayer url={`/api/streams/${imdbId}`} config={
+      <p>Choose a quality:</p>
+      <ul>
+        {qualities.map(q => (
+          <li className='text-white text-xl'>{q.quality}</li>
+        ))}
+      </ul>
+      {/* <ReactPlayer url={`/api/streams/${imdbId}${quality.quality}/${quality.hash}`} config={ */}
+      <ReactPlayer url={`/api/streams/${imdbId}/${quality.quality}`} config={
         {}
       } controls={true}/>
 
