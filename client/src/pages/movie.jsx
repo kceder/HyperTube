@@ -21,9 +21,12 @@ function MoviePage() {
   const location = useLocation() // needed to parse the imdb id from React URL
 
   console.log(location.pathname) // testing
+  const imdbId = location.pathname.split('/').pop()
 
   React.useEffect(() => {
     const url = '/api' + location.pathname
+
+    console.log(imdbId)
     async function fetchMovie() {
       const response = await fetch(url + '?' + new URLSearchParams({
         language: activeLanguage
@@ -43,12 +46,9 @@ function MoviePage() {
       {!isLoading && movie && <>
         <h1 className='text-2xl text-white'>{movie.title}</h1>
         <p className='text-xl text-white'>{movie.year}</p>
-        <p className='text-xl text-white'>📺 Show Video player here</p>
       </>}
-      <ReactPlayer url='https://www.youtube.com/watch?v=ysz5S6PUM-U' config={
-        {
-          
-        }
+      <ReactPlayer url={`/api/streams/${imdbId}`} config={
+        {}
       } controls={true}/>
 
       {isLoading && <p className='text-white text-center text-2xl pt-20'>

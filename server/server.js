@@ -13,6 +13,8 @@ import { getSessionsRouter } from './src/routes/sessions.js'
 import { getUsernamesRouter } from './src/routes/usernames.js'
 import { getPasswordsRouter } from './src/routes/passwords.js'
 import { getMoviesRouter } from './src/routes/movies.js'
+// import { getStreamsRouter } from './src/routes/streams.js'
+import streamsRouter from './src/routes/streams.js'
 
 // Middleware
 import cors from 'cors'
@@ -45,6 +47,9 @@ app.use('/api', getUsernamesRouter())
 
 // Route for movies (list of them, and individual ones)
 app.use('/api', getMoviesRouter())
+
+// Route for movies (list of them, and individual ones)
+app.use('/api', streamsRouter)
 
 //Listen port
 const PORT = 3000
