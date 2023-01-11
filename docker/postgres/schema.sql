@@ -21,6 +21,16 @@ CREATE TABLE IF NOT EXISTS email_tokens (
     expires_at BIGINT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS downloads (
+	id SERIAL NOT NULL PRIMARY KEY,
+	imdb_id VARCHAR(15) NOT NULL,
+	quality VARCHAR(10) NOT NULL,
+	completed BOOLEAN DEFAULT false,
+	path VARCHAR(1000) NOT NULL,
+	size BIGINT NOT NULL,
+	last_watched BIGINT NOT NULL
+);
+
 -- Hashed password is Asdf1
 INSERT INTO users VALUES (1, 'Bobby1', 'Robert', 'Doe', 'test@test.com', '$2a$12$bzfTNVzNkqMH94ubFhDPL.OfPQcj5Xi2/5H2tPemG0fByaUGlZDlu');
 

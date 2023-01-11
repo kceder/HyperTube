@@ -21,3 +21,24 @@ With the conditions described above, if we need to install some package, we'll h
 ```
 docker exec -it 59b9ef0e502a npm uninstall dotenv
 ```
+
+After that, other devs may have to recreate the containers, because only when the images are created, the packages are installed.
+
+> Check the `dev-clean` target in the `Makefile`
+
+### Modifying DB Schema (e.g. Creating New Tables)
+Since we have a volume for the database container, in order to make modifications to the schema, we have to get rid of the existing volume. Otherwise, when the `postgres` container is starting, it will detect an existing DB in the volume, and won't recreate the new schema.
+
+> We're mounting the schema file as a volume in `/docker-entrypoint-initdb.d/schema.sql`. By default, the `postgres` container will execute any script under `/docker-entrypoint-initdb.d/` only if it doesn't find an existing database.
+
+So in order to list the volumes:
+```
+docker volumes ls
+```
+
+Once you find the one you want to delete, you can do so with:
+```
+docker volume rm hyper-express_pg-express-data
+```
+
+Now, when you restart the `postgres` container, it won't find the database, and it'll run the aforementioned script, in order to recreate the schema.
