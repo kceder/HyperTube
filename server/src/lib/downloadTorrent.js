@@ -6,10 +6,13 @@ export async function downloadTorrent(movie) {
 
   // Let's start with the first torrent (forget about video quality for now)
   const hash = torrents[0].hash
-  const magnetLink = `magnet:?xt=urn:btih:${hash}&dn=${title.split(' ').join('+')}`
-  
+
+  // We gotta build a magnet link, because that's what 'torrent-stream' needs.
+  const magnetLink = `magnet:?xt=urn:btih:${hash}&dn=${encodeURIComponent(title)}`
+  // const magnetLink = `magnet:?xt=urn:btih:${hash}&dn=${title.split(' ').join('+')}`
   // console.log(magnetLink)  // testing
-  // Let's set some options for the torrent streaming engine
+  
+  // Let's set some options for the torrent streaming engine (trackers, path to file)
   const torrentStreamOptions = {
     // Trackers recommended by YTS (check movie details page)
     trackers: [
@@ -25,6 +28,7 @@ export async function downloadTorrent(movie) {
     // Path in our server where we want to keep our movies
     path: `/app/public/movies/${imdb_code}`,
   }
+
   // Let's initialize the torrent streaming engine
   const engine = torrentStream(magnetLink, torrentStreamOptions)
 
@@ -39,5 +43,7 @@ export async function downloadTorrent(movie) {
       file.select() // In theory, this should start the download?
     })
   })
+
+  // Here we have to use the engine's events to mark the movie download as complete.
 }
 

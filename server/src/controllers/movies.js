@@ -89,6 +89,7 @@ async function getMovie(req, res) {
     console.log('Client sent - Language:', language, `(Imdb-id${id})`) // testing
 
     try {
+      // 1st of all, we request the movie with lots of extra information
       const response = await fetch(ytsBaseUrl + '?' + new URLSearchParams({
         imdb_id: id,
         with_images: true,
@@ -96,16 +97,15 @@ async function getMovie(req, res) {
       }))
 
       const { data } = await response.json() // Destructure the data property
-
       // console.log(data.movie) // testing
+
+      // Here we check our DB for the existence of the video file (and if it's completed)
+      // 1. If it exists, we start streaming it.
+
+      // 2. If it doesn't, we download it using the BitTorrent protocol (and also streaming it from there).
       downloadTorrent(data.movie) // for now it prints the magnet link
 
-      /* Here it's needed to add logic for:
-        - Using the info in data.torrents, download the movie to our filesystem,
-        only if it doesn't already exist.
-        - Make it available to the user, so it starts streaming when she clicks
-        on the play button.
-      */
+
       return res.status(200).json(data.movie)
     } catch (error) {
       return res.status(200).json({

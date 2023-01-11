@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
-
+import ReactPlayer from 'react-player'
 
 function MoviePage() {
   const { activeLanguage } = useSelector(slices => slices.language)
@@ -45,6 +45,11 @@ function MoviePage() {
         <p className='text-xl text-white'>{movie.year}</p>
         <p className='text-xl text-white'>📺 Show Video player here</p>
       </>}
+      <ReactPlayer url='https://www.youtube.com/watch?v=ysz5S6PUM-U' config={
+        {
+          
+        }
+      } controls={true}/>
 
       {isLoading && <p className='text-white text-center text-2xl pt-20'>
         <ArrowPathIcon className='inline w-8 animate-spin'/>
