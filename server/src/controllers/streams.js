@@ -25,7 +25,7 @@ async function getStream(req, res) {
 
     /* In case the movie exists in the DB, and it's been
       downloaded completedly we start streaming it.*/
-    if (false && movieExists && movieExists.completed) {
+    if ( movieExists && movieExists.completed) {
       // const videoPath = `/app/public/movies/tt23806336/willSisters.mp4`
       const videoPath = movieExists.path
       const videoSize = movieExists.size
@@ -57,8 +57,9 @@ async function getStream(req, res) {
         hash,
         start,
         CHUNK_SIZE,
-        movieExists
-      }, res)
+        movieExists,
+        res
+      })
     }
   } catch (error) {
     console.log(error)
