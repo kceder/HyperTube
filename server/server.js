@@ -15,6 +15,7 @@ import { getPasswordsRouter } from './src/routes/passwords.js'
 import { getMoviesRouter } from './src/routes/movies.js'
 // import { getStreamsRouter } from './src/routes/streams.js'
 import streamsRouter from './src/routes/streams.js'
+import commentsRouter from './src/routes/comments.js'
 
 // Middleware
 import cors from 'cors'
@@ -50,6 +51,9 @@ app.use('/api', getMoviesRouter())
 
 // Route for movies (list of them, and individual ones)
 app.use('/api', streamsRouter)
+
+// Route for comments (get list of them, and create new ones)
+app.use('/api', commentsRouter)
 
 //Listen port
 const PORT = 3000

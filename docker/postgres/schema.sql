@@ -31,6 +31,14 @@ CREATE TABLE IF NOT EXISTS downloads (
 	last_watched BIGINT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS comments (
+	id SERIAL NOT NULL PRIMARY KEY,
+	user_id INT NOT NULL,
+	imdb_id VARCHAR(15) NOT NULL,
+	comment VARCHAR(255) NOT NULL,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Hashed password is Asdf1
 INSERT INTO users VALUES (1, 'Bobby1', 'Robert', 'Doe', 'test@test.com', '$2a$12$bzfTNVzNkqMH94ubFhDPL.OfPQcj5Xi2/5H2tPemG0fByaUGlZDlu');
 

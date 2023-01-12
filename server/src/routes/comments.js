@@ -1,11 +1,13 @@
 import express from 'express'
 import { validateToken } from '../middlewares/validateToken.js' // plug this middleware later ;-)
-import { postComment } from '../controllers/streams.js'
-
+import {
+  getCommentList,
+  postComment
+} from '../controllers/comments.js'
 
 const router = express.Router()
 
-
-router.post('/comments/new-comment', postComment);
+router.get('/comments', getCommentList)
+router.post('/comments/new-comment', postComment) // 🤛 not RESTful 
 
 export default router

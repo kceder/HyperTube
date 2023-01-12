@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import ReactPlayer from 'react-player'
+import CommentSection from '../components/comment-section'
 
 function MoviePage() {
   const { activeLanguage } = useSelector(slices => slices.language)
@@ -67,13 +68,14 @@ function MoviePage() {
         ))}
       </ul>
       {/* <ReactPlayer url={`/api/streams/${imdbId}${quality.quality}/${quality.hash}`} config={ */}
-      <ReactPlayer url={`/api/streams/${imdbId}/${quality.quality}/${quality.hash}`} config={
+      {/* <ReactPlayer url={`/api/streams/${imdbId}/${quality.quality}/${quality.hash}`} config={
         {}
-      } controls={true}/>
+      } controls={true}/> */}
 
       {isLoading && <p className='text-white text-center text-2xl pt-20'>
         <ArrowPathIcon className='inline w-8 animate-spin'/>
       </p>}
+      <CommentSection imdbId={imdbId} />
     </div>)
 }
 
