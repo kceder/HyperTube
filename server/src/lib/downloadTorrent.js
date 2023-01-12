@@ -61,7 +61,7 @@ export async function downloadTorrent(stuff) {
               size: file.length,
               last_watched: +new Date() // Unix time in milliseconds
             })
-            console.log(`new movie saved to DB:`, newMovie) // test
+            console.log(`new movie saved to DB:`, filePath) // test
           } catch (error) {
             console.log(error)
           }
@@ -91,13 +91,26 @@ export async function downloadTorrent(stuff) {
     })
   })
 
-  engine.on('download', () => {
-    console.log('downloaded', engine.swarm.downloaded) //testing
+  engine.on('download', async() => {
+    console.log(`downloaded ${engine.swarm.downloaded} from ${newMovie?.size || movieExists?.size}`) //testing
+    let result
+    /* Here we used the engine's 'iddle' event that fires up every time
+      a torrent chunk is downloaded. So each time, we compare how much
+      has been downloaded so far against the size of the torrent, and 
+      when it's greater or equal the size of the movie, we set the
+      download as completed in the DB */
+    if ((newMovie?.size || movieExists?.size) <= engine.swarm.downloaded) {
+      result = await setCompleteMovie({ imdb_id, quality })
+      console.log('Completed?', JSON.stringify(result)) // testing
+    }
   })
 
   engine.on('idle', async function () {
-    // Here we use the engine's 'iddle' event to set the download as complete.
-    const result = await setCompleteMovie({ imdb_id, quality })
-    console.log('Completed?', JSON.stringify(result)) // testing
+    /* Here we tried to use the engine's 'iddle' event to set the
+      download as complete. But apparently, this event is triggered
+      several times (mb once per file in the torrent) */
+    // const result = await setCompleteMovie({ imdb_id, quality })
+    // console.log('Completed?', JSON.stringify(result)) // testing
+    console.log('idle triggered') // testing
   })
 }
