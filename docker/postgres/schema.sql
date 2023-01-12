@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS comments (
 	user_id INT NOT NULL,
 	imdb_id VARCHAR(15) NOT NULL,
 	comment VARCHAR(255) NOT NULL,
-	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+	created_at BIGINT NOT NULL
 );
 
 -- Hashed password is Asdf1

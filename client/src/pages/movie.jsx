@@ -51,11 +51,12 @@ function MoviePage() {
 
   // make api request to get all the imdb info, and video stuff
   return (
-    <div className='text-white max-w-4xl mx-auto pt-10 pb-20 px-2'>
+    <div className='text-white max-w-4xl mx-auto pt-10 pb-20 px-2 flex flex-col space-y-6'>
       {!isLoading && movie && <>
         <h1 className='text-2xl text-white'>{movie.title}</h1>
         <p className='text-xl text-white'>{movie.year}</p>
       </>}
+
       <p>Choose a quality:</p>
       <ul>
         {qualities.map((q, idx) => (
@@ -67,14 +68,14 @@ function MoviePage() {
           </li>
         ))}
       </ul>
-      {/* <ReactPlayer url={`/api/streams/${imdbId}${quality.quality}/${quality.hash}`} config={ */}
-      {/* <ReactPlayer url={`/api/streams/${imdbId}/${quality.quality}/${quality.hash}`} config={
+      <ReactPlayer url={`/api/streams/${imdbId}/${quality.quality}/${quality.hash}`} config={
         {}
-      } controls={true}/> */}
+      } controls={true}/>
 
       {isLoading && <p className='text-white text-center text-2xl pt-20'>
         <ArrowPathIcon className='inline w-8 animate-spin'/>
       </p>}
+
       <CommentSection imdbId={imdbId} />
     </div>)
 }

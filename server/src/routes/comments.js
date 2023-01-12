@@ -8,6 +8,6 @@ import {
 const router = express.Router()
 
 router.get('/comments', getCommentList)
-router.post('/comments/new-comment', postComment) // 🤛 not RESTful 
+router.post('/comments', postComment)
 
 export default router
