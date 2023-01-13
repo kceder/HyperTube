@@ -1,3 +1,13 @@
 {
-    "title": "Some Finnish sentence that fits perfectly the page layout."
+    "moviePage": {
+        "chooseQuality": "Valitse laatu",
+        "commentSection": {
+            "addComment": "Lisää kommentti",
+            "charactersLeft": " merkkiä jäljellä",
+            "submit": "Lähetä",
+            "comments": "Kommentit",
+            "wroteOn": "kirjoitti",
+            "noComments": "Ei kommentteja vielä"
+        }
+    }
 }

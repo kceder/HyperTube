@@ -1,5 +1,9 @@
 import React from 'react'
+
+import { useSelector } from 'react-redux'
 // import dayjs from 'dayjs'
+
+import t from '../i18n/i18n'
 
 import {
   ExclamationTriangleIcon,
@@ -13,6 +17,7 @@ function CommentSection(props) {
   // const [refresh, setRefresh] = React.useState(false)
   const [comments, setComments] = React.useState(null)
   const [newComment, setNewComment] = React.useState('')
+  const activeLanguage = useSelector(slices => slices.language.activeLanguage)
   // id, imbdb_id, username, content, timestamp
   React.useEffect(() => {
     async function fetchComments() {
@@ -60,26 +65,29 @@ function CommentSection(props) {
   return (
     <div className='w-full space-y-6'>
       <form className='flex flex-col'>
-        <label className='text-xl'>Add New Comment</label>
+        <label className='text-xl'>{t(activeLanguage, 'moviePage.commentSection.addComment')}</label>
         <textarea
           className='rounded-sm p-2 mb-2 w-full text-slate-700'
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
         />
-        <p className='text-sm mb-4 ml-2'>
-          <ExclamationTriangleIcon className='inline w-4 text-white -mt-1 mr-1' />
-          {255 - newComment.length} characters left
-        </p>
-        <button
-          className='w-full border rounded-lg text-white p-2 hover:bg-white hover:bg-opacity-20'
-          onClick={(e) => handleSubmit(e)}
-        >
-          Submit
-        </button>
+        <div className='flex flex-row justify-between'>
+          <button
+            className='w-20 border rounded-lg text-white p-2 hover:bg-white hover:bg-opacity-20'
+            onClick={(e) => handleSubmit(e)}
+          >
+            {t(activeLanguage, 'moviePage.commentSection.submit')}
+          </button>
+          <p className='text-sm mb-4 ml-2'>
+            <ExclamationTriangleIcon className='inline w-4 text-white -mt-1 mr-1' />
+            {255 - newComment.length} {t(activeLanguage, 'moviePage.commentSection.charactersLeft')}
+          </p>
+        </div>
       </form>
 
-      <h2 className='text-2xl text-center mb-4'>Comments</h2>
+      <h2 className='text-2xl text-center mb-4'>{t(activeLanguage, 'moviePage.commentSection.comments')}</h2>
       <hr />
+      <div className='commentBox w-full h-40 overflow-y-scroll'>
       <ul className=''>
         {comments &&
           comments.length > 0 &&
@@ -90,7 +98,7 @@ function CommentSection(props) {
               >
               <p>
                 {/* <span className='font-bold'>{comment.username}</span> wrote on <span>{dayjs().to(dayjs(comment.created_at / 1000))}</span> */}
-                <span className='font-bold'>{comment.username}</span> wrote on{' '}
+                <span className='font-bold'>{comment.username}</span>{t(activeLanguage, 'moviePage.commentSection.wroteOn')}{' '}
                 <span>
                   <CalendarIcon className='inline w-4 text-white -mt-1 mr-1'/>
                   {new Date(+comment.created_at).toLocaleDateString('fi-FI')} at{' '}
@@ -104,7 +112,9 @@ function CommentSection(props) {
               <p className='text-xl bg-slate-300 text-slate-700 rounded-md p-2'>{comment.comment}</p>
             </li>
           ))}
+          {comments && comments.length === 0 && <p className='text-center'>{t(activeLanguage, 'moviePage.commentSection.noComments')}</p>}
       </ul>
+      </div>
     </div>
   )
 }

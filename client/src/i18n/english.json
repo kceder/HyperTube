@@ -15,7 +15,16 @@
         "noMoviesFound": "no movies found"
     },
     "moviePage": {
-        "chooseQuality": "choose a quality, bro"
+        "chooseQuality": "Choose a quality",
+        "commentSection": {
+            "addComment": "Add New Comment",
+            "charactersLeft": " characters left",
+            "submit": "Submit",
+            "comments": "Comments",
+            "wroteOn": " wrote on",
+            "noComments": "No comments yet"
+
+        }
     },
     "sideBar": {
         "advancedSearch": "advanced search",
