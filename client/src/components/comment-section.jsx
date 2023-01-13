@@ -24,10 +24,10 @@ function CommentSection(props) {
       )
       const data = await response.json()
       setComments(data.comments)
+      console.log('comments  fetched again', data.comments)
     }
 
     fetchComments()
-    console.log('comments  fetched again')
   }, [])
 
   function handleSubmit(e) {
@@ -47,8 +47,9 @@ function CommentSection(props) {
         }),
       })
       const data = await response.json()
-      console.log(data)
-      setComments(data.comments)
+      // console.log(data)
+      // setComments(data.comments)
+      setComments(prev => [data.comment, ...prev])
     }
 
     postComment()
@@ -82,9 +83,9 @@ function CommentSection(props) {
       <ul className=''>
         {comments &&
           comments.length > 0 &&
-          comments.map((comment, index) => (
+          comments.map(comment => (
             <li
-              key={index}
+              key={comment.id}
               className='p-2'
               >
               <p>
