@@ -5,6 +5,9 @@ import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import ReactPlayer from 'react-player'
 import CommentSection from '../components/comment-section'
 
+// homemade i18n
+import t from '../i18n/i18n'
+
 function MoviePage() {
   const { activeLanguage } = useSelector(slices => slices.language)
   const [ isLoading, setIsloading ] = React.useState(null)
@@ -65,7 +68,9 @@ function MoviePage() {
         <p className='text-xl text-white'>{movie.year}</p>
       </>}
 
-      <p>Choose a quality:</p>
+      <p>
+        {t(activeLanguage, 'moviePage.chooseQuality')}
+      </p>
       <ul>
         {qualities.map((q, idx) => (
           <li

@@ -14,6 +14,9 @@
         "noMoreMovies": "no more movies",
         "noMoviesFound": "no movies found"
     },
+    "moviePage": {
+        "chooseQuality": "choose a quality, bro"
+    },
     "sideBar": {
         "advancedSearch": "advanced search",
         "sortBy": "sort by",
