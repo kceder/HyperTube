@@ -8,7 +8,7 @@ async function findMovie({ quality, imdb_id }) {
   const values = [ imdb_id, quality ]
   const result = await pool.query(query, values)
 
-  console.log('Downloads model - found movie', result.rows[0]) // testing
+  // console.log('Downloads model - found movie', result.rows[0]) // testing
   const movie = result.rows[0]
   return movie ?? null 
 }

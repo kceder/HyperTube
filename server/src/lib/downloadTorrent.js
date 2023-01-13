@@ -73,7 +73,6 @@ export async function downloadTorrent(stuff) {
         them.But if we want to fetch a file without creating a stream 
         we can use the 'file.select' and 'file.deselect' methods. */
         file.select() // This starts the download
-        let stream = file.createReadStream({ start, end }) // we'll decide later
         // Set Headers of our response
         const headers = {
           'Content-Range': `bytes ${start}-${end}/${file.length}`,
@@ -81,12 +80,18 @@ export async function downloadTorrent(stuff) {
           'Content-Length': contentLength,
           'Content-Type': 'video/mp4'
         }
+        // Sometimes the start doesn't make sense, so we have to:
+        if (start > file.length - 1) {
+          start = 0
+          res.writeHead(416, headers) // Range Not Satisfiable
+        } else
         res.writeHead(206, headers) // Partial content
+        let stream = file.createReadStream({ start, end }) // we'll decide later
 
         stream.pipe(res)
-        console.log('torrentStream is processing:', file.name)
-        console.log('file path is:', file.path)
-        console.log('and extension is:', extension)
+        // console.log('torrentStream is processing:', file.name)
+        // console.log('file path is:', file.path)
+        // console.log('and extension is:', extension)
       }
     })
   })
