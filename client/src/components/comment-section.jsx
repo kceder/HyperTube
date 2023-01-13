@@ -1,5 +1,5 @@
 import React from 'react'
-import dayjs from 'dayjs'
+// import dayjs from 'dayjs'
 
 import {
   ExclamationTriangleIcon,
@@ -27,7 +27,7 @@ function CommentSection(props) {
     }
 
     fetchComments()
-    // console.log('comments  fetched again')
+    console.log('comments  fetched again')
   }, [])
 
   function handleSubmit(e) {
@@ -82,11 +82,11 @@ function CommentSection(props) {
       <ul className=''>
         {comments &&
           comments.length > 0 &&
-          comments.map((comment) => (
+          comments.map((comment, index) => (
             <li
-              key={comment.id}
+              key={index}
               className='p-2'
-            >
+              >
               <p>
                 {/* <span className='font-bold'>{comment.username}</span> wrote on <span>{dayjs().to(dayjs(comment.created_at / 1000))}</span> */}
                 <span className='font-bold'>{comment.username}</span> wrote on{' '}
