@@ -12,10 +12,18 @@ function MoviePage() {
   const location = useLocation() // needed to parse the imdb id from React URL
 
   const { torrents } = location.state.movie
+  /* Here we should write code to select the default quality (smaller better):
+    1. Try 720p
+    2. If not found then 1080p
+    3. If not found either, the quality of the first torrent.
+  */
   const qualities = torrents.map(t => ({ quality: t.quality, hash: t.hash }))
-
-  const [ quality, setQuality ] = React.useState(qualities[0])
-  console.log(quality)
+  const smallerQuality = qualities.find(q => q.quality === '720p')
+  if (!smallerQuality)
+    smallerQuality = qualities.find(q => q.quality === '1080p')
+  console.log(smallerQuality) // test it
+  const [ quality, setQuality ] = React.useState(smallerQuality || qualities[0])
+  // console.log(quality)
   // get the array of torrents (include several qualities)
 
   // Protected route: redirect to home page if user's not logged in

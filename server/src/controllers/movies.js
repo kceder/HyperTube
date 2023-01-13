@@ -1,5 +1,5 @@
-import pool from '/app/src/lib/db.js'
-import { downloadTorrent } from '/app/src/lib/downloadTorrent.js'
+// import pool from '/app/src/lib/db.js'
+// import { downloadTorrent } from '/app/src/lib/downloadTorrent.js'
 
 async function getListMovies(req, res) {
   // Destructure the query
