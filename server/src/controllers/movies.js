@@ -34,7 +34,7 @@ async function getListMovies(req, res) {
       // console.log('added sort_by', sort_by, typeof sort_by)
       url += `&sort_by=${sort_by}`
     } else {
-      url += `&sort_by=year&order_by=desc`
+      url += `&sort_by=download_count&order_by=desc`
     }
 
     if (order_by !== 'null') {
