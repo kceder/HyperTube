@@ -12,6 +12,7 @@ function MoviePage() {
   const { activeLanguage } = useSelector(slices => slices.language)
   const [ isLoading, setIsloading ] = React.useState(null)
   const [ movie, setMovie ] = React.useState(null)
+  const [ subtitles, setSubtitles ] = React.useState(null)
   const location = useLocation() // needed to parse the imdb id from React URL
 
   const { torrents } = location.state.movie
@@ -43,7 +44,7 @@ function MoviePage() {
 
   React.useEffect(() => {
     const url = '/api' + location.pathname
-
+    
     console.log(imdbId)
     async function fetchMovie() {
       const response = await fetch(url + '?' + new URLSearchParams({
@@ -51,14 +52,31 @@ function MoviePage() {
         hash:     quality.hash,
         quality:  quality.quality
       }))
-
+      
       const data = await response.json()
       setMovie(data)
       console.log(data)
     }
-
+    
     fetchMovie()
   }, [])
+
+  React.useEffect(() => {
+    if (movie === null) return
+    const url = '/api/subtitles/' + imdbId
+    
+    async function fetchSubtitles() {
+      const response = await fetch(url + '?' + new URLSearchParams({
+        language: activeLanguage
+      }))
+      
+      const data = await response.json()
+      console.log(data)
+      setSubtitles(data)
+    }
+    
+    fetchSubtitles()
+  }, [movie])
 
   // make api request to get all the imdb info, and video stuff
   return (
