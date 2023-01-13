@@ -1,5 +1,7 @@
 // Import the comments model
 import { getComments, createComment } from '../models/comment.js'
+// Import the users model
+import { findByUid } from '../models/user.js'
 
 async function getCommentList(req, res) {
   const { imdb_id } = req.query
@@ -16,18 +18,19 @@ async function postComment(req, res) {
   const { imdb_id, comment, created_at } = req.body
   req.uid = 1 // testing while authentication is bypassed
 
-  // console.log(req.body)
-  // console.log(imdb_id, comment)
+  const user = await findByUid({ uid: req.uid })
 
   const savedComment = await createComment({
     user_id: req.uid, // testing
     imdb_id: imdb_id,
     comment: comment
   })
-  // const comments = await getComments({ imdb_id })
 
   // send new created comment to the front, to update UI
-  res.status(200).json({ comment: savedComment })
+  res.status(200).json({ comment: {
+    ...savedComment,
+    username: user.username
+  } })
 }
 
 export { getCommentList, postComment }
