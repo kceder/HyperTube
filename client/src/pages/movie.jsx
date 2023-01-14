@@ -22,10 +22,10 @@ function MoviePage() {
     3. If not found either, the quality of the first torrent.
   */
   const qualities = torrents.map(t => ({ quality: t.quality, hash: t.hash }))
-  const smallerQuality = qualities.find(q => q.quality === '720p')
+  let smallerQuality = qualities.find(q => q.quality === '720p')
   if (!smallerQuality)
     smallerQuality = qualities.find(q => q.quality === '1080p')
-  console.log(smallerQuality) // test it
+  // console.log(smallerQuality) // test it
   const [ quality, setQuality ] = React.useState(smallerQuality || qualities[0])
   // console.log(quality)
   // get the array of torrents (include several qualities)
@@ -39,13 +39,13 @@ function MoviePage() {
   //   if (!isLoggedIn) navigate('/', { replace: true })
   // }, [isLoggedIn])
 
-  console.log(location.pathname) // testing
+  // console.log(location.pathname) // testing
   const imdbId = location.pathname.split('/').pop()
 
   React.useEffect(() => {
     const url = '/api' + location.pathname
     
-    console.log(imdbId)
+    // console.log(imdbId)
     async function fetchMovie() {
       const response = await fetch(url + '?' + new URLSearchParams({
         language: activeLanguage,
@@ -55,7 +55,7 @@ function MoviePage() {
       
       const data = await response.json()
       setMovie(data)
-      console.log(data)
+      // console.log(data)
     }
     
     fetchMovie()
@@ -80,7 +80,7 @@ function MoviePage() {
 
   // make api request to get all the imdb info, and video stuff
   return (
-    <div className='text-white max-w-4xl mx-auto pt-10 pb-20 px-2 flex flex-col space-y-6'>
+    <div className='text-white max-w-4xl min-w-[360px] md:w-4xl md:px-0 px-3 pt-10 flex flex-col space-y-6'>
       {!isLoading && movie && <>
         <h1 className='text-2xl text-white'>{movie.title}</h1>
         <p className='text-xl text-white'>{movie.year}</p>
@@ -99,9 +99,16 @@ function MoviePage() {
           </li>
         ))}
       </ul>
-      <ReactPlayer url={`/api/streams/${imdbId}/${quality.quality}/${quality.hash}`} config={
-        {}
-      } controls={true}/>
+      <div className='react-player-wrapper'>
+        <ReactPlayer
+          url={`/api/streams/${imdbId}/${quality.quality}/${quality.hash}`}
+          config={{}}
+          controls={true}
+          className='react-player'
+          width='100%'
+          height='100%'
+        />
+      </div>
 
       {isLoading && <p className='text-white text-center text-2xl pt-20'>
         <ArrowPathIcon className='inline w-8 animate-spin'/>
