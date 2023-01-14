@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import ReactPlayer from 'react-player'
 import CommentSection from '../components/comment-section'
+import Select from 'react-select'
 
 // homemade i18n
 import t from '../i18n/i18n'
@@ -13,22 +14,31 @@ function MoviePage() {
   const [ isLoading, setIsloading ] = React.useState(null)
   const [ movie, setMovie ] = React.useState(null)
   const [ subtitles, setSubtitles ] = React.useState(null)
+  const [torrentOptions, setTorrentOptions] = React.useState(null)
+  const [selectedTorrent, setSelectedTorrent] = React.useState(null)
   const location = useLocation() // needed to parse the imdb id from React URL
 
-  const { torrents } = location.state.movie
-  /* Here we should write code to select the default quality (smaller better):
-    1. Try 720p
-    2. If not found then 1080p
-    3. If not found either, the quality of the first torrent.
-  */
-  const qualities = torrents.map(t => ({ quality: t.quality, hash: t.hash }))
-  let smallerQuality = qualities.find(q => q.quality === '720p')
-  if (!smallerQuality)
-    smallerQuality = qualities.find(q => q.quality === '1080p')
-  // console.log(smallerQuality) // test it
-  const [ quality, setQuality ] = React.useState(smallerQuality || qualities[0])
-  // console.log(quality)
-  // get the array of torrents (include several qualities)
+  React.useEffect(() => {
+    const { torrents } = location.state.movie
+
+    setTorrentOptions(torrents.map(t => ({
+      value: t.quality,
+      label: t.quality,
+      hash: t.hash
+    })))
+  }, [])
+
+  React.useEffect(() => {
+    if (!torrentOptions) return
+    /* Here we select the default quality (smaller better):
+    1. Try 720p.
+    2. If not found then 1080p.
+    3. If not found either, the quality of the first torrent. */
+    let smallestQuality = torrentOptions.find(torrent => torrent.value === '720p')
+    if (!smallestQuality)
+      smallestQuality = torrentOptions.find(torrent => torrent.value === '1080p')
+    setSelectedTorrent(smallestQuality || torrentOptions[0])
+  }, [torrentOptions])
 
   // Protected route: redirect to home page if user's not logged in
   // DISABLE IT DURING DEVELOPMENT!!
@@ -41,16 +51,18 @@ function MoviePage() {
 
   // console.log(location.pathname) // testing
   const imdbId = location.pathname.split('/').pop()
+  console.log(selectedTorrent) // testing
 
   React.useEffect(() => {
+    if (!torrentOptions || !selectedTorrent) return
     const url = '/api' + location.pathname
     
     // console.log(imdbId)
     async function fetchMovie() {
       const response = await fetch(url + '?' + new URLSearchParams({
         language: activeLanguage,
-        hash:     quality.hash,
-        quality:  quality.quality
+        hash:     selectedTorrent.hash,
+        quality:  selectedTorrent.quality
       }))
       
       const data = await response.json()
@@ -59,7 +71,7 @@ function MoviePage() {
     }
     
     fetchMovie()
-  }, [])
+  }, [torrentOptions, selectedTorrent])
 
   React.useEffect(() => {
     if (movie === null) return
@@ -80,35 +92,32 @@ function MoviePage() {
 
   // make api request to get all the imdb info, and video stuff
   return (
-    <div className='text-white max-w-4xl min-w-[360px] md:w-4xl md:px-0 px-3 pt-10 flex flex-col space-y-6'>
+    <div className='max-w-4xl min-w-[360px] md:w-4xl md:px-0 px-3 pt-10 flex flex-col space-y-6'>
       {!isLoading && movie && <>
-        <h1 className='text-2xl text-white'>{movie.title}</h1>
-        <p className='text-xl text-white'>{movie.year}</p>
+        <h1 className='text-2xl text-white'>{movie.title} ({movie.year})</h1>
       </>}
 
-      <p>
-        {t(activeLanguage, 'moviePage.chooseQuality')}
-      </p>
-      <ul>
-        {qualities.map((q, idx) => (
-          <li
-            key={idx}
-            className='text-white text-xl'
-          >
-            {q.quality}
-          </li>
-        ))}
-      </ul>
-      <div className='react-player-wrapper'>
+      <div>
+        <p className='text-white text-xl capitalize mb-3'>
+          {t(activeLanguage, 'moviePage.chooseQuality')}
+        </p>
+        <Select
+          onChange={e => setSelectedTorrent(e)}
+          options={torrentOptions}
+          value={selectedTorrent}
+        />
+      </div>
+
+      {!isLoading && selectedTorrent && <div className='react-player-wrapper'>
         <ReactPlayer
-          url={`/api/streams/${imdbId}/${quality.quality}/${quality.hash}`}
+          url={`/api/streams/${imdbId}/${selectedTorrent.quality}/${selectedTorrent.hash}`}
           config={{}}
           controls={true}
           className='react-player'
           width='100%'
           height='100%'
         />
-      </div>
+      </div>}
 
       {isLoading && <p className='text-white text-center text-2xl pt-20'>
         <ArrowPathIcon className='inline w-8 animate-spin'/>

@@ -60,7 +60,7 @@ function CommentSection(props) {
   return (
     <div className='min-w-4xl pb-6'>
       <form className='flex flex-col'>
-        <label className='text-xl'>{t(activeLanguage, 'moviePage.commentSection.addComment')}</label>
+        <label className='text-xl text-white'>{t(activeLanguage, 'moviePage.commentSection.addComment')}</label>
         <textarea
           className='rounded-sm p-2 mb-2 w-full text-slate-700'
           value={newComment}
@@ -73,14 +73,14 @@ function CommentSection(props) {
           >
             {t(activeLanguage, 'moviePage.commentSection.submit')}
           </button>
-          <p className='text-sm mb-4 ml-2'>
+          <p className='text-sm text-white mb-4 ml-2'>
             <ExclamationTriangleIcon className='inline w-4 text-white -mt-1 mr-1' />
             {255 - newComment.length} {t(activeLanguage, 'moviePage.commentSection.charactersLeft')}
           </p>
         </div>
       </form>
 
-      <h2 className='text-2xl text-center mb-4 pt-6'>{t(activeLanguage, 'moviePage.commentSection.comments')}</h2>
+      <h2 className='text-2xl text-white text-center mb-4 pt-6'>{t(activeLanguage, 'moviePage.commentSection.comments')}</h2>
       <hr />
       <ul className='flex flex-col space-y-6 py-6 max-h-96 overflow-y-scroll'>
         {comments && comments.length > 0 &&
@@ -89,7 +89,7 @@ function CommentSection(props) {
               key={comment.id}
               className='break-all'
               >
-              <p>
+              <p className='text-white'>
                 <span className='font-bold'>{comment.username}</span>{t(activeLanguage, 'moviePage.commentSection.wroteOn')}{' '}
                 <span>
                   <CalendarIcon className='inline w-4 text-white -mt-1 mr-1'/>
