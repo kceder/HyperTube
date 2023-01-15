@@ -82,7 +82,7 @@ function CommentSection(props) {
 
       <h2 className='text-2xl text-white text-center mb-4 pt-6'>{t(activeLanguage, 'moviePage.commentSection.comments')}</h2>
       <hr />
-      <ul className='flex flex-col space-y-6 py-6 max-h-96 overflow-y-scroll'>
+      <ul className={`flex flex-col space-y-6 py-6 max-h-96${comments && comments.length > 0 &&' overflow-y-scroll'}`}>
         {comments && comments.length > 0 &&
           comments.map(comment => (
             <li
@@ -106,7 +106,7 @@ function CommentSection(props) {
           ))}
 
           {comments && comments.length === 0 &&
-            <li className='text-center py-20'>
+            <li className='text-center text-white text-lg py-20'>
               {t(activeLanguage, 'moviePage.commentSection.noComments')}
           </li>}
       </ul>
