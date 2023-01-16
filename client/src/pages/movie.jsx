@@ -13,7 +13,7 @@ function MoviePage() {
   const { activeLanguage } = useSelector(slices => slices.language)
   const [ isLoading, setIsloading ] = React.useState(null)
   const [ movie, setMovie ] = React.useState(null)
-  const [ subtitles, setSubtitles ] = React.useState(null)
+  const [ subtitlesArr, setSubtitlesArr ] = React.useState([])
   const [torrentOptions, setTorrentOptions] = React.useState(null)
   const [selectedTorrent, setSelectedTorrent] = React.useState(null)
   const location = useLocation() // needed to parse the imdb id from React URL
@@ -74,6 +74,13 @@ function MoviePage() {
   }, [torrentOptions, selectedTorrent])
 
   React.useEffect(() => {
+    const subsArray = {
+      kind: 'subtitles',
+      src: './subtitles/' + imdbId + '/' + 'en.srt', // TODO: change to dynamic language
+      srcLang: 'en',
+      label: 'English',
+      default: true
+    }
     if (movie === null) return
     const url = '/api/subtitles/' + imdbId
     
@@ -84,7 +91,15 @@ function MoviePage() {
       
       const data = await response.json()
       console.log(data)
-      setSubtitles(data)
+
+      if (data.subtitles === 'ok') {
+          console.log('subtitles found')
+          console.log('subs array :',subsArray)
+          setSubtitlesArr(subsArray)
+      }
+
+
+      
     }
     
     fetchSubtitles()
@@ -108,14 +123,18 @@ function MoviePage() {
         />
       </div>
 
-      {!isLoading && selectedTorrent && <div className='react-player-wrapper'>
+      {!isLoading && selectedTorrent && subtitlesArr && <div className='react-player-wrapper'>
         <ReactPlayer
           url={`/api/streams/${imdbId}/${selectedTorrent.quality}/${selectedTorrent.hash}`}
-          config={{}}
           controls={true}
           className='react-player'
           width='100%'
           height='100%'
+          config={{
+            file: {
+              tracks: [subtitlesArr]
+            }
+          }}
         />
       </div>}
 

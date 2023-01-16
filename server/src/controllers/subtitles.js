@@ -1,5 +1,9 @@
+import https from 'https';
+import fs from 'fs';
+
 async function getSubtitles(req, res) {
-  // Destructure the query
+  // Destructure the quer
+
   const { id } = req.params
   const { language } = req.query
   const baseUrl = 'https://api.opensubtitles.com/api/v1/'
@@ -26,7 +30,7 @@ async function getSubtitles(req, res) {
   }
 
   try {
-    const response = await fetch(baseUrl + 'downloads', {
+    const response = await fetch(baseUrl + 'download', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -37,13 +41,30 @@ async function getSubtitles(req, res) {
       })
     })
 
+    console.log('Subtitles - response:', response);
+
     if (response.ok) {
-      // const data = await response.text()
       const data = await response.json()
-      console.log('Subtitles - file:', data)
-      subs = data
+      console.log('Subtitles - file:', data.link)
+
+      // Take the download link from the response
+      const subsLink = data.link
+      try {
+        if (!fs.existsSync(`./public/subtitles/${id}`)) {
+          fs.mkdirSync(`./public/subtitles/${id}`)
+        }
+        const file = fs.createWriteStream(`./public/subtitles/${id}/${language}.srt`)
+        https.get(subsLink, function (response) {
+          response.pipe(file)
+        })
+      } catch (error) {
+        console.log(error)
+      }
+
+      return res.status(200).json({ subtitles: 'ok' })
+
     } else {
-      // return res.status(401).json({ subtitles: 'nope' })
+      // return res.status(401).json({ subtitles: 'nope' }) 
     }
   } catch (error) {
     console.log(error)
