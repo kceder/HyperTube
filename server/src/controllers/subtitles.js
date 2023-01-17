@@ -57,8 +57,8 @@ async function getSubtitles(req, res) {
       // Take the download link from the response
       subsLink = data.link
       const pathToSub = await saveSub(subsLink, imdbId, language)
-      
-        return res.status(200).json({ subtitles: [pathToSub] })
+      console.log('pathToSub',pathToSub)
+      return res.status(200).json({ subtitles: [pathToSub] })
     } else {
       return res.status(401).json({ subtitles: 'nope' })
     }

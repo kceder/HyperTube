@@ -40,5 +40,5 @@ export const saveSub = async (subsLink, imdbId, language) => {
   }
 
   // We return the relative URL, in case we want to send it in the response.
-  return `/subtitles/${imdbId}/${language}.vtt`
+  return `subtitles/${imdbId}/${language}.vtt`
 }

@@ -151,7 +151,7 @@ function MoviePage() {
                 attributes: {
                   crossOrigin: 'true',
                 },
-                tracks: [subtitlesArr],
+                tracks: subtitlesArr,
               },
             }}
           />
