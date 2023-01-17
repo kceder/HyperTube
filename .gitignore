@@ -2,3 +2,7 @@
 node_modules
 server/public/uploads
 server/public/movies
+server/public/subtitles
+
+DS_Store
+*.srt
