@@ -39,6 +39,8 @@ export const saveSub = async (subsLink, imdbId, language) => {
     console.log(error)
   }
 
-  // We return the relative URL, in case we want to send it in the response.
-  return `subtitles/${imdbId}/${language}.vtt`
+  /* We return the URL to the subtitle file, that we want to send in the
+  response. Note that it must be RELATIVE to the location of the video file!
+  (hence the two dots) */
+  return `../subtitles/${imdbId}/${language}.vtt`
 }

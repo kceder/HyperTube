@@ -138,7 +138,7 @@ function MoviePage() {
         />
       </div>
 
-      {!isLoading && selectedTorrent && (
+      {!isLoading && selectedTorrent && subtitlesArr.length > 0 && (
         <div className='react-player-wrapper'>
           <ReactPlayer
             url={`/api/streams/${imdbId}/${selectedTorrent.value}/${selectedTorrent.hash}`}
@@ -152,6 +152,13 @@ function MoviePage() {
                   crossOrigin: 'true',
                 },
                 tracks: subtitlesArr,
+                // tracks: [{
+                //   kind: 'subtitles',
+                //   src: '../subtitles/tt9419884/en.vtt', // the link to the sub file in our server.
+                //   srcLang: 'en',
+                //   label: 'English',
+                //   default: true,
+                // }],
               },
             }}
           />
