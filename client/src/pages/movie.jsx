@@ -11,11 +11,11 @@ import t from '../i18n/i18n'
 
 function MoviePage() {
   const { activeLanguage } = useSelector((slices) => slices.language)
-  const [isLoadingSubs, setIsloadingSubs] = React.useState(null)
-  const [subtitlesArr, setSubtitlesArr] = React.useState([])
+  const [isLoading, setIsloading] = React.useState(true)
   const [movie, setMovie] = React.useState(null)
   const location = useLocation() // needed to parse the imdb id from React URL
   const [selectedTorrent, setSelectedTorrent] = React.useState(null)
+  const [config, setConfig] = React.useState(null)
   const { torrents } = location.state.movie
   const torrentOptions = torrents.map((t) => ({
     value: t.quality,
@@ -34,9 +34,7 @@ function MoviePage() {
 
   // console.log(location.pathname) // testing
   const imdbId = location.pathname.split('/').pop()
-  // console.log(selectedTorrent) // testing
   React.useEffect(() => {
-    setIsloadingSubs(true)
     /* Here we select the default quality (smaller better):
     1. Try 720p.
     2. If not found then 1080p.
@@ -50,11 +48,17 @@ function MoviePage() {
       )
     }
     setSelectedTorrent(smallestQuality || torrentOptions[0])
-    const url = '/api/subtitles/' + imdbId
+  }, [])
+
+  React.useEffect(() => {
+    if (!selectedTorrent) return
+    // setIsloading(true)
+    
+    const urlSubs = '/api/subtitles/' + imdbId
 
     async function fetchSubtitles() {
       const response = await fetch(
-        url + '?' +
+        urlSubs + '?' +
           new URLSearchParams({
             language: activeLanguage,
           }),
@@ -64,26 +68,32 @@ function MoviePage() {
       if (response.ok) {
         // console.log(data) // testing
         const data = await response.json()
+        // console.log('subtitles found', data.subtitles) // testing
 
-        console.log('subtitles found', data.subtitles)
-        setSubtitlesArr(prev => [...prev,
-          ...data.subtitles.map(st => ({
-            kind: 'subtitles',
-            src: st, // the link to the sub file in our server.
-            srcLang: 'en',
-            label: 'English',
-            default: true,
-          }))])
-          console.log('subs array:', subtitlesArr) // this is a link
-        }
-    }
+        const tracks = data.subtitles.map(st => ({
+          kind: 'subtitles',
+          src: st, // the link to the sub file in our server.
+          srcLang: 'en',
+          label: 'English',
+          // default: true,
+        }))
+        console.log('subs array:', tracks) // this is a link
+        setConfig({
+          file: {
+            attributes: {
+              crossOrigin: 'true',
+            },
+            tracks: tracks
+          }
+        })
+      }
+    } // fetchSubtitles
 
     fetchSubtitles()
-    setIsloadingSubs(false)
-  }, [])
+  }, [selectedTorrent])
 
   React.useEffect(() => {
-    if (isLoadingSubs) return
+    if (!config) return // if the config is still not ready, bail
     const url = '/api' + location.pathname
 
     // console.log(imdbId)
@@ -103,13 +113,14 @@ function MoviePage() {
     }
 
     fetchMovie()
-  }, [isLoadingSubs])
+    setIsloading(false)
+  }, [config])
 
-  console.log(subtitlesArr) // testing
+  console.log('config:', config) // testing
   // make api request to get all the imdb info, and video stuff
   return (
     <div className='max-w-4xl min-w-[360px] md:w-4xl md:px-0 px-3 pt-10 flex flex-col space-y-6'>
-      {!isLoadingSubs && movie && (
+      {!isLoading && movie && (
         <>
           <h1 className='text-2xl text-white'>
             {movie.title} ({movie.year})
@@ -128,7 +139,7 @@ function MoviePage() {
         />
       </div>
 
-      {!isLoadingSubs && selectedTorrent && (
+      {!isLoading && (
         <div className='react-player-wrapper'>
           <ReactPlayer
             url={`/api/streams/${imdbId}/${selectedTorrent.value}/${selectedTorrent.hash}`}
@@ -136,21 +147,7 @@ function MoviePage() {
             className='react-player'
             width='100%'
             height='100%'
-            config={{
-              file: {
-                attributes: {
-                  crossOrigin: 'true',
-                },
-                // tracks: subtitlesArr,
-                tracks: [{
-                  kind: 'subtitles',
-                  src: '../subtitles/tt9419884/en.vtt', // the link to the sub file in our server.
-                  srcLang: 'en',
-                  label: 'English',
-                  default: true,
-                }],
-              },
-            }}
+            config={config}
           />
         </div>
       )}
