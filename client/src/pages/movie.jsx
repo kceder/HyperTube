@@ -141,7 +141,7 @@ function MoviePage() {
       {!isLoading && selectedTorrent && (
         <div className='react-player-wrapper'>
           <ReactPlayer
-            url={`/api/streams/${imdbId}/${selectedTorrent.quality}/${selectedTorrent.hash}`}
+            url={`/api/streams/${imdbId}/${selectedTorrent.value}/${selectedTorrent.hash}`}
             controls={true}
             className='react-player'
             width='100%'
