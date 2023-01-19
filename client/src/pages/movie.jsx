@@ -53,7 +53,7 @@ function MoviePage() {
   React.useEffect(() => {
     if (!selectedTorrent) return
     // setIsloading(true)
-    
+
     const urlSubs = '/api/subtitles/' + imdbId
 
     async function fetchSubtitles() {
@@ -63,12 +63,13 @@ function MoviePage() {
             language: activeLanguage,
           }),
       )
-      console.log(response) // testing
+      // console.log(response) // testing
 
       if (response.ok) {
         // console.log(data) // testing
         const data = await response.json()
-        // console.log('subtitles found', data.subtitles) // testing
+        // console.log('subtitles ALL', data.allSubs) // testing
+        console.log('subtitles ALL', data.allSubsFileIds) // testing
 
         const tracks = data.subtitles.map(st => ({
           kind: 'subtitles',
@@ -109,14 +110,14 @@ function MoviePage() {
       )
       const data = await response.json()
       setMovie(data)
-      // console.log(data)
+      console.log(data)
     }
 
     fetchMovie()
     setIsloading(false)
   }, [config])
 
-  console.log('config:', config) // testing
+  // console.log('config:', config) // testing
   // make api request to get all the imdb info, and video stuff
   return (
     <div className='max-w-4xl min-w-[360px] md:w-4xl md:px-0 px-3 pt-10 flex flex-col space-y-6'>
