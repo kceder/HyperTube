@@ -44,3 +44,37 @@ export const saveSub = async (subsLink, imdbId, language) => {
   (hence the two dots) */
   return `../subtitles/${imdbId}/${language}.vtt`
 }
+
+/**
+ * Download the subtitle to the filesystem, and returns the path
+ */
+export const downloadSub = async (fileId, baseUrl, imdbId, language) => {
+  try {
+    const response = await fetch(baseUrl + 'download', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Api-Key': 'XxvT3Wc5zytDqrWssllOVaKNwPWKccNn',
+      },
+      body: JSON.stringify({
+        file_id: fileId,
+        sub_format: 'webvtt',
+      })
+    })
+
+    if (response.ok) {
+      const data = await response.json()
+      // console.log('Subtitles - file:', data.link) // testing
+
+      const UrlToSub = await saveSub(data.link, imdbId, language)
+      // console.log('pathToSub', UrlToSub) // testing
+
+      return UrlToSub
+    } else {
+      throw new Error('response not OK')
+    }
+  } catch (error) {
+    console.log(error)
+    throw new Error('error getting response')
+  }
+}
