@@ -73,11 +73,17 @@ export default function ProfilePage() {
     profilePic: z
       .any()
       .refine(
-        (files) => files?.length === 0 || files?.[0]?.size <= MAX_FILE_SIZE,
+        (files) => {
+          // console.log('refine', files)
+          return files?.length === 0 || files?.[0]?.size <= MAX_FILE_SIZE
+        },
         t(activeLanguage, 'profilePage.pictureInput.maxSizeWarning')
       )
       .refine(
-        (files) => files?.length === 0 || ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+        (files) => {
+          // console.log('refine', files)
+          return files?.length === 0 || ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type)
+        },
         t(activeLanguage, 'profilePage.pictureInput.filetypeWarning')
       ),
   })
@@ -86,7 +92,9 @@ export default function ProfilePage() {
     register,
     handleSubmit,
     formState: { errors },
-    setValue
+    setValue,
+    watch,
+    clearErrors
   } = useForm({
     mode: 'all',
     resolver: zodResolver(validationSchema),
@@ -94,6 +102,8 @@ export default function ProfilePage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
+  // console.log(watch('userName')) // testing
+  // console.log(watch('profilePic')) // testing
   React.useEffect(() => {
     if (!isLoggedIn) navigate('/', { replace: true })
 
@@ -139,8 +149,8 @@ export default function ProfilePage() {
       array (truthy value). Otherwise it's a falsey empty string. */
     if (data.profilePic) {
       // Add the profile pic at the end of the form.
+      // console.log('form - profilePic[0] =', data.profilePic[0]) // testing
       formData.append('profilePic', data.profilePic[0])
-      // console.log(data.profilePic[0]) // testing
     }
     
     const response = await fetch(`/api/users/${uid}`, {
@@ -259,6 +269,7 @@ export default function ProfilePage() {
           registerOptions={{ required: false }}
           errors={errors}
           setValue={setValue}
+          clearErrors={clearErrors}
           isRequired={false} // for showing (or not) the asterisk
         />
 
