@@ -69,16 +69,15 @@ function MoviePage() {
         // console.log(data) // testing
         const data = await response.json()
         // console.log('subtitles ALL', data.allSubs) // testing
-        console.log('subtitles ALL', data.allSubsFileIds) // testing
 
         const tracks = data.subtitles.map(st => ({
           kind: 'subtitles',
-          src: st, // the link to the sub file in our server.
-          srcLang: 'en',
-          label: 'English',
+          src: st.src, // the link to the sub file in our server.
+          srcLang: st.srcLang,
+          label: st.label
           // default: true,
         }))
-        console.log('subs array:', tracks) // this is a link
+        // console.log('subs array:', tracks) // this is a link
         setConfig({
           file: {
             attributes: {

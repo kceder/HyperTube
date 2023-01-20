@@ -69,7 +69,10 @@ export const downloadSub = async (fileId, baseUrl, imdbId, language) => {
       const UrlToSub = await saveSub(data.link, imdbId, language)
       // console.log('pathToSub', UrlToSub) // testing
 
-      return UrlToSub
+      return {
+        url: UrlToSub,
+        srcLang: language === 'en' ? 'English' : 'Español'
+      }
     } else {
       throw new Error('response not OK')
     }

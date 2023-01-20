@@ -7,11 +7,13 @@ async function getSubtitles(req, res) {
   const baseUrl = 'https://api.opensubtitles.com/api/v1/'
   const englishSubsArr = []
   const otherSubsArr = []
-  const allSubsFileIds = []           // The file ids of the subs we want.
-  const allSubs = []                  // The URLs to the subtitle files.
+  const allSubsFileObjs = []          // The file ids of the subs we want.
+  const allSubsMapped = []            // The URLs to the subtitle files.
   const subs = []                     // The URLs to the subtitle files.
   const imdbIdNumeric = Number(imdbId.replace(/\D/g, ''))
 
+  // Check that the subtitles don't already exist in the DB.
+  let subsArr
   try {
     const response = await fetch(
       baseUrl +
@@ -26,8 +28,8 @@ async function getSubtitles(req, res) {
         },
       },
     )
-    const { data: subsArr } = await response.json()
-    
+    const { data } = await response.json()
+    subsArr = data
     /* Here is where we get the array of subtitles. So we gotta filter them
       and extract:
       1. English subtitles (required no matter what)
@@ -39,29 +41,37 @@ async function getSubtitles(req, res) {
       return s.attributes.language === 'en'
     }))
 
-    let language = 'es' // <=== TESTING!!!
+    allSubsFileObjs.push(englishSubsArr[0]) // grab just the 1st one
+
     if (language !== 'en') {
       otherSubsArr.push(...subsArr.filter(s => {imdbId, language
         return s.attributes.language === language
       }))
+      allSubsFileObjs.push(otherSubsArr[0])   // grab just the 1st one
     }
-    allSubs.push(englishSubsArr[0]) // grab just the 1st one
-    allSubs.push(otherSubsArr[0])   // grab just the 1st one
-    allSubsFileIds.push(...allSubs.map(s => s.attributes.files[0].file_id))
+
+    allSubsMapped.push(...allSubsFileObjs.map(s => ({
+      file_id: s.attributes.files[0].file_id,
+      srcLang: s.attributes.language
+    })))
   } catch (error) {
     console.log(error)
   }
 
   try {
-    for (const fileId of allSubsFileIds) {
-      const url = await downloadSub(fileId, baseUrl, imdbId, language)
-      subs.push(url)
+    for (const obj of allSubsMapped) {
+      let { url, srcLang } = await downloadSub(obj.file_id, baseUrl, imdbId, obj.srcLang)
+
+      subs.push({
+        src: url,
+        srcLang: srcLang,
+        label: obj.label
+      })
     }
 
     return res.status(200).json({
-      allSubs: allSubs,
-      allSubsFileIds: allSubsFileIds,
-      subtitles: subs
+      allSubs: subsArr,
+      subtitles: subs // the good stuff
     })
   } catch (error) {
     console.log(error)
