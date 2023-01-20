@@ -13,17 +13,24 @@ function LanguageSelector(props) {
   const [isOpen, setIsOpen] = React.useState(false)
   const { activeLanguage } = useSelector(slices => slices.language)
   const dispatch = useDispatch()
-  // const [lang, setLang] = React.useState('en') // later this is gonna be global state
 
   let imgFlag
   if (activeLanguage === 'en') imgFlag = english
+  if (activeLanguage === 'es') imgFlag = spanish
   if (activeLanguage === 'it') imgFlag = italian
   if (activeLanguage === 'fi') imgFlag = finnish
+
+  const languages = [
+    { lang: 'en', imgSrc: english },
+    { lang: 'es', imgSrc: spanish },
+    { lang: 'fi', imgSrc: finnish },
+    { lang: 'it', imgSrc: italian }
+  ]
 
   function changeLanguage(e) {
     const chosenLanguage = e.currentTarget.getAttribute('data-id')
     // console.log(`user changed language to: ${chosenLanguage}`) // testing
-    // setLang(chosenLanguage) // set the language local state
+
     dispatch(setActiveLanguage(chosenLanguage))
 
     setIsOpen(false)        // collapse the component
@@ -41,38 +48,19 @@ function LanguageSelector(props) {
           isOpened={isOpen}
           className=''
         >
-          <div
-            className={`cursor-pointer ${activeLanguage === 'en' && ' hidden'} pt-3`}
-            data-id='en'
-            onClick={(e) => changeLanguage(e)}
-          >
-            <img
-              src={english}
-              className='w-10 h-10 rounded-full'
-            />
-          </div>
-
-          <div
-            className={`cursor-pointer ${activeLanguage === 'it' && ' hidden'} pt-3`}
-            data-id='it'
-            onClick={(e) => changeLanguage(e)}
-          >
-            <img
-              src={italian}
-              className='w-10 h-10 rounded-full'
-            />
-          </div>
-
-          <div
-            className={`cursor-pointer ${activeLanguage === 'fi' && ' hidden'} pt-3`}
-            data-id='fi'
-            onClick={(e) => changeLanguage(e)}
-          >
-            <img
-              src={finnish}
-              className='w-10 h-10 rounded-full'
-            />
-          </div>
+          {languages.map(l => (
+            <div
+              key={l.lang}
+              className={`cursor-pointer ${activeLanguage === l.lang && ' hidden'} pt-3`}
+              data-id={l.lang}
+              onClick={(e) => changeLanguage(e)}
+            >
+              <img
+                src={l.imgSrc}
+                className='w-10 h-10 rounded-full'
+              />
+            </div>
+          ))}
         </Collapse>
       </div>
     </div>
