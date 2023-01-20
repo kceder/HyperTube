@@ -1,4 +1,7 @@
 import pool from "../lib/db.js"
+import jobDeleteMovies from "./cron.js";
+
+jobDeleteMovies.start();
 
 async function findMovie({ quality, imdb_id }) {
   // console.log('downloads received',quality, imdb_id)
@@ -65,8 +68,20 @@ async function setCompleteMovie(movie) {
   return updatedMovie ?? null 
 }
 
+// function to delete movie from db if last_watched is older than 1 month. Using cron job
+async function deleteMovies() {
+  const query = `DELETE FROM downloads WHERE to_timestamp(last_watched / 1000) < NOW() - INTERVAL '1 month'`
+  try {
+    const { rows } = await pool.query(query)
+    return rows
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export {
   findMovie,
   saveMovie,
-  setCompleteMovie
+  setCompleteMovie,
+  deleteMovies
 }
