@@ -7,29 +7,33 @@ function MovieMiniCard(props) {
     title,
     year,
     imdbRating,
-    coverUrl
+    coverUrl,
+    synopsis
   } = props.movie
 
   return (
-  <div className='p-1 bg-white bg-opacity-20 text-white rounded-sm'>
+  <div className='relative group bg-[#2e3747] text-white rounded duration-500 hover:scale-110 hover:z-40 overflow-hidden'>
     <img
       src={coverUrl}
       alt={title}
-      className='w-96' 
+      className='w-96 rounded'
       onError={(e) => {
         e.target.onerror = null
         e.target.src=notFound
       }}
     />
+    <div className='absolute hidden duration-500 group-hover:block mt-[-5rem] bg-black bg-opacity-70 min-w-[100%] max-w-[100%]'>
     <p className='truncate py-2 text-center'>{title} </p>
     <hr />
     <p className='flex justify-between items-center py-2 px-1'>
       <span>
-        <img src={imdbLogo} alt="imdb logo" className='inline w-8 -mt-1'/>
+        <img src={imdbLogo} alt="imdb logo" className='inline w-8'/>
         <span className='font-bold'> {imdbRating}</span>
       </span>
       <span className='font-bold'>{year}</span>
     </p>
+    </div>
+    {/* <div className='hidden group-hover:block'>{synopsis}</div> */}
   </div>
   )
 }

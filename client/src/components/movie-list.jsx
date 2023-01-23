@@ -124,7 +124,7 @@ function MovieList(props) {
       setPageNumber={setPageNumber}
     />
 
-    <div className={`text-white max-w-4xl mx-auto pb-20 px-2`}>
+    <div className={`text-white mx-auto pb-20 px-2`}>
       {/* The paragraph below toggles the Advanced Search side-bar */}
       <p onClick={() => setIsVisible(true)} className='text-white cursor-pointer text-center py-4 hover:scale-110'>
         <MagnifyingGlassIcon className='inline w-6'/>
@@ -137,7 +137,7 @@ function MovieList(props) {
       {error ? 
         <p className='text-white text-2xl text-center capitalize'>{error}</p>
       :
-        <ul className='grid grid-cols-1 md:grid-cols-4 gap-4'>
+        <ul className='grid grid-cols-2 md:grid-cols-4 gap-4'>
           {movieList.length > 0 && movieList.map((movie, idx) => {
             if (idx === movieList.length - 1) { // <== Last Movie
               return (<li key={`${movie.imdbId}${idx}`} ref={lastMovie} className='col-span-1'>

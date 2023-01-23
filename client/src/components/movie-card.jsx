@@ -14,41 +14,34 @@ function MovieCard(props) {
 
   console.log(props) // check all props you get
   return (
-  <div className='p-3 bg-white bg-opacity-20 text-white rounded-sm'>
-    <div className="grid md:grid-cols-2 md:gap-1">
+  <div className='p-3 bg-white bg-opacity-5 text-white rounded-md'>
+    <div className="grid md:grid-cols-5 md:gap-1">
+      <div className='md:col-span-4'>
+        <p className='text-xl font-bold text-center'>{title}</p>
+        <hr className='my-4'/>
+        <div className='flex justify-between'>
+          <p>
+            <span className='font-bold'>{year}</span>
+          </p>
+          <p className='flex items-center space-x-2'>
+            <img src={imdbLogo} alt="imdb logo" className='inline w-8 -mt-1'/>
+            <span className='pr-3 font-bold'>{imdbRating}</span>
+          </p>
+        </div>
+        <p className='mt-3'>
+        {synopsis}
+        </p>
+      </div>
       <img
         src={coverUrl}
         alt={title}
-        className='w-96 col-span-1' 
+        className='md:w-52 col-span-1 mt-3 md:mt-0 p-3' 
         onError={(e) => {
           e.target.onerror = null
           e.target.src=notFound
         }}
         />
-      <div className='col-span-1'>
-        <p className='text-xl font-bold text-center'>{title}</p>
-        <hr className='my-4'/>
-        <div className='flex justify-between'>
-          <p>
-            <span>Year: </span>
-            <span className='font-bold'>{year}</span>
-          </p>
-          <p className='flex items-center space-x-2'>
-            <img src={imdbLogo} alt="imdb logo" className='inline w-8 -mt-1'/>
-            <span className='pr-3 font-bold'>{imdbCode}</span>
-          </p>
-        </div>
-        <p>
-          <span className='font-bold text-lg'>Synopsis: </span>{synopsis}
-        </p>
-      </div>
     </div>
-    <p className='flex justify-between items-center py-2 px-1'>
-      <span>
-        <img src={imdbLogo} alt="imdb logo" className='inline w-8 -mt-1'/>
-        <span className='font-bold'>{imdbRating}</span>
-      </span>
-    </p>
   </div>
   )
 }
