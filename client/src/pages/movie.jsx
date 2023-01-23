@@ -120,15 +120,7 @@ function MoviePage() {
   // console.log('config:', config) // testing
   // make api request to get all the imdb info, and video stuff
   return (
-    <div className='max-w-4xl min-w-[360px] md:w-4xl md:px-0 px-3 pt-10 flex flex-col space-y-6'>
-      {/* {!isLoading && movie && (
-        <>
-          <h1 className='text-2xl text-white'>
-            {movie.title} ({movie.year})
-          </h1>
-        </>
-      )} */}
-
+    <div className='max-w-4xl min-w-[360px] md:w-4xl md:px-0 px-3 flex flex-col space-y-10'>
       {!isLoading && (
         <div className='react-player-wrapper'>
           <ReactPlayer

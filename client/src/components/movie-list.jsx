@@ -126,7 +126,7 @@ function MovieList(props) {
 
     <div className={`text-white mx-auto pb-20 px-2`}>
       {/* The paragraph below toggles the Advanced Search side-bar */}
-      <p onClick={() => setIsVisible(true)} className='text-white cursor-pointer text-center py-4 hover:scale-110'>
+      <p onClick={() => setIsVisible(true)} className='text-white cursor-pointer text-center py-4 hover:scale-105'>
         <MagnifyingGlassIcon className='inline w-6'/>
         <span className='ml-3 capitalize'>
           {t(activeLanguage, 'movieListPage.advancedSearch')}
