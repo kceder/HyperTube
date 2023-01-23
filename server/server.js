@@ -22,18 +22,21 @@ import subtitlesRouter from './src/routes/subtitles.js'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 
+// import path from 'path'
 const app = express()
+
+// Serve the React bundled app
+app.use(express.static('dist'))
 
 // middleware to serve static files (images, and later our React bundle)
 app.use(express.static('public'))
 
-app.get('/api', (req, res) => {
-  res.send('Hello world!\n')
-}) // testing shit out
+// app.get('/api', (req, res) => {
+//   res.send('Hello world!\n')
+// }) // testing shit out
 
 app.use(cors())
 app.use(bodyParser.json()) // Content-Type: application-json
-
 
 // Routes for creating user accounts, getting user profiles...
 app.use('/api', getUsersRouter())
@@ -52,7 +55,6 @@ app.use('/api', getMoviesRouter())
 
 // Route for movies (list of them, and individual ones)
 app.use('/api', streamsRouter)
-app.use('/api', commentsRouter)
 
 // Route for comments (get list of them, and create new ones)
 app.use('/api', commentsRouter)

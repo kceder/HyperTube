@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  hypertube-express:
+    image: hypertube-express
+    container_name: hypertube-express
+    depends_on: 
+      - postgres
+    env_file:
+      - ./docker/postgres/.postgres-env
+    build: 
+      context: ./
+      dockerfile: ./docker/Dockerfile.prod
+    ports:
+      - 80:3000
+    # volumes:
+    #   - ./server:/app
+    #   - /app/node_modules # anonymous volume (not bound to host)

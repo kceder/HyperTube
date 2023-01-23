@@ -33,17 +33,10 @@ CREATE TABLE IF NOT EXISTS downloads (
 
 CREATE TABLE IF NOT EXISTS comments (
 	id SERIAL NOT NULL PRIMARY KEY,
-<<<<<<< Updated upstream
 	user_id INT NOT NULL,
 	imdb_id VARCHAR(15) NOT NULL,
 	comment VARCHAR(255) NOT NULL,
 	created_at BIGINT NOT NULL
-=======
-	imdb_id VARCHAR(15) NOT NULL,
-	username VARCHAR(50) NOT NULL,
-	content VARCHAR(1000) NOT NULL,
-	time_stamp BIGINT NOT NULL
->>>>>>> Stashed changes
 );
 
 -- Hashed password is Asdf1

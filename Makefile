@@ -10,6 +10,22 @@ dev-clean:
 dev-stop:
 	docker compose -f compose.yml -f compose-dev.yml down
 
+.PHONY:
+prod:
+	docker compose -f compose.yml -f compose-prod.yml up
+
+.PHONY:
+prod-stop:
+	docker compose -f compose.yml -f compose-prod.yml down
+
+.PHONY:
+prod-clean:
+	docker compose -f compose.yml -f compose-prod.yml up --build --force-recreate
+
+.PHONY:
+build:
+	cd client; npm run build
+
 # Deletes all volumes that don't have any container running (database)
 .PHONY:
 prune:

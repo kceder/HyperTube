@@ -42,3 +42,24 @@ docker volume rm hyper-express_pg-express-data
 ```
 
 Now, when you restart the `postgres` container, it won't find the database, and it'll run the aforementioned script, in order to recreate the schema.
+
+### Building
+Between evaluations, we gotta:
+
+* Stop the containers:
+
+```
+make prod-stop
+```
+
+* Clean up the volumes:
+
+```
+make prune
+```
+
+* Recreate the containers again:
+
+```
+make prod-clean
+```

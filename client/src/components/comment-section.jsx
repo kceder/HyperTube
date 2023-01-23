@@ -98,10 +98,9 @@ function CommentSection(props) {
             {comments && comments.length > 0 && (
               comments.map(comment => {
                 return (
-
                   <li
-                  key={comment.id}
-                  className='break-all'
+                    key={comment.id}
+                    className='break-all'
                   >
                   <p className='text-white'>
                     <span className='font-bold'>{comment.username}</span>{t(activeLanguage, 'moviePage.commentSection.wroteOn')}{' '}
