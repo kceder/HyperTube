@@ -5,6 +5,7 @@ import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import ReactPlayer from 'react-player'
 import CommentSection from '../components/comment-section'
 import Select from 'react-select'
+import MovieCard from '../components/movie-card'
 
 // homemade i18n
 import t from '../i18n/i18n'
@@ -22,7 +23,7 @@ function MoviePage() {
     label: t.quality,
     hash: t.hash,
   }))
-
+  console.log(location.state.movie)
   // Protected route: redirect to home page if user's not logged in
   // DISABLE IT DURING DEVELOPMENT!!
   // const navigate = useNavigate()
@@ -128,7 +129,7 @@ function MoviePage() {
         </>
       )}
 
-      <div>
+      <div className='flex space-x-3 items-center'>
         <p className='text-white text-xl capitalize mb-3'>
           {t(activeLanguage, 'moviePage.chooseQuality')}
         </p>
@@ -151,6 +152,7 @@ function MoviePage() {
           />
         </div>
       )}
+      {!isLoading && movie && <MovieCard movie={movie} />}
 
       <CommentSection imdbId={imdbId} />
     </div>

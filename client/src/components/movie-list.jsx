@@ -1,7 +1,7 @@
 import { MagnifyingGlassIcon, ArrowPathIcon } from '@heroicons/react/24/outline'
 import React from 'react'
 import { Link } from 'react-router-dom'
-import MovieCard from './movie-card'
+import MovieMiniCard from './movie-mini-card'
 import SideBar from './sidebar'
 
 // Redux
@@ -145,7 +145,7 @@ function MovieList(props) {
                   to={`movies/${movie.imdbId}`}
                   state={{movie}}
                 >
-                  <MovieCard movie={movie} />
+                  <MovieMiniCard movie={movie} />
                 </Link>
               </li>)
             } else {
@@ -154,7 +154,7 @@ function MovieList(props) {
                   to={`movies/${movie.imdbId}`}
                   state={{movie}}
                 >
-                  <MovieCard movie={movie} />
+                  <MovieMiniCard movie={movie} />
                 </Link>
               </li>)
             }
