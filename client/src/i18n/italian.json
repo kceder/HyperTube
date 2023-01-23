@@ -1,3 +1,250 @@
 {
-    "title": "Some Italian sentence that fits perfectly the page layout."
+    "mobileMenu": {
+        "logInBtn": "Accedi",
+        "logOutBtn": "Esci",
+        "signUpBtn": "Registati"
+    },
+    "heroPage": {
+        "title": "Guarda film in streaming gratis, senza paure.",
+        "logInBtn": "Accedi",
+        "signUpBtn": "Registrati"
+    },
+    "movieListPage": {
+        "advancedSearch": "ricerca avanzata",
+        "noMoreMovies": "fine",
+        "noMoviesFound": "nessun film trovato"
+    },
+    "moviePage": {
+        "chooseQuality": "Seleziona qualità",
+        "commentSection": {
+            "addComment": "Lascia un commento",
+            "charactersLeft": " caratteri rimasti",
+            "submit": "Commenta",
+            "comments": "Commenti",
+            "wroteOn": " ha commentato il",
+            "noComments": "Non ci sono commenti"
+
+        }
+    },
+    "sideBar": {
+        "advancedSearch": "ricerca avanzata",
+        "sortBy": "ordina per",
+        "sortByPlaceholder": "Seleziona",
+        "orderBy": "ordina per",
+        "orderByPlaceholder": "Seleziona",
+        "minimumRating": "punteggio minimo",
+        "selectGenre": "seleziona un genere",
+        "genrePlaceholder": "'Tutti' Predefinito",
+        "queryTerm": "parola chiave",
+        "queryTermPlaceholder": "Cerca un titolo",
+        "submitFilter": "conferma filtri"
+    },
+    "logInPage": {
+        "title": "Accedi",
+        "usernameInput": {
+            "label": "Nome utetnte",
+            "minWarning": "Nome utente richiesto",
+            "regexWarning": "da 5 a 10 lettere in maiuscolo, minuscolo e numeri"
+        },
+        "passwordInput": {
+            "label": "Password",
+            "minWarning": "Da 5 a 10 caratteri",
+            "regexWarning": "Lettere maiuscole, minuscole e numeri"
+        },
+        "submitBtn": {
+            "fillForm": "Compila il modulo",
+            "submitForm": "Conferma"
+        },
+        "createAccount": "Crea un Account",
+        "forgotPassword": "Password Dimenticata?",
+        "confirmationEmail": "Richiedi email di conferma",
+        "or": "o",
+        "42Access": "Accedi usando il tuo account 42",
+        "GHAccess": "Accedi usando il tuo account GitHub",
+        "notification": {
+            "loading": "Stiamo verificando in tuoi dati",
+            "success": "Hai effettuato il log in con successo!",
+            "unconfirmed": "Per favore, conferma il tuo account prima di accedere!",
+            "error": "C'e stato un problema con il tuo accesso!"
+        }
+    },
+    "signUpPage": {
+        "title": "Registrati",
+        "userNameInput": {
+            "label": "Nome utente",
+            "minWarning": "Nome utente richiesto",
+            "regexWarning": "da 5 a 10 lettere in maiuscolo, minuscolo e numeri",
+            "alreadyExists": "Nome utente già in uso"
+        },
+        "firstNameInput": {
+            "label": "Nome",
+            "minWarning": "Nome Richiesto",
+            "maxWarning": "Massimo 30 caratteri",
+            "regexWarning": "Solo lettere e spazi"
+        },
+        "lastNameInput": {
+            "label": "Cognome",
+            "minWarning": "Cognome Richiesto",
+            "maxWarning": "Massimo 30 caratteri",
+            "regexWarning": "Solo lettere e spazi"
+        },
+        "emailInput": {
+            "label": "Email",
+            "minWarning": "Email Richiesta",
+            "validEmailWarning": "L' email deve essere valida"
+        },
+        "passwordInput": {
+            "label": "Password",
+            "minWarning": "Tra 5 e 10 caratteri",
+            "regexWarning": "Lettere maiuscole/minuscole e numeri"
+        },
+        "confirmPasswordInput": {
+            "label": "Conferma Password",
+            "minWarning": "Tra 5 e 10 caratteri",
+            "regexWarning": "Lettere maiuscole/minuscole e numeri",
+            "matchWarning": "La password non corrisponde"
+        },
+        "pictureInput": {
+            "label": "Immagine del Profilo",
+            "btnLabel": "scegli",
+            "clearPicLabel": "rimuovi immagine",
+            "noFilePlaceholder": "Nessun File Selezionato",
+            "maxSizeWarning": "Massima dimensione del file 5MB.",
+            "filetypeWarning": "Solo formati .jpg, .jpeg, .png e .webp sono supportati."
+        },
+        "submitBtn": {
+            "fillForm": "Compila il modulo",
+            "submitForm": "Conferma"
+        },
+        "notification": {
+            "loading": "Stiamo processando i tuoi dati",
+            "success": "Registrazione completata!",
+            "successConfirm": "Conferma la tua e-mail prima di accedere nuovamente",
+            "error": "Si è verificato un problema durante la registrazione!"
+        }
+    },
+    "profilePage": {
+        "title": "impostazioni profilo",
+        "userNameInput": {
+            "label": "Nome Utente",
+            "minWarning": "Nome utente richiesto",
+            "regexWarning": "da 5 a 10 lettere in maiuscolo, minuscolo e numeri",
+            "alreadyExists": "Nome utente già in uso"
+        },
+        "firstNameInput": {
+            "label": "Nome",
+            "minWarning": "Nome Richiesto",
+            "maxWarning": "Massimo 30 caratteri",
+            "regexWarning": "Solo lettere e spazi"
+        },
+        "lastNameInput": {
+            "label": "Cognome",
+            "minWarning": "Cognome Richiesto",
+            "maxWarning": "Massimo 30 caratteri",
+            "regexWarning": "Solo lettere e spazi"
+        },
+        "emailInput": {
+            "label": "Email",
+            "minWarning": "Email Richiesta",
+            "validEmailWarning": "L' email deve essere valida"
+        },
+        "pictureInput": {
+            "label": "Immagine del Profilo",
+            "btnLabel": "scegli",
+            "clearPicLabel": "rimuovi immagine",
+            "noFilePlaceholder": "Nessun File Selezionato",
+            "maxSizeWarning": "Massima dimensione del file 5MB.",
+            "filetypeWarning": "Solo formati .jpg, .jpeg, .png e .webp sono supportati."
+        },
+        "submitBtn": {
+            "fillForm": "Compila il modulo",
+            "submitForm": "Conferma"
+        },
+        "notification": {
+            "loading": "Stiamo processando i tuoi dati",
+            "success": "Il tuo profilo é stato aggiornato con successo",
+            "successConfirm": "Conferma la tua e-mail prima di accedere nuovamente",
+            "error": "C'é stato un problema con l'aggiornamento dei tuoi dati!"
+        }
+    },
+    "forgotPasswordPage": {
+        "title": "Richiedi una Email per reinpostare la tua Password",
+        "emailInput": {
+            "label": "Email",
+            "placeholder": "Inserisci la tua Email",
+            "minWarning": "L' Email é richiesta",
+            "validEmailWarning": "L' email deve essere valida"
+        },
+        "submitBtn": "Conferma",
+        "messages": {
+            "loading": "Stiamo preparando la tua Email",
+            "success": "Email inviata!",
+            "error": "Ooops! C'é stato un problema."
+        }
+    },
+    "resetPasswordPage": {
+        "title": "Inserisci la tua nuova password",
+        "passwordInput": {
+            "label": "password",
+            "placeholder": "la tua nuova password",
+            "minWarning": "Tra 5 e 10 caratteri",
+            "regexWarning": "Lettere maiuscole, minuscole e numeri"
+        },
+        "confirmPasswordInput": {
+            "label": "conferma password",
+            "placeholder": "conferma la tua nuova password",
+            "minWarning": "Tra 5 e 10 caratteri",
+            "regexWarning": "Lettere maiuscole, minuscole e numeri",
+            "noMatchWarning": "Le password non conincidono"
+        },
+        "submitBtn": "Conferma",
+        "notification": {
+            "loading": "Stiamo processando la tua password",
+            "error": "Qualcosa é andato storto",
+            "success": "La tua password é stata aggiornata"
+        }
+    },
+    "confirmAccountPage": {
+        "title": "conferma del profilo",
+        "notification": {
+            "loading": "Stiamo processando i tuoi dati",
+            "error": "Qualcosa é andato storto",
+            "success": "Il tuo profilo é stato confermato. Ora puoi accedere."
+        }
+    },
+    "requestConfirmationLinkPage": {
+        "title": "Richiedi un link di conferma",
+        "emailInput": {
+            "label": "email",
+            "placeholder": "Inserisci la tua email",
+            "minWarning": "Email Richiesta",
+            "validEmailWarning": "L' email deve essere valida"
+        },
+        "submitBtn": "Conferma",
+        "notification": {
+            "loading": "Stiamo processando i tuoi dati",
+            "error": "Qualcosa é andato storto",
+            "success": "Link inviato! Controlla la tua posta elettronica"
+        }
+    },
+    "OAuthPage": {
+        "42": {
+            "title": "Autenticazione 42",
+            "notification": {
+                "loading": "Stiamo processando la tuarichiesta 42 OAuth",
+                "error": "Qualcosa é andato storto",
+                "successNewUser": "Iscrizione tramite profilo 42 completata",
+                "success": "Autentiicazione via 42 completata"
+            }
+        },
+        "GH": {
+            "title": "Autenticazione GitHub",
+            "notification": {
+                "loading": "Stiamo processando la tuarichiesta di autenticazione con GitHub",
+                "error": "Qualcosa é andato storto",
+                "successNewUser": "Iscrizione tramite profilo GitHub completata",
+                "success": "Autentiicazione via GitHub completata"
+            }
+        }
+    }
 }
