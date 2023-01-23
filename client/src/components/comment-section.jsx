@@ -34,9 +34,19 @@ function CommentSection(props) {
 
   function handleSubmit(e) {
     e.preventDefault()
-
+    let comment = newComment.trim();
+    if (comment.length > 255) {
+      comment = newComment.slice(0, 255);
+    }
+    else if (comment.length === 0) {
+      return
+    }
+    else if (comment.replace(/\s/g, '').length === 0) {
+      setNewComment('');
+      return
+    }
     async function postComment() {
-      console.log(newComment)
+      console.log(comment)
       const response = await fetch('/api/comments', {
         method: 'POST',
         headers: {
@@ -44,7 +54,7 @@ function CommentSection(props) {
         },
         body: JSON.stringify({
           imdb_id: imdbId,
-          comment: newComment,
+          comment: comment,
           created_at: +new Date(),
         }),
       })
@@ -64,6 +74,7 @@ function CommentSection(props) {
           className='rounded-sm p-2 mb-2 w-full text-slate-700'
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
+          maxLength='255'
         />
         <div className='flex justify-between'>
           <button
