@@ -67,7 +67,7 @@ function CommentSection(props) {
         />
         <div className='flex justify-between'>
           <button
-            className='border rounded-lg text-white p-2 hover:bg-white hover:bg-opacity-20'
+            className='border rounded-lg mb-2 text-white p-2 hover:bg-white hover:bg-opacity-20'
             onClick={(e) => handleSubmit(e)}
           >
             {t(activeLanguage, 'moviePage.commentSection.submit')}
@@ -81,8 +81,8 @@ function CommentSection(props) {
         {comments && comments.length > 0 && (
           <>
           {/* <h2 className='text-2xl text-white text-center mb-4 pt-6'>{t(activeLanguage, 'moviePage.commentSection.comments')}</h2> */}
-          <ul className={`flex flex-col space-y-6 py-6 max-h-96${comments && comments.length > 0 &&' overflow-y-scroll'}`}>
           <hr />
+          <ul className={`flex flex-col space-y-6 py-6 max-h-96${comments && comments.length > 0 &&' overflow-y-scroll'}`}>
             {comments && comments.length > 0 && (
               comments.map(comment => {
                 return (
