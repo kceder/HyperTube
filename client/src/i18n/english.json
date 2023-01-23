@@ -19,7 +19,7 @@
         "commentSection": {
             "addComment": "Add New Comment",
             "charactersLeft": " characters left",
-            "submit": "Submit",
+            "submit": "Comment",
             "comments": "Comments",
             "wroteOn": " wrote on",
             "noComments": "No comments yet"

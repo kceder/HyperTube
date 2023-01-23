@@ -37,7 +37,7 @@ function LanguageSelector(props) {
   }
 
   return (
-    <div className='relative'>
+    <div className='relative z-40'>
       <img
         src={imgFlag}
         className='w-10 h-10 rounded-full cursor-pointer'
