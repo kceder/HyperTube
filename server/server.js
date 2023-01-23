@@ -52,6 +52,7 @@ app.use('/api', getMoviesRouter())
 
 // Route for movies (list of them, and individual ones)
 app.use('/api', streamsRouter)
+app.use('/api', commentsRouter)
 
 // Route for comments (get list of them, and create new ones)
 app.use('/api', commentsRouter)
