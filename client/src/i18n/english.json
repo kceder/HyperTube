@@ -17,9 +17,9 @@
     "moviePage": {
         "chooseQuality": "Choose a quality",
         "commentSection": {
-            "addComment": "Add New Comment",
+            "label": "leave your comment",
             "charactersLeft": " characters left",
-            "submit": "Comment",
+            "submit": "Submit",
             "comments": "Comments",
             "wroteOn": " wrote on",
             "noComments": "No comments yet"

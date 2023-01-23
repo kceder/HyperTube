@@ -70,6 +70,7 @@ function CommentSection(props) {
   return (
     <div className='min-w-4xl pb-6'>
       <form className='flex flex-col'>
+        <label className='text-white text-lg capitalize'>{t(activeLanguage, 'moviePage.commentSection.label')}</label>
         <textarea
           className='rounded-sm p-2 mb-2 w-full text-slate-700'
           value={newComment}
@@ -91,7 +92,7 @@ function CommentSection(props) {
       </form>
         {comments && comments.length > 0 && (
           <>
-          {/* <h2 className='text-2xl text-white text-center mb-4 pt-6'>{t(activeLanguage, 'moviePage.commentSection.comments')}</h2> */}
+          <h2 className='text-2xl text-white text-center mb-4'>{t(activeLanguage, 'moviePage.commentSection.comments')}</h2>
           <hr />
           <ul className={`flex flex-col space-y-6 py-6 max-h-96${comments && comments.length > 0 &&' overflow-y-scroll'}`}>
             {comments && comments.length > 0 && (
