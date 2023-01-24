@@ -23,7 +23,7 @@ function MoviePage() {
     label: t.quality,
     hash: t.hash,
   }))
-  console.log(location.state.movie)
+  console.log('26', location.state.movie)
   // Protected route: redirect to home page if user's not logged in
   // DISABLE IT DURING DEVELOPMENT!!
   // const navigate = useNavigate()
@@ -110,7 +110,6 @@ function MoviePage() {
       )
       const data = await response.json()
       setMovie(data)
-      console.log(data)
     }
 
     fetchMovie()
@@ -145,7 +144,6 @@ function MoviePage() {
         />
       </div>
       {!isLoading && movie && <MovieCard movie={movie} />}
-
       <CommentSection imdbId={imdbId} />
     </div>
   )
