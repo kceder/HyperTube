@@ -14,6 +14,7 @@ import ForgotPasswordPage from './pages/forgot-password'
 import ResetPasswordPage from './pages/reset-password'
 import RequestConfirmationPage from './pages/request-confirmation'
 import ConfirmAccountPage from './pages/confirm-account'
+import PageNotFound from './pages/page-not-found'
 import Notification from './components/notification'
 
 export default function Home() {
@@ -72,6 +73,11 @@ export default function Home() {
           <Route
             path='reset-password'
             element={<ResetPasswordPage />}
+          />
+
+          <Route
+            path='*'
+            element={<PageNotFound />}
           />
         </Routes>
       </Layout>

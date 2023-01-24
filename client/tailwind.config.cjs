@@ -6,6 +6,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      backgroundImage: {
+        'travolta': "url('./assets/travolta.gif')",
+      },
       fontFamily: {
         'leagueGothic': ['League Gothic', 'sans-serif']
       }
