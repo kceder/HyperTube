@@ -1,4 +1,19 @@
 {
+    "mobileMenu": {
+        "logInBtn": "Kirjaudu",
+        "logOutBtn": "Kirjaudu ulos",
+        "signUpBtn": "Rekisteröidy"
+    },
+    "heroPage": {
+        "title": "Katso elokuvia ilmaiseksi ja turvassa.",
+        "logInBtn": "Kirjaudu",
+        "signUpBtn": "Rekisteröidy"
+    },
+    "movieListPage": {
+        "advancedSearch": "tarkempi haku",
+        "noMoreMovies": "ei enempää elokuvia",
+        "noMoviesFound": "elokuvia ei löytynyt"
+    },
     "moviePage": {
         "chooseQuality": "Valitse laatu",
         "commentSection": {
@@ -8,6 +23,227 @@
             "comments": "Kommentit",
             "wroteOn": "kirjoitti",
             "noComments": "Ei kommentteja vielä"
+        }
+    },
+    "sideBar": {
+        "advancedSearch": "tarkempi haku",
+        "sortBy": "järjestä",
+        "sortByPlaceholder": "Valitse",
+        "orderBy": "järjestä",
+        "orderByPlaceholder": "Valitse",
+        "minimumRating": "vähintään",
+        "selectGenre": "valitse genre",
+        "genrePlaceholder": "Oletuksena kaikki",
+        "queryTerm": "haku sanalla",
+        "queryTermPlaceholder": "Hae elokuvia",
+        "submitFilter": "Suodata"
+    },
+    "logInPage": {
+        "title": "Kirjaudu",
+        "usernameInput": {
+            "label": "Käyttäjänimi",
+            "minWarning": "Käyttäjänimi on pakollinen",
+            "regexWarning": "5-10 kirjainta, isoja ja pieniä kirjaimia sekä numeroita"
+        },
+        "passwordInput": {
+            "label": "Salasana",
+            "minWarning": "5-10 merkkiä",
+            "regexWarning": "Isoja ja pieniä kirjaimia sekä numeroita"
+        },
+        "submitBtn": {
+            "fillForm": "Täytä kaikki kentät",
+            "submitForm": "Kirjaudu"
+        },
+        "createAccount": "Luo uusi tili",
+        "forgotPassword": "Unohditko salasanasi?",
+        "confirmationEmail": "Tarvitsetko vahvistussähköpostin?",
+        "or": "tai",
+        "42Access": "Kirjaudu käyttäen 42 tunnuksiasi",
+        "GHAccess": "Kirjaudu käyttäen GitHub tunnuksiasi",
+        "notification": {
+            "loading": "Varmistetaan tunnuksiasi",
+            "success": "Olet nyt kirjautunut sisään!",
+            "unconfirmed": "Vahvista sähköpostisi ennen kirjautumista!",
+            "error": "Kirjautuminen epäonnistui!"
+        }
+    },
+    "signUpPage": {
+        "title": "Kirjaudu",
+        "userNameInput": {
+            "label": "Käyttäjänimi",
+            "minWarning": "Käyttäjänimi on pakollinen",
+            "regexWarning": "5-10 kirjainta, isoja ja pieniä kirjaimia sekä numeroita",
+            "alreadyExists": "Käyttäjänimi on jo käytössä"
+        },
+        "firstNameInput": {
+            "label": "Etunimi",
+            "minWarning": "Etuninmi on pakollinen",
+            "maxWarning": "Enintään 30 kirjainta",
+            "regexWarning": "Vain kirjaimia ja välilyönti"
+        },
+        "lastNameInput": {
+            "label": "Sukuniimi",
+            "minWarning": "Sukunimi on pakollinen",
+            "maxWarning": "Enintään 30 kirjainta",
+            "regexWarning": "Vain kirjaimia ja välilyönti"
+        },
+        "emailInput": {
+            "label": "Sähköposti",
+            "minWarning": "Sähköposti on pakollinen",
+            "validEmailWarning": "Sähköposti on virheellinen"
+        },
+        "passwordInput": {
+            "label": "Salasana",
+            "minWarning": "5-10 merkkiä",
+            "regexWarning": "Isoja ja pieniä kirjaimia sekä numeroita"
+        },
+        "confirmPasswordInput": {
+            "label": "Vahvista salasana",
+            "minWarning": "5-10 merkkiä",
+            "regexWarning": "Isoja ja pieniä kirjaimia sekä numeroita",
+            "matchWarning": "Salasanat eivät täsmää"
+        },
+        "pictureInput": {
+            "label": "Profiilikuva",
+            "btnLabel": "Valitse kuva",
+            "clearPicLabel": "Poista kuva",
+            "noFilePlaceholder": "Ei tiedostoa valittuna",
+            "maxSizeWarning": "Enintään 5MB",
+            "filetypeWarning": "Vain .jpg, .jpeg, .png ja .webp tiedostoja"
+        },
+        "submitBtn": {
+            "fillForm": "Täytä kaikki kentät",
+            "submitForm": "Lähetä"
+        },
+        "notification": {
+            "loading": "Lähetetään tietoja",
+            "success": "Olet nyt kirjautunut sisään!",
+            "successConfirm": "Vahvistussähköposti lähetetty!",
+            "error": "Rekisteröityminen epäonnistui!"
+        }
+    },
+    "profilePage": {
+        "title": "Profiili",
+        "userNameInput": {
+            "label": "Käyttäjänimi",
+            "minWarning": "Käyttäjänimi on pakollinen",
+            "regexWarning": "5-10 kirjainta, isoja ja pieniä kirjaimia sekä numeroita",
+            "alreadyExists": "Käyttäjänimi on jo käytössä"
+        },
+        "firstNameInput": {
+            "label": "Etunimi",
+            "minWarning": "Etuninmi on pakollinen",
+            "maxWarning": "Enintään 30 kirjainta",
+            "regexWarning": "Vain kirjaimia ja välilyönti"
+        },
+        "lastNameInput": {
+            "label": "Last Name",
+            "minWarning": "Sukunimi on pakollinen",
+            "maxWarning": "Enintään 30 kirjainta",
+            "regexWarning": "Vain kirjaimia ja välilyönti"
+        },
+        "emailInput": {
+            "label": "Sähköposti",
+            "minWarning": "Sähköposti on pakollinen",
+            "validEmailWarning": "Sähköposti on virheellinen"
+        },
+        "pictureInput": {
+            "label": "Profiilikuva",
+            "btnLabel": "Valitse kuva",
+            "clearPicLabel": "Poista kuva",
+            "noFilePlaceholder": "Ei tiedostoa valittuna",
+            "maxSizeWarning": "Enintään 5MB",
+            "filetypeWarning": "Vain .jpg, .jpeg, .png ja .webp tiedostoja"
+        },
+        "submitBtn": {
+            "fillForm": "Täytä kaikki kentät",
+            "submitForm": "Lähetä"
+        },
+        "notification": {
+            "loading": "Tarkistetaan tietoja",
+            "success": "Profiili päivitetty!",
+            "successConfirm": "Vahvistussähköposti lähetetty!",
+            "error": "Ongelma profiilin päivittämisessä!"
+        }
+    },
+    "forgotPasswordPage": {
+        "title": "Aseta uusi salasana?",
+        "emailInput": {
+            "label": "Sähköposti",
+            "placeholder": "Sähköposti",
+            "minWarning": "Sähköposti on pakollinen",
+            "validEmailWarning": "Sähköposti on virheellinen"
+        },
+        "submitBtn": "Lähetä",
+        "messages": {
+            "loading": "Lähetetään sähköpostia",
+            "success": "Sähköposti lähetetty!",
+            "error": "Salasanan palautuksessa tapahtui virhe!"
+        }
+    },
+    "resetPasswordPage": {
+        "title": "Uusi salasana",
+        "passwordInput": {
+            "label": "salasana",
+            "placeholder": "uusi salasanasi",
+            "minWarning": "5-10 merkkiä",
+            "regexWarning": "Isoja ja pieniä kirjaimia sekä numeroita"
+        },
+        "confirmPasswordInput": {
+            "label": "vahvista salasana",
+            "placeholder": "vahvista uusi salasanasi",
+            "minWarning": "5-10 merkkiä",
+            "regexWarning": "Isoja ja pieniä kirjaimia sekä numeroita",
+            "noMatchWarning": "Salasanat eivät täsmää"
+        },
+        "submitBtn": "Lähetä",
+        "notification": {
+            "loading": "Päivitetään salasanaa",
+            "error": "Salasanan päivittämisessä tapahtui virhe!",
+            "success": "Salasana päivitetty!"
+        }
+    },
+    "confirmAccountPage": {
+        "title": "Vahvita tilisi",
+        "notification": {
+            "loading": "Varmistetaan tunnuksiasi",
+            "error": "Jokin meni pieleen tunnuksesi vahvistamisessa",
+            "success": "Tunnukset vahvistettu!"
+        }
+    },
+    "requestConfirmationLinkPage": {
+        "title": "Pyydä vahvistussähköposti",
+        "emailInput": {
+            "label": "Sähköposti",
+            "placeholder": "Syötä sähköpostisi",
+            "minWarning": "Sähköposti on pakollinen",
+            "validEmailWarning": "Sähköposti on virheellinen"
+        },
+        "submitBtn": "Lähetä",
+        "notification": {
+            "loading": "Lähetetään vahvistussähköpostia",
+            "error": "Jokin meni pieleen vahvistussähköpostin lähettämisessä",
+            "success": "Vahvistussähköposti lähetetty!"
+        }
+    },
+    "OAuthPage": {
+        "42": {
+            "title": "42 kirjautuminen",
+            "notification": {
+                "loading": "Käsitellään 42 OAuth pyyntöä",
+                "error": "Jokin meni pieleen pyynnön käsittelyssä",
+                "successNewUser": "Onnistuneesti rekisteröity 42:lla",
+                "success": "Onnistuneesti kirjautunut 42:lla"
+            }
+        },
+        "GH": {
+            "title": "GitHub kirjautuminen",
+            "notification": {
+                "loading": "Käsitellään GitHub OAuth pyyntöä",
+                "error": "Jokin meni pieleen pyynnön käsittelyssä",
+                "successNewUser": "Onnistuneesti rekisteröity GitHub:lla",
+                "success": "Onnistuneesti kirjautunut GitHub:lla"
+            }
         }
     }
 }
