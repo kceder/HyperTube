@@ -7,6 +7,8 @@ import CommentSection from '../components/comment-section'
 import Select from 'react-select'
 import MovieCard from '../components/movie-card'
 
+import spinner from '../assets/rose.png'
+
 // homemade i18n
 import t from '../i18n/i18n'
 
@@ -132,6 +134,15 @@ function MoviePage() {
   // make api request to get all the imdb info, and video stuff
   return (
     <div className='max-w-4xl min-w-[360px] md:w-4xl md:px-0 px-3 flex flex-col space-y-10'>
+      {isLoading &&
+      <p className='text-center pt-10'>
+        <img
+          src={spinner}
+          alt='trendy-spinner'
+          className='inline w-32 animate-spin'
+          />
+      </p>}
+
       {!isLoading && (
         <div className='react-player-wrapper'>
           <ReactPlayer
