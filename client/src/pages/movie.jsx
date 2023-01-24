@@ -49,6 +49,18 @@ function MoviePage() {
       )
     }
     setSelectedTorrent(smallestQuality || torrentOptions[0])
+
+	async function setAsWatched () {
+		const response = await fetch(`/api/movies/${imdbId}`, {
+			method : 'POST',
+			headers : {
+				'Content-Type' : 'application/json'
+			}
+		})
+		const data = await response.json()
+		console.log('58', data)
+	}
+	setAsWatched();
   }, [])
 
   React.useEffect(() => {

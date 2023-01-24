@@ -1,5 +1,6 @@
 // import pool from '/app/src/lib/db.js'
 // import { downloadTorrent } from '/app/src/lib/downloadTorrent.js'
+import { checkIfWatched, markAsWatched } from '../models/watchedHistory.js'
 
 async function getListMovies(req, res) {
   // Destructure the query
@@ -56,17 +57,24 @@ async function getListMovies(req, res) {
     
     // console.log(data.movies.map(m => m.title)) //  testing
     if (data.movie_count > 0 && data?.movies?.length > 0) {
-      const movies = data.movies.map(m => ({
-        // consider extracting more info here
-        title:      m.title,
-        imdbId:     m.imdb_code,
-        year:       m.year,
-        imdbRating: m.rating,
-        coverUrl:   m.large_cover_image,
-        synopsis:   m.synopsis,
-        genres:     m.genres,
-        torrents:   m.torrents
-      }))
+      const movies = []
+      for (const m of data.movies) {
+        movies.push(
+            {
+                // consider extracting more info here
+                title:      m.title,
+                imdbId:     m.imdb_code,
+                year:       m.year,
+                imdbRating: m.rating,
+                coverUrl:   m.large_cover_image,
+                synopsis:   m.synopsis,
+                genres:     m.genres,
+                torrents:   m.torrents,
+                watched:    await checkIfWatched({ uid : req.uid, imdbId : m.imdb_code })
+            }
+        )
+      }
+      
       return res.status(200).json({ movies })
     } else {
       return res.status(200).json({
@@ -118,4 +126,18 @@ async function getMovie(req, res) {
     }
 }
 
-export { getListMovies, getMovie }
+async function watchMovie(req, res) {
+    try {
+        const { id } = req.params
+        // const uid = req.uid
+        const uid = 23
+        await markAsWatched({uid : uid, imdbId : id})
+        res.status(200)
+    } catch (error) {
+        res.status(200).json({
+            error : error
+        })
+    }
+}
+
+export { getListMovies, getMovie, watchMovie }

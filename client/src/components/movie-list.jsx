@@ -43,6 +43,7 @@ function MovieList(props) {
         order_by:       orderBy?.value ?? null
       }))
       const data = await response.json()
+	  console.log('46', data)
   
       if (data.error === 'no movies found') {
         setError(t(activeLanguage, 'movieListPage.noMoviesFound')) // ADD TRANSLATION HERE

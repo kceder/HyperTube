@@ -12,7 +12,7 @@ import { getUsersRouter } from './src/routes/users.js'
 import { getSessionsRouter } from './src/routes/sessions.js'
 import { getUsernamesRouter } from './src/routes/usernames.js'
 import { getPasswordsRouter } from './src/routes/passwords.js'
-import { getMoviesRouter } from './src/routes/movies.js'
+import moviesRouter from './src/routes/movies.js'
 // import { getStreamsRouter } from './src/routes/streams.js'
 import streamsRouter from './src/routes/streams.js'
 import commentsRouter from './src/routes/comments.js'
@@ -51,7 +51,7 @@ app.use('/api', getPasswordsRouter())
 app.use('/api', getUsernamesRouter())
 
 // Route for movies (list of them, and individual ones)
-app.use('/api', getMoviesRouter())
+app.use('/api', moviesRouter)
 
 // Route for movies (list of them, and individual ones)
 app.use('/api', streamsRouter)
