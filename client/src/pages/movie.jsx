@@ -23,7 +23,7 @@ function MoviePage() {
     label: t.quality,
     hash: t.hash,
   }))
-  console.log('26', location.state.movie)
+  console.log('26', torrentOptions)
   // Protected route: redirect to home page if user's not logged in
   // DISABLE IT DURING DEVELOPMENT!!
   // const navigate = useNavigate()

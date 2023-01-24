@@ -13,7 +13,7 @@ function MovieCard(props) {
     description_full: synopsis
   } = props.movie
 
-  console.log(props.movie.cast) // check all props you get
+  console.log('props.movie', props) // check all props you get
   return (
   <div>
 	<div className='p-3 bg-white bg-opacity-5 text-white rounded-md'>
@@ -44,8 +44,8 @@ function MovieCard(props) {
 		  }}
 		  />
 	  </div>
-	</div>
 		<MovieCast cast={props.movie.cast}/>
+	</div>
   </div>
   )
 }
