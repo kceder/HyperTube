@@ -16,14 +16,20 @@ function CommentSection(props) {
   const [comments, setComments] = React.useState(null)
   const [newComment, setNewComment] = React.useState('')
   const activeLanguage = useSelector(slices => slices.language.activeLanguage)
-
+	const accessToken = useSelector(slices => slices.auth.accessToken)
+	console.log('accessToken', accessToken)
   React.useEffect(() => {
     async function fetchComments() {
       const response = await fetch(
         '/api/comments?' +
           new URLSearchParams({
             imdb_id: imdbId,
-          }),
+          }),{
+			headers: {
+				'Content-Type' : 'application/json',
+				Authorization : `Bearer ${accessToken}`
+			}
+		  } 
       )
       const data = await response.json()
       setComments(data.comments)
@@ -51,6 +57,7 @@ function CommentSection(props) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+		  Authorization : `Bearer ${accessToken}`
         },
         body: JSON.stringify({
           imdb_id: imdbId,

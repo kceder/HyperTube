@@ -7,7 +7,7 @@ import {
 
 const router = express.Router()
 
-router.get('/comments', getCommentList)
-router.post('/comments', postComment)
+router.get('/comments', validateToken, getCommentList)
+router.post('/comments', validateToken, postComment)
 
 export default router

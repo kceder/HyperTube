@@ -21,8 +21,9 @@ function Header() {
   const { isLoggedIn, profilePic } = useSelector(slices => slices.auth)
 
   function logoutHandler() {
+	navigate('/', { replace: true })
+	localStorage.clear()
     dispatch(logOut())
-    navigate('/', { replace: true })
   }
   // console.log(`header: ${isLoggedIn}`);
   let imgElem = !profilePic ?

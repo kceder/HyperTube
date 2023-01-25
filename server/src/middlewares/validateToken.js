@@ -2,8 +2,9 @@
 import jwt from 'jsonwebtoken'
 
 const validateToken = (req, res, next) => {
+
   const authHeader = req?.headers?.authorization
-  // console.log(`validateToken middleware: ${req.headers.authorization}`)
+  console.log(`validateToken middleware: ${req.headers.authorization}`)
 
   if (authHeader) {
     const [key, accessToken] = authHeader.split(' ');

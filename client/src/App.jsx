@@ -1,7 +1,9 @@
 import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 // Redux
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+
+import { logIn } from './store/authSlice.js'
 
 import Layout from './components/layout'
 import HomePage from './pages/home'
@@ -18,7 +20,20 @@ import PageNotFound from './pages/page-not-found'
 import Notification from './components/notification'
 
 export default function Home() {
-  // Redux
+	// Redux
+	const dispatch = useDispatch()
+  const { isLoggedIn } = useSelector(slices => slices.auth)
+  React.useEffect(() => {
+	const userData = window.localStorage.hypertube
+	  if (isLoggedIn)
+	  return
+	  else if (userData !== undefined) {
+		const parsedData = JSON.parse(userData)
+		console.log(parsedData)
+		dispatch(logIn(parsedData))
+	}
+  }, [])
+ 
   const { isOn } = useSelector((slices) => slices.notifications)
 
   return (
