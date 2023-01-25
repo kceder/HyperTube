@@ -1,3 +1,5 @@
+import { EyeIcon } from '@heroicons/react/24/solid'
+
 import React from 'react'
 import imdbLogo from '../assets/imdb.png'
 import notFound from '../assets/not_found.png'
@@ -13,7 +15,7 @@ function MovieMiniCard(props) {
   console.log(props.movie.watched)
   return (
   <div className='relative group bg-[#2e3747] text-white rounded duration-500 hover:scale-110 hover:z-40 overflow-hidden'>
-    <h1>{props.movie.watched ? 'watched' : 'not watched'}</h1>
+    <h1>{props.movie.watched && <EyeIcon className='absolute w-[2rem] text-[#5c7397] right-1'/>}</h1>
 	<img
       src={coverUrl}
       alt={title}

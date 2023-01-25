@@ -10,9 +10,9 @@ const MovieCast = ({cast}) => {
 					className="ml-5 mr-5 h-[60px] w-[60px]"
 				/>
 				<div className='flex flex-col items-center'>
-					<small style={{fontWeight: 'lighter', fontSize: '12px'}}>{member.name}</small>
-					<small style={{fontWeight: 'lighter', fontSize: '12px'}}>as</small>
-					<small style={{fontSize: '12px'}}> {member.character_name}</small>
+					<small className='text-[12px] font-light'>{member.name}</small>
+					<small className='text-[12px] font-light'>as</small>
+					<small className='text-[12px]'> {member.character_name}</small>
 				</div>
 			</div>
 		)

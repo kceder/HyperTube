@@ -6,7 +6,7 @@ function Layout(props) {
     <div className='flex flex-col min-h-screen bg-gray-800'>
       <Header />
 
-      <div className='max-w-6xl mx-auto'>
+      <div className='mx-auto'>
         {props.children}
       </div>
 
