@@ -1,11 +1,12 @@
 import React from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import ReactPlayer from 'react-player'
 import CommentSection from '../components/comment-section'
 import Select from 'react-select'
 import MovieCard from '../components/movie-card'
+import { logIn } from '../store/authSlice'
 
 import spinner from '../assets/rose.png'
 
@@ -13,6 +14,7 @@ import spinner from '../assets/rose.png'
 import t from '../i18n/i18n'
 
 function MoviePage() {
+  const { isLoggedIn } = useSelector((slices) => slices.auth)
   const { activeLanguage } = useSelector((slices) => slices.language)
   const [isLoading, setIsloading] = React.useState(true)
   const [movie, setMovie] = React.useState(null)
@@ -25,17 +27,21 @@ function MoviePage() {
     label: t.quality,
     hash: t.hash,
   }))
-  console.log('26', torrentOptions)
   // Protected route: redirect to home page if user's not logged in
   // DISABLE IT DURING DEVELOPMENT!!
-  // const navigate = useNavigate()
-  // const { isLoggedIn } = useSelector(slices => slices.auth)
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  React.useEffect(() => {
+    const userData = window.localStorage.hypertube
+    if (isLoggedIn) return
+    else if (userData !== undefined) {
+      const parsedData = JSON.parse(userData)
+      console.log(parsedData)
+      dispatch(logIn(parsedData))
+    } else navigate('/')
+  }, [])
 
-  // React.useEffect(() => {
-  //   if (!isLoggedIn) navigate('/', { replace: true })
-  // }, [isLoggedIn])
-
-  // console.log(location.pathname) // testing
+  console.log(location.pathname) // testing
   const imdbId = location.pathname.split('/').pop()
   React.useEffect(() => {
     /* Here we select the default quality (smaller better):
@@ -52,17 +58,16 @@ function MoviePage() {
     }
     setSelectedTorrent(smallestQuality || torrentOptions[0])
 
-	async function setAsWatched () {
-		const response = await fetch(`/api/movies/${imdbId}`, {
-			method : 'POST',
-			headers : {
-				'Content-Type' : 'application/json'
-			}
-		})
-		const data = await response.json()
-		console.log('58', data)
-	}
-	setAsWatched();
+    async function setAsWatched() {
+      const response = await fetch(`/api/movies/${imdbId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      const data = await response.json()
+    }
+    setAsWatched()
   }, [])
 
   React.useEffect(() => {
@@ -73,7 +78,8 @@ function MoviePage() {
 
     async function fetchSubtitles() {
       const response = await fetch(
-        urlSubs + '?' +
+        urlSubs +
+          '?' +
           new URLSearchParams({
             language: activeLanguage,
           }),
@@ -85,11 +91,11 @@ function MoviePage() {
         const data = await response.json()
         // console.log('subtitles ALL', data.allSubs) // testing
 
-        const tracks = data.subtitles.map(st => ({
+        const tracks = data.subtitles.map((st) => ({
           kind: 'subtitles',
           src: st.src, // the link to the sub file in our server.
           srcLang: st.srcLang,
-          label: st.label
+          label: st.label,
           // default: true,
         }))
         // console.log('subs array:', tracks) // this is a link
@@ -98,8 +104,8 @@ function MoviePage() {
             attributes: {
               crossOrigin: 'true',
             },
-            tracks: tracks
-          }
+            tracks: tracks,
+          },
         })
       }
     } // fetchSubtitles
@@ -134,14 +140,15 @@ function MoviePage() {
   // make api request to get all the imdb info, and video stuff
   return (
     <div className='max-w-4xl min-w-[360px] md:w-4xl md:px-0 px-3 flex flex-col space-y-10'>
-      {isLoading &&
-      <p className='text-center pt-10'>
-        <img
-          src={spinner}
-          alt='trendy-spinner'
-          className='inline w-32 animate-spin'
+      {isLoading && (
+        <p className='text-center pt-10'>
+          <img
+            src={spinner}
+            alt='trendy-spinner'
+            className='inline w-32 animate-spin'
           />
-      </p>}
+        </p>
+      )}
 
       {!isLoading && (
         <div className='react-player-wrapper'>

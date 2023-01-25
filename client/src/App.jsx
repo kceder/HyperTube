@@ -20,18 +20,18 @@ import PageNotFound from './pages/page-not-found'
 import Notification from './components/notification'
 
 export default function Home() {
-	// Redux
-	const dispatch = useDispatch()
+    // Redux
+    const dispatch = useDispatch()
   const { isLoggedIn } = useSelector(slices => slices.auth)
   React.useEffect(() => {
-	const userData = window.localStorage.hypertube
-	  if (isLoggedIn)
-	  return
-	  else if (userData !== undefined) {
-		const parsedData = JSON.parse(userData)
-		console.log(parsedData)
-		dispatch(logIn(parsedData))
-	}
+    const userData = window.localStorage.hypertube
+      if (isLoggedIn)
+      return
+      else if (userData !== undefined) {
+        const parsedData = JSON.parse(userData)
+        console.log(parsedData)
+        dispatch(logIn(parsedData))
+    }
   }, [])
  
   const { isOn } = useSelector((slices) => slices.notifications)

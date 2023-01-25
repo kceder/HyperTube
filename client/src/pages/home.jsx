@@ -8,12 +8,10 @@ import MovieList from '../components/movie-list'
 import { useSelector } from 'react-redux'
 
 function HomePage() {
-  const { isLoggedIn } = useSelector(slices => slices.auth)
+  const { isLoggedIn } = useSelector((slices) => slices.auth)
 
-  // if (isLoggedIn)
-    return <MovieList />
-  // else
-  //   return <Hero />
+  if (isLoggedIn) return <MovieList />
+  else return <Hero />
 }
 
 export default HomePage

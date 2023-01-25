@@ -12,7 +12,6 @@ function MovieMiniCard(props) {
     coverUrl,
     synopsis
   } = props.movie
-  console.log(props.movie.watched)
   return (
   <div className='relative group bg-[#2e3747] text-white rounded duration-500 hover:scale-110 hover:z-40 overflow-hidden'>
     <h1>{props.movie.watched && <EyeIcon className='absolute w-[2rem] text-[#5c7397] right-1'/>}</h1>
