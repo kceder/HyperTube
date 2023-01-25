@@ -13,6 +13,9 @@ async function getListMovies(req, res) {
     order_by
   } = req.query
 
+//   const uid = req.uid
+  const uid = 1
+
   try {
     const ytsBaseUrl = 'https://yts.mx/api/v2/list_movies.json'
 
@@ -70,11 +73,10 @@ async function getListMovies(req, res) {
                 synopsis:   m.synopsis,
                 genres:     m.genres,
                 torrents:   m.torrents,
-                watched:    await checkIfWatched({ uid : req.uid, imdbId : m.imdb_code })
+                watched:    await checkIfWatched({ uid : uid, imdbId : m.imdb_code })
             }
         )
       }
-      
       return res.status(200).json({ movies })
     } else {
       return res.status(200).json({
@@ -130,7 +132,7 @@ async function watchMovie(req, res) {
     try {
         const { id } = req.params
         // const uid = req.uid
-        const uid = 23
+        const uid = 1
         await markAsWatched({uid : uid, imdbId : id})
         res.status(200)
     } catch (error) {

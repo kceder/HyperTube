@@ -10,10 +10,11 @@ function MovieMiniCard(props) {
     coverUrl,
     synopsis
   } = props.movie
-
+  console.log(props.movie.watched)
   return (
   <div className='relative group bg-[#2e3747] text-white rounded duration-500 hover:scale-110 hover:z-40 overflow-hidden'>
-    <img
+    <h1>{props.movie.watched ? 'watched' : 'not watched'}</h1>
+	<img
       src={coverUrl}
       alt={title}
       className='w-96 rounded'
