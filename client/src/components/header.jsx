@@ -11,6 +11,8 @@ import { logOut } from '../store/authSlice'
 import Burger from './burguer'
 import MobileMenu from './mobile-menu'
 import LanguageSelector from './language-selector'
+import greenDoor from '../assets/green-door.png'
+import redDoor from '../assets/red_door.png'
 
 function Header() {
   const navigate = useNavigate()
@@ -67,7 +69,8 @@ function Header() {
             {!isLoggedIn ? (
               <li>
                 <Link to='/auth'>
-                  <ArrowLeftOnRectangleIcon className='inline w-10 md:w-12 mr-4 hover:scale-105 hover:text-green-300' />
+                  <img src={greenDoor} className='inline h-12 hover:scale-110' />
+                  {/* <ArrowLeftOnRectangleIcon className='inline w-10 md:w-12 mr-4 hover:scale-105 hover:text-green-300' /> */}
                 </Link>
               </li>
             ) : (
@@ -80,7 +83,8 @@ function Header() {
                 </li>
 
                 <li onClick={logoutHandler}>
-                  <ArrowRightOnRectangleIcon className='inline w-10 md:w-12 mr-4 hover:scale-105 hover:text-red-500' />
+                  <img src={redDoor} className='inline h-12 hover:scale-110' />
+                  {/* <ArrowRightOnRectangleIcon className='inline w-10 md:w-12 mr-4 hover:scale-105 hover:text-red-500' /> */}
                 </li>
               </>
             )}
