@@ -16,7 +16,7 @@ async function getCommentList(req, res) {
 
 async function postComment(req, res) {
   const { imdb_id, comment, created_at } = req.body
-  req.uid = 1 // testing while authentication is bypassed
+  // req.uid = 1 // testing while authentication is bypassed
 
   const user = await findByUid({ uid: req.uid })
 
