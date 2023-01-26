@@ -184,7 +184,7 @@ export default function AuthPage() {
 
       <div className='inline-flex justify-center items-center w-full space-x-2 my-4'>
         <hr className='inline my-8 w-[40%] h-1 bg-gray-200 rounded border-0 dark:bg-gray-700' />
-        <p>or</p>
+        <p>{t(activeLanguage, 'logInPage.or')}</p>
         <hr className='inline my-8 w-[40%] h-1 bg-gray-200 rounded border-0 dark:bg-gray-700' />
       </div>
 

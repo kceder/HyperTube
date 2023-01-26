@@ -2,12 +2,14 @@
 import englishTranslations from '../i18n/english.json'
 import finnishTranslations from '../i18n/finnish.json'
 import italianTranslations from '../i18n/italian.json'
+import spanishTranslations from '../i18n/spanish.json'
 
 // object containing the translations.
 const translations = {
   en: englishTranslations,
   fi: finnishTranslations,
-  it: italianTranslations
+  it: italianTranslations,
+  es: spanishTranslations
 }
 
 /** It allows to use strings like 'prop1.prop2.prop3' to access the values

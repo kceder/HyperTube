@@ -1,0 +1,250 @@
+{
+    "mobileMenu": {
+        "logInBtn": "Inicia Sesión",
+        "logOutBtn": "Cerrar Sesión",
+        "signUpBtn": "Registro"
+    },
+    "heroPage": {
+        "title": "Pelis de gratís, sin miedo de acabar en el talego.",
+        "logInBtn": "Inicia Sesión",
+        "signUpBtn": "Registro"
+    },
+    "movieListPage": {
+        "advancedSearch": "busqueda avanzada",
+        "noMoreMovies": "no hay pelis, viejo",
+        "noMoviesFound": "no hay pelis, viejo"
+    },
+    "moviePage": {
+        "chooseQuality": "Escoge calidad",
+        "commentSection": {
+            "label": "deja un comentario",
+            "charactersLeft": " caracteres restantes.",
+            "submit": "Envia",
+            "comments": "Commentarios",
+            "wroteOn": " escribió el",
+            "noComments": "No hay comentarios"
+
+        }
+    },
+    "sideBar": {
+        "advancedSearch": "búsqueda avanzada",
+        "sortBy": "ordena por",
+        "sortByPlaceholder": "Selecciona",
+        "orderBy": "en order",
+        "orderByPlaceholder": "Selecciona",
+        "minimumRating": "mínima calificación",
+        "selectGenre": "selecciona género",
+        "genrePlaceholder": "'Todo' Por defecto",
+        "queryTerm": "término de búsqueda",
+        "queryTermPlaceholder": "Búsca en título",
+        "submitFilter": "Envía filtro"
+    },
+    "logInPage": {
+        "title": "Inicia sesión",
+        "usernameInput": {
+            "label": "Usuario",
+            "minWarning": "Usuario es obligatorio",
+            "regexWarning": "5-10 letras mayúsculas y minúsculas, y números"
+        },
+        "passwordInput": {
+            "label": "Contraseña",
+            "minWarning": "Entre 5-10 caracteres",
+            "regexWarning": "Letras mayúsculas y minúsculas, y números"
+        },
+        "submitBtn": {
+            "fillForm": "Porfi, rellena en condiciones",
+            "submitForm": "Envia"
+        },
+        "createAccount": "Crear Cuenta?",
+        "forgotPassword": "Olvidaste Contraseña?",
+        "confirmationEmail": "Necesitas Confirmar Email?",
+        "or": "o",
+        "42Access": "Accede usando tu Cuenta de 42",
+        "GHAccess": "Accede usando tu Cuenta de GitHub",
+        "notification": {
+            "loading": "Estamos comprobando tus credenciales",
+            "success": "Triunfazo!",
+            "unconfirmed": "Porfi, confirma tu cuenta antes de loguearte!",
+            "error": "Se jodió la marrana intentando loguearte!"
+        }
+    },
+    "signUpPage": {
+        "title": "Registrate",
+        "userNameInput": {
+            "label": "Usuario",
+            "minWarning": "Usuario obligatorio",
+            "regexWarning": "5-10 mayúsculas y minúsculas, y números",
+            "alreadyExists": "Usuario ya existe"
+        },
+        "firstNameInput": {
+            "label": "Nombre",
+            "minWarning": "Nombre es obligatorio",
+            "maxWarning": "Máximo 30 letras",
+            "regexWarning": "Sólo letras y espacios"
+        },
+        "lastNameInput": {
+            "label": "Apellidos",
+            "minWarning": "Apellido obligatorio",
+            "maxWarning": "Máximo 30 letras",
+            "regexWarning": "Sólo letras y espacios"
+        },
+        "emailInput": {
+            "label": "Email",
+            "minWarning": "Email es obligatorio",
+            "validEmailWarning": "Email debe ser válido"
+        },
+        "passwordInput": {
+            "label": "Contraseña",
+            "minWarning": "Entre 5-10 caracteres",
+            "regexWarning": "Mayúsculas y minúsculas, y números"
+        },
+        "confirmPasswordInput": {
+            "label": "Confirma Contraseña",
+            "minWarning": "Entre 5-10 caracteres",
+            "regexWarning": "Mayúsculas y minúsculas, y números",
+            "matchWarning": "Contraseñas no coinciden"
+        },
+        "pictureInput": {
+            "label": "Foto de perfil",
+            "btnLabel": "escoge",
+            "clearPicLabel": "borra pic",
+            "noFilePlaceholder": "No archivo seleccionado",
+            "maxSizeWarning": "Máximo tamaño es 5MB.",
+            "filetypeWarning": "Sólo formatos .jpg, .jpeg, .png and .webp se soportan."
+        },
+        "submitBtn": {
+            "fillForm": "Porfi, rellena en condiciones",
+            "submitForm": "Envia"
+        },
+        "notification": {
+            "loading": "Estamos creando tu cuenta",
+            "success": "Cuenta creada exitosamente!",
+            "successConfirm": "Triunfazo! Confirma tu Email antes de loguearte",
+            "error": "Se jodió la marrana intentando crear tu cuenta!"
+        }
+    },
+    "profilePage": {
+        "title": "Ajustes de perfil",
+        "userNameInput": {
+            "label": "Usuarioº",
+            "minWarning": "Usuario es obligatorio",
+            "regexWarning": "5-10 mayúsculas y minúsculas, y números",
+            "alreadyExists": "Usuario ya existe"
+        },
+        "firstNameInput": {
+            "label": "Nombre",
+            "minWarning": "Nombre es obligatorio",
+            "maxWarning": "Máximo 30 letras",
+            "regexWarning": "Sólo letras y espacios"
+        },
+        "lastNameInput": {
+            "label": "Apellidos",
+            "minWarning": "Apellido obligatorio",
+            "maxWarning": "Máximo 30 letras",
+            "regexWarning": "Sólo letras y espacios"
+        },
+        "emailInput": {
+            "label": "Email",
+            "minWarning": "Email es obligatorio",
+            "validEmailWarning": "Email debe ser válido"
+        },
+        "pictureInput": {
+            "label": "Foto de perfil",
+            "btnLabel": "escoge",
+            "clearPicLabel": "borra pic",
+            "noFilePlaceholder": "No archivo seleccionado",
+            "maxSizeWarning": "Tamaño máximo es 5MB.",
+            "filetypeWarning": "Sólo formatos .jpg, .jpeg, .png and .webp se soportan."
+        },
+        "submitBtn": {
+            "fillForm": "Porfi, rellena en condiciones",
+            "submitForm": "Envia"
+        },
+        "notification": {
+            "loading": "Estamos actualizando tus datos",
+            "success": "Tu perfil se ha actualizado correctamente!",
+            "successConfirm": "Triunfazo! Confirma tu Email antes de loguearte",
+            "error": "Se jodió la marrana intentando actualizar tus datos!"
+        }
+    },
+    "forgotPasswordPage": {
+        "title": "Solicita Email para Reseteo de Contraseña",
+        "emailInput": {
+            "label": "Email",
+            "placeholder": "Introduce tu Email",
+            "minWarning": "Email es obligatorio",
+            "validEmailWarning": "Email debe ser válido"
+        },
+        "submitBtn": "Envia",
+        "messages": {
+            "loading": "Solicita Email de Confirmación",
+            "success": "Triunfazo! Tu Email esta de camino",
+            "error": "La ostia! Se jodió la marrana procesando tu petición."
+        }
+    },
+    "resetPasswordPage": {
+        "title": "Introduce tu Nueva Contraseña",
+        "passwordInput": {
+            "label": "contraseña",
+            "placeholder": "tu nueva contraseña",
+            "minWarning": "Entre 5-10 caracteres",
+            "regexWarning": "Mayúsculas y minúsculas, y números"
+        },
+        "confirmPasswordInput": {
+            "label": "Confirma Contraseña",
+            "placeholder": "Confirma tu Nueva Contraseña",
+            "minWarning": "Entre 5-10 caracteres",
+            "regexWarning": "Mayúsculas y minúsculas, y números",
+            "noMatchWarning": "Contraseñas no coinciden"
+        },
+        "submitBtn": "Envia",
+        "notification": {
+            "loading": "Estamos procesando tu nueva contraseña",
+            "error": "Se jodió la marrana intentando actualizar tu contraseña!",
+            "success": "Triunfazo! Tu nueva contraseña esta activada"
+        }
+    },
+    "confirmAccountPage": {
+        "title": "confirma cuenta",
+        "notification": {
+            "loading": "Estamos procesando tu confirmación",
+            "error": "Se jodió la marrana intentando confirmar tu cuenta!",
+            "success": "Tu cuenta esta confirmada. Puedes acceder."
+        }
+    },
+    "requestConfirmationLinkPage": {
+        "title": "solicita link para confirmar cuenta",
+        "emailInput": {
+            "label": "email",
+            "placeholder": "Introduce tu Email",
+            "minWarning": "Email es obligatorio",
+            "validEmailWarning": "Email debe ser válido"
+        },
+        "submitBtn": "Envia",
+        "notification": {
+            "loading": "Estamos procesando tu solicitud para Confirmar Cuenta",
+            "error": "Se jodió la marrana intentando confirmar tu cuenta!",
+            "success": "Enlace para Confirmar enviado. Mira tu Email ;-)"
+        }
+    },
+    "OAuthPage": {
+        "42": {
+            "title": "Accede usando tu cuenta de 42",
+            "notification": {
+                "loading": "Estamos comprobando tu petición",
+                "error": "Se jodió la marrana intentando darte accesso!",
+                "successNewUser": "Triunfazo! Registrado via 42",
+                "success": "Triunfazo! Logueado via 42"
+            }
+        },
+        "GH": {
+            "title": "GitHub open authentication",
+            "notification": {
+                "loading": "Estamos comprobando tu petición",
+                "error": "Se jodió la marrana intentando darte accesso!",
+                "successNewUser": "Triunfazo! Registrado via GitHub",
+                "success": "Triunfazo! Logueado via GitHub"
+            }
+        }
+    }
+}
