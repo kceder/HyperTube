@@ -19,17 +19,17 @@ export default function AuthPage() {
   const validationSchema = z.object({
     userName: z
       .string()
-      .min(1, { message: t(activeLanguage, 'logInPage.usernameInput.min') })
+      .min(1, { message: t(activeLanguage, 'logInPage.usernameInput.minWarning') })
       .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
         // message: '5-10 upper and lowercase letters, and digits',
         message: t(activeLanguage, 'logInPage.usernameInput.regex')
       }),
     password: z
       .string()
-      .min(5, { message: t(activeLanguage, 'logInPage.passwordInput.min') })
+      .min(5, { message: t(activeLanguage, 'logInPage.passwordInput.minWarning') })
       .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
         // message: 'Upper and lowercase letters, and digits'
-        message: t(activeLanguage, 'logInPage.passwordInput.regex')
+        message: t(activeLanguage, 'logInPage.passwordInput.regexWarning')
       }),
   })
 

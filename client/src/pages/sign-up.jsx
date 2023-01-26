@@ -100,7 +100,7 @@ export default function SignUpPage() {
       profilePic: z
         .any()
         .refine((files) => {
-          console.log('file list', files, files.length)
+          // console.log('file list', files, files.length)
           if (files.length === 0) return true
           else if (files.length && files[0].size <= MAX_FILE_SIZE) return true
           else return false
