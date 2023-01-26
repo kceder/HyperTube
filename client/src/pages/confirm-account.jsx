@@ -11,34 +11,37 @@ import { showNotif } from '../store/notificationsSlice'
 import t from '../i18n/i18n'
 
 export default function ConfirmAccountPage() {
-  const { activeLanguage } = useSelector(slices => slices.language)
+  const { activeLanguage } = useSelector((slices) => slices.language)
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { isLoggedIn } = useSelector(slices => slices.auth)
+  const { isLoggedIn } = useSelector((slices) => slices.auth)
   const [error, setError] = React.useState('')
   const [isLoading, setIsLoading] = React.useState(false)
-  
+
   // Extract the parameters from the confirmation link
   const [searchParams] = useSearchParams()
   const email = searchParams.get('email')
   const token = searchParams.get('token')
   // console.log(email, token) // testing
+  React.useEffect(() => {
+    if (email === null || token === null) navigate('/')
+  }, [email, token])
 
   async function requestConfirmation() {
     setIsLoading(true)
     dispatch(
       showNotif({
         status: 'loading',
-        message: t(activeLanguage, 'confirmAccountPage.notification.loading')
-      })
+        message: t(activeLanguage, 'confirmAccountPage.notification.loading'),
+      }),
     )
     const response = await fetch('/api/users/confirm', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email, token })
+      body: JSON.stringify({ email, token }),
     })
     const data = await response.json()
     if (data.error) {
@@ -48,14 +51,14 @@ export default function ConfirmAccountPage() {
         showNotif({
           status: 'error',
           title: 'error',
-          message: t(activeLanguage, 'confirmAccountPage.notification.error')
+          message: t(activeLanguage, 'confirmAccountPage.notification.error'),
         }),
       )
     } else {
       dispatch(
         showNotif({
           status: 'success',
-          message: t(activeLanguage, 'confirmAccountPage.notification.success')
+          message: t(activeLanguage, 'confirmAccountPage.notification.success'),
         }),
       )
     }
@@ -65,8 +68,7 @@ export default function ConfirmAccountPage() {
 
   React.useEffect(() => {
     if (isLoggedIn) navigate('/', { replace: true })
-
-    requestConfirmation()
+    if (email !== null || token !== null) requestConfirmation()
 
     // redirect after 3 seconds
     const timer = setTimeout(() => {
@@ -80,16 +82,16 @@ export default function ConfirmAccountPage() {
   if (isLoading) {
     // Show the notification too!!
     return (
-      <div className="flex h-[80vh] items-center justify-center">
+      <div className='flex h-[80vh] items-center justify-center'>
         <ArrowPathIcon className='text-white animate-spin w-40 md:w-96' />
       </div>
     )
   }
-  
+
   if (error) {
     // Show the notification!!
     return (
-      <div className="flex h-[80vh] items-center justify-center">
+      <div className='flex h-[80vh] items-center justify-center'>
         <p className='text-white text-2xl'>
           {t(activeLanguage, 'confirmAccountPage.notification.error')}
         </p>

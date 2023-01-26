@@ -17,28 +17,47 @@ import { showNotif } from '../store/notificationsSlice'
 import t from '../i18n/i18n'
 
 export default function ResetPasswordPage() {
-  const { activeLanguage } = useSelector(slices => slices.language)
-
-  const validationSchema = z.object({
-    password: z
-      .string()
-      .min(5, {
-        message: t(activeLanguage, 'resetPasswordPage.passwordInput.regexWarning')
-      })
-      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
-        message: t(activeLanguage, 'resetPasswordPage.passwordInput.regexWarning')
-        // 'Upper and lowercase letters, and digits',
-      }),
-    password_confirmation: z
-      .string()
-      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
-        message: t(activeLanguage, 'resetPasswordPage.confirmPasswordInput.regexWarning')
-      })
-  })
-  .refine((data) => data.password === data.password_confirmation, {
-    path: ['password_confirmation'],
-    message: t(activeLanguage, 'resetPasswordPage.confirmPasswordInput.noMatchWarning')
-  })
+  const { activeLanguage } = useSelector((slices) => slices.language)
+  const navigate = useNavigate()
+  React.useEffect(() => {
+    const userData = window.localStorage.hypertube
+    if (userData === undefined) {
+      navigate('/')
+    }
+  }, [])
+  const validationSchema = z
+    .object({
+      password: z
+        .string()
+        .min(5, {
+          message: t(
+            activeLanguage,
+            'resetPasswordPage.passwordInput.regexWarning',
+          ),
+        })
+        .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
+          message: t(
+            activeLanguage,
+            'resetPasswordPage.passwordInput.regexWarning',
+          ),
+          // 'Upper and lowercase letters, and digits',
+        }),
+      password_confirmation: z
+        .string()
+        .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
+          message: t(
+            activeLanguage,
+            'resetPasswordPage.confirmPasswordInput.regexWarning',
+          ),
+        }),
+    })
+    .refine((data) => data.password === data.password_confirmation, {
+      path: ['password_confirmation'],
+      message: t(
+        activeLanguage,
+        'resetPasswordPage.confirmPasswordInput.noMatchWarning',
+      ),
+    })
 
   const {
     register,
@@ -50,7 +69,6 @@ export default function ResetPasswordPage() {
     resolver: zodResolver(validationSchema),
   })
   const dispatch = useDispatch()
-  const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const email = searchParams.get('email')
   const token = searchParams.get('token')
@@ -60,22 +78,21 @@ export default function ResetPasswordPage() {
     dispatch(
       showNotif({
         status: 'loading',
-        message:
-          t(activeLanguage, 'resetPasswordPage.notification.loading')
+        message: t(activeLanguage, 'resetPasswordPage.notification.loading'),
       }),
     )
 
     const response = await fetch(`/api/reset-password`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        email:                  email,
-        token:                  token,
-        password:               data.password,
-        password_confirmation:  data.password_confirmation
-      })
+        email: email,
+        token: token,
+        password: data.password,
+        password_confirmation: data.password_confirmation,
+      }),
     })
     const parsed = await response.json()
     if (parsed.error) {
@@ -84,8 +101,8 @@ export default function ResetPasswordPage() {
       dispatch(
         showNotif({
           status: 'error',
-          message: t(activeLanguage, 'resetPasswordPage.notification.error')
-        })
+          message: t(activeLanguage, 'resetPasswordPage.notification.error'),
+        }),
       )
 
       // and redirect
@@ -96,8 +113,8 @@ export default function ResetPasswordPage() {
       dispatch(
         showNotif({
           status: 'success',
-          message: t(activeLanguage, 'resetPasswordPage.notification.success')
-        })
+          message: t(activeLanguage, 'resetPasswordPage.notification.success'),
+        }),
       )
 
       // and redirect
@@ -128,7 +145,10 @@ export default function ResetPasswordPage() {
         <Input
           id='password_confirmation'
           type='password'
-          label={t(activeLanguage, 'resetPasswordPage.confirmPasswordInput.label')}
+          label={t(
+            activeLanguage,
+            'resetPasswordPage.confirmPasswordInput.label',
+          )}
           register={register}
           registerOptions={{ required: true }}
           errors={errors}

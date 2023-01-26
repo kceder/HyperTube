@@ -14,6 +14,8 @@ import spinner from '../assets/rose.png'
 import t from '../i18n/i18n'
 
 function MoviePage() {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
   const { isLoggedIn } = useSelector((slices) => slices.auth)
   const { activeLanguage } = useSelector((slices) => slices.language)
   const [isLoading, setIsloading] = React.useState(true)
@@ -21,33 +23,39 @@ function MoviePage() {
   const location = useLocation() // needed to parse the imdb id from React URL
   const [selectedTorrent, setSelectedTorrent] = React.useState(null)
   const [config, setConfig] = React.useState(null)
-  const { torrents } = location.state.movie
-  const torrentOptions = torrents.map((t) => ({
-    value: t.quality,
-    label: t.quality,
-    hash: t.hash,
-  }))
+  let torrentOptions
+  React.useEffect(() => {
+    if (location.state !== null) {
+      const { torrents } = location.state.movie
+      torrentOptions = torrents.map((t) => ({
+        value: t.quality,
+        label: t.quality,
+        hash: t.hash,
+      }))
+    }
+  }, [])
+
   // Protected route: redirect to home page if user's not logged in
   // DISABLE IT DURING DEVELOPMENT!!
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
+
   React.useEffect(() => {
+    if (location.state === null) navigate('/')
     const userData = window.localStorage.hypertube
     if (isLoggedIn) return
     else if (userData !== undefined) {
       const parsedData = JSON.parse(userData)
-      console.log(parsedData)
       dispatch(logIn(parsedData))
     } else navigate('/')
   }, [])
 
-  console.log(location.pathname) // testing
+  // console.log(location.pathname) // testing
   const imdbId = location.pathname.split('/').pop()
   React.useEffect(() => {
     /* Here we select the default quality (smaller better):
     1. Try 720p.
     2. If not found then 1080p.
     3. If not found either, the quality of the first torrent. */
+    if (torrentOptions === undefined) return
     let smallestQuality = torrentOptions.find(
       (torrent) => torrent.value === '720p',
     )
@@ -68,7 +76,7 @@ function MoviePage() {
       const data = await response.json()
     }
     setAsWatched()
-  }, [])
+  }, [torrentOptions])
 
   React.useEffect(() => {
     if (!selectedTorrent) return

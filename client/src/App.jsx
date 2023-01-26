@@ -20,20 +20,19 @@ import PageNotFound from './pages/page-not-found'
 import Notification from './components/notification'
 
 export default function Home() {
-    // Redux
-    const dispatch = useDispatch()
-  const { isLoggedIn } = useSelector(slices => slices.auth)
+  // Redux
+  const dispatch = useDispatch()
+  const { isLoggedIn } = useSelector((slices) => slices.auth)
   React.useEffect(() => {
     const userData = window.localStorage.hypertube
-      if (isLoggedIn)
-      return
-      else if (userData !== undefined) {
-        const parsedData = JSON.parse(userData)
-        console.log(parsedData)
-        dispatch(logIn(parsedData))
+    if (isLoggedIn) return
+    else if (userData !== undefined) {
+      const parsedData = JSON.parse(userData)
+      console.log(parsedData)
+      dispatch(logIn(parsedData))
     }
   }, [])
- 
+
   const { isOn } = useSelector((slices) => slices.notifications)
 
   return (
@@ -87,7 +86,7 @@ export default function Home() {
 
           <Route
             path='reset-password'
-            element={<ResetPasswordPage />}
+            element={<ResetPasswordPage />} //this
           />
 
           <Route
