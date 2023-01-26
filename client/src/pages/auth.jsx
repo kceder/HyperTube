@@ -90,7 +90,7 @@ export default function AuthPage() {
         } else {
           setValue('userName', '')
           setValue('password', '')
-          console.log(parsed.message)
+          // console.log(parsed.message) // testing
           // Show notification
           dispatch(
             showNotif({
@@ -109,7 +109,7 @@ export default function AuthPage() {
         // And redirect the user to the main page
         navigate('/', { replace: true })
       } else {
-        console.log(parsed.error) // testing
+        // console.log(parsed.error) // testing
 
         // Show notification
         dispatch(
@@ -175,10 +175,10 @@ export default function AuthPage() {
       </form>
 
       <div className='flex flex-col space-y-6 md:flex-row md:items-center md:justify-between md:space-y-0 md:w-full mx-auto pt-8 text-center'>
-        <Link to='/sign-up' className='hover:scale-110 hover:cursor-pointer hover:underline hover:underline-offset-4 md:self-start'>Create Account?</Link>
+        <Link to='/sign-up' className='hover:scale-110 hover:cursor-pointer hover:underline hover:underline-offset-4 md:self-start'>{t(activeLanguage, 'logInPage.createAccount')}</Link>
         <div className='flex flex-col space-y-6 md:text-right'>
-          <Link to='/forgot-password' className='hover:scale-110 hover:cursor-pointer hover:underline hover:underline-offset-4'>Forgot your Password?</Link>
-          <Link to='/request-confirmation' className='hover:scale-110 hover:cursor-pointer hover:underline hover:underline-offset-4'>Need Confirmation Email?</Link>
+          <Link to='/forgot-password' className='hover:scale-110 hover:cursor-pointer hover:underline hover:underline-offset-4'>{t(activeLanguage, 'logInPage.forgotPassword')}</Link>
+          <Link to='/request-confirmation' className='hover:scale-110 hover:cursor-pointer hover:underline hover:underline-offset-4'>{t(activeLanguage, 'logInPage.confirmationEmail')}</Link>
         </div>
       </div>
 

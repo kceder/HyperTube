@@ -55,7 +55,7 @@
             "fillForm": "Please, fill the form",
             "submitForm": "Submit"
         },
-        "createAccount": "Create Account",
+        "createAccount": "Create Account?",
         "forgotPassword": "Forgot Your Password?",
         "confirmationEmail": "Need Confirmation Email?",
         "or": "or",
