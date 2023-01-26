@@ -14,7 +14,7 @@ function MovieMiniCard(props) {
   } = props.movie
   return (
   <div className='relative group bg-[#2e3747] text-white rounded duration-500 hover:scale-110 hover:z-40 overflow-hidden'>
-    <h1>{props.movie.watched && <EyeIcon className='absolute w-[2rem] text-[#5c7397] right-1'/>}</h1>
+    <h1>{props.movie.watched && <EyeIcon className='absolute w-[2rem] text-[#5c7397] right-1 group-hover:animate-pulse'/>}</h1>
 	<img
       src={coverUrl}
       alt={title}
