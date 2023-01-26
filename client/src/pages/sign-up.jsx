@@ -123,7 +123,7 @@ export default function SignUpPage() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
     setValue,
     watch,
     clearErrors,
