@@ -24,15 +24,17 @@ const ACCEPTED_IMAGE_TYPES = [
 ]
 
 export default function SignUpPage() {
-  const { activeLanguage } = useSelector(slices => slices.language)
-  
+  const { activeLanguage } = useSelector((slices) => slices.language)
+
   const validationSchema = z
     .object({
       userName: z
         .string()
-        .min(1, { message: t(activeLanguage, 'signUpPage.userNameInput.minWarning') })
+        .min(1, {
+          message: t(activeLanguage, 'signUpPage.userNameInput.minWarning'),
+        })
         .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
-          message: t(activeLanguage, 'signUpPage.userNameInput.regexWarning')
+          message: t(activeLanguage, 'signUpPage.userNameInput.regexWarning'),
         })
         .refine(
           async (userName) => {
@@ -42,70 +44,89 @@ export default function SignUpPage() {
             // console.log('usernameExists? '+ usernameExists)
             return !usernameExists
           },
-          { message: t(activeLanguage, 'signUpPage.userNameInput.alreadyExists') }
+          {
+            message: t(
+              activeLanguage,
+              'signUpPage.userNameInput.alreadyExists',
+            ),
+          },
         ),
       firstName: z
         .string()
-        .min(1, { message: t(activeLanguage, 'signUpPage.firstNameInput.minWarning') })
-        .max(30, { message: t(activeLanguage, 'signUpPage.firstNameInput.maxWarning') })
-        .regex(/^[A-Za-z\ ]*$/, { message: t(activeLanguage, 'signUpPage.firstNameInput.regexWarning') }),
+        .min(1, {
+          message: t(activeLanguage, 'signUpPage.firstNameInput.minWarning'),
+        })
+        .max(30, {
+          message: t(activeLanguage, 'signUpPage.firstNameInput.maxWarning'),
+        })
+        .regex(/^[A-Za-z\ ]*$/, {
+          message: t(activeLanguage, 'signUpPage.firstNameInput.regexWarning'),
+        }),
       lastName: z
         .string()
-        .min(1, { message: t(activeLanguage, 'signUpPage.lastNameInput.minWarning') })
-        .max(30, { message: t(activeLanguage, 'signUpPage.lastNameInput.maxWarning') })
-        .regex(/^[A-Za-z\ ]*$/, { message: t(activeLanguage, 'signUpPage.lastNameInput.regexWarning') }),
+        .min(1, {
+          message: t(activeLanguage, 'signUpPage.lastNameInput.minWarning'),
+        })
+        .max(30, {
+          message: t(activeLanguage, 'signUpPage.lastNameInput.maxWarning'),
+        })
+        .regex(/^[A-Za-z\ ]*$/, {
+          message: t(activeLanguage, 'signUpPage.lastNameInput.regexWarning'),
+        }),
       email: z
         .string()
-        .min(1, { message: t(activeLanguage, 'signUpPage.emailInput.minWarning') })
-        .email({ message: t(activeLanguage, 'signUpPage.emailInput.validEmailWarning') }),
+        .min(1, {
+          message: t(activeLanguage, 'signUpPage.emailInput.minWarning'),
+        })
+        .email({
+          message: t(activeLanguage, 'signUpPage.emailInput.validEmailWarning'),
+        }),
       password: z
         .string()
-        .min(5, { message: t(activeLanguage, 'signUpPage.passwordInput.minWarning') })
+        .min(5, {
+          message: t(activeLanguage, 'signUpPage.passwordInput.minWarning'),
+        })
         .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
-          message: t(activeLanguage, 'signUpPage.passwordInput.regexWarning')
+          message: t(activeLanguage, 'signUpPage.passwordInput.regexWarning'),
         }),
       confirmPassword: z
         .string()
         .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
-          message: t(activeLanguage, 'signUpPage.confirmPasswordInput.regexWarning')
+          message: t(
+            activeLanguage,
+            'signUpPage.confirmPasswordInput.regexWarning',
+          ),
         }),
       profilePic: z
         .any()
-        .refine(
-          (files) => {
-            console.log('file list',files, files.length)
-            if (files.length === 0)
-              return true
-            else if (files.length && files[0].size <= MAX_FILE_SIZE)
-              return true
-            else
-              return false
-          },
-          t(activeLanguage, 'signUpPage.pictureInput.maxSizeWarning')
-        )
-        .refine(
-          (files) => {
-            if (files.length === 0)
-              return true
-            else if (files.length && ACCEPTED_IMAGE_TYPES.includes(files[0].type))
-              return true
-            else
-              return false
-          },
-          t(activeLanguage, 'signUpPage.pictureInput.filetypeWarning')
-        )
+        .refine((files) => {
+          console.log('file list', files, files.length)
+          if (files.length === 0) return true
+          else if (files.length && files[0].size <= MAX_FILE_SIZE) return true
+          else return false
+        }, t(activeLanguage, 'signUpPage.pictureInput.maxSizeWarning'))
+        .refine((files) => {
+          if (files.length === 0) return true
+          else if (files.length && ACCEPTED_IMAGE_TYPES.includes(files[0].type))
+            return true
+          else return false
+        }, t(activeLanguage, 'signUpPage.pictureInput.filetypeWarning')),
     })
     .refine((data) => data.password === data.confirmPassword, {
       path: ['confirmPassword'],
-      message: t(activeLanguage, 'signUpPage.confirmPasswordInput.matchWarning')
+      message: t(
+        activeLanguage,
+        'signUpPage.confirmPasswordInput.matchWarning',
+      ),
     })
 
   const {
     register,
     handleSubmit,
+    formState: { errors },
+    setValue,
     watch,
-    formState: { errors, isValid },
-    setValue
+    clearErrors,
   } = useForm({
     mode: 'all',
     resolver: zodResolver(validationSchema),
@@ -117,8 +138,8 @@ export default function SignUpPage() {
     dispatch(
       showNotif({
         status: 'loading',
-        message: t(activeLanguage, 'signUpPage.notification.loading')
-      })
+        message: t(activeLanguage, 'signUpPage.notification.loading'),
+      }),
     )
     // console.log(data)
     const formData = new FormData()
@@ -135,10 +156,10 @@ export default function SignUpPage() {
       formData.append('profilePic', data.profilePic[0])
       // console.log('submitting',data.profilePic[0]) // testing
     }
-    
+
     const response = await fetch('/api/users', {
       method: 'POST',
-      body: formData
+      body: formData,
     })
     const parsed = await response.json()
     if (parsed.error) {
@@ -146,16 +167,16 @@ export default function SignUpPage() {
       dispatch(
         showNotif({
           status: 'error',
-          message: t(activeLanguage, 'signUpPage.notification.error')
-        })
+          message: t(activeLanguage, 'signUpPage.notification.error'),
+        }),
       )
     } else {
       // console.log(`sign-up OK: ${JSON.stringify(parsed.message)}`) // testing!!!
       dispatch(
         showNotif({
           status: 'success',
-          message: t(activeLanguage, 'signUpPage.notification.success')
-        })
+          message: t(activeLanguage, 'signUpPage.notification.success'),
+        }),
       )
       // and redirect
       navigate('/', { replace: true })
@@ -167,7 +188,7 @@ export default function SignUpPage() {
   return (
     <div className='text-white max-w-4xl mx-auto pt-10 pb-20 px-2'>
       <h1 className='text-2xl text-center pb-8'>
-      {t(activeLanguage, 'signUpPage.title')}
+        {t(activeLanguage, 'signUpPage.title')}
       </h1>
 
       <form
@@ -181,7 +202,7 @@ export default function SignUpPage() {
           register={register}
           registerOptions={{ required: true }}
           errors={errors}
-          isRequired={true}  // for showing the asterisk
+          isRequired={true} // for showing the asterisk
         />
 
         <Input
@@ -237,9 +258,15 @@ export default function SignUpPage() {
         <InputFile
           label={t(activeLanguage, 'signUpPage.pictureInput.label')}
           inputId='profilePic'
-          noFilePlaceholder={t(activeLanguage, 'signUpPage.pictureInput.noFilePlaceholder')}
+          noFilePlaceholder={t(
+            activeLanguage,
+            'signUpPage.pictureInput.noFilePlaceholder',
+          )}
           btnLabel={t(activeLanguage, 'signUpPage.pictureInput.btnLabel')}
-          clearPicLabel={t(activeLanguage, 'signUpPage.pictureInput.clearPicLabel')}
+          clearPicLabel={t(
+            activeLanguage,
+            'signUpPage.pictureInput.clearPicLabel',
+          )}
           register={register}
           registerOptions={{ required: false }}
           errors={errors}
@@ -252,10 +279,9 @@ export default function SignUpPage() {
           disabled={!isValid}
           className={`p-3 border-[1px] border-slate-500 rounded-md hover:enabled:bg-white hover:enabled:bg-opacity-20 disabled:cursor-not-allowed w-full`}
         >
-          {isValid ?
-          t(activeLanguage, 'signUpPage.submitBtn.submitForm')
-          :
-          t(activeLanguage, 'signUpPage.submitBtn.fillForm')}
+          {isValid
+            ? t(activeLanguage, 'signUpPage.submitBtn.submitForm')
+            : t(activeLanguage, 'signUpPage.submitBtn.fillForm')}
         </button>
       </form>
     </div>
