@@ -19,6 +19,8 @@ Once our application has been registered in the **42 API**, we'll need to get tw
 
 > Important to notice that the **client secret** has an expiration date of **1 month** after its creation, so we must remember to get a new one if the evaluation exceeds that date.
 
+If your **client secret** expires, you gotta visit your [42 applications page](https://profile.intra.42.fr/oauth/applications), and **Generate new** secret to replace the expired one.
+
 ## Redirect users to request 42 access
 After we copied the credentials to our ``.env`` files, we're given a URL that we should use as the starting point of the authentication process; meaning the link with the **42 icon** that the user clicks to initiate the OAuth web flow. This link has several parts:
 
