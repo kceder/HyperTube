@@ -22,7 +22,12 @@ import subtitlesRouter from './src/routes/subtitles.js'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 
-// import path from 'path'
+// Hack to have __dirname available in an ES module 😱
+import path from 'path'
+import { fileURLToPath } from 'url'
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
 const app = express()
 
 // Serve the React bundled app
@@ -61,6 +66,11 @@ app.use('/api', commentsRouter)
 
 // Route for comments (get list of them, and create new ones)
 app.use('/api', subtitlesRouter)
+
+// To be able to paste a link in the browser's search bar
+app.get('/*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+})
 
 //Listen port
 const PORT = 3000
