@@ -44,7 +44,36 @@ docker volume rm hyper-express_pg-express-data
 Now, when you restart the `postgres` container, it won't find the database, and it'll run the aforementioned script, in order to recreate the schema.
 
 ### Building
-Between evaluations, we gotta:
+To build the application we must:
+```
+make build
+```
+
+And then:
+```
+make prod
+```
+
+> If all's good, commit, push, submit the project.
+
+### How to proceed during evaluation
+For the first evaluation, once we've cloned the project (the build was also pushed) we have to run:
+
+```
+make prod
+```
+
+That should start the production server at `http://localhost`
+
+> Before building the images, make sure there's no **movies** folder in the front-end build!
+
+### How to proceed in between evaluations
+After the first evaluation, and between all further evaluations, we gotta:
+
+* Remove the movies (In Linux you may have to do it from within the running container):
+```
+rm -rf public/movies
+```
 
 * Stop the containers:
 
