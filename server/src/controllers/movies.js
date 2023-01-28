@@ -13,8 +13,8 @@ async function getListMovies(req, res) {
     order_by
   } = req.query
 
-//   const uid = req.uid
-  const uid = 1
+  const uid = req.uid // wired up authentication
+  // const uid = 1    // testing
 
   try {
     const ytsBaseUrl = 'https://yts.mx/api/v2/list_movies.json'
@@ -54,7 +54,7 @@ async function getListMovies(req, res) {
       // console.log('added query_term', query_term, typeof query_term)
       url += `&query_term=${query_term.replace(/\s/g, '+')}`
     }
-    console.log(url) // testing
+    // console.log(url) // testing
     const response = await fetch(url)
     const { data } = await response.json()
     

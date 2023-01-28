@@ -25,6 +25,8 @@ function MovieList(props) {
   const [queryTerm, setQueryTerm] = React.useState(null)
   const [sortBy, setSortBy] = React.useState(null)
   const [orderBy, setOrderBy] = React.useState(null)
+  const { accessToken } = useSelector(slices => slices.auth)
+
 
   /* 'hasMore' will be set to 'true' during the first request (assuming
     there are movies) and to 'false' when the request returns no movies. */
@@ -41,9 +43,13 @@ function MovieList(props) {
         query_term:     queryTerm,
         sort_by:        sortBy?.value ?? null,
         order_by:       orderBy?.value ?? null
-      }))
+      }),{
+        headers: {
+          'Content-Type' : 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        }
+      })
       const data = await response.json()
-	  console.log('46', data)
   
       if (data.error === 'no movies found') {
         setError(t(activeLanguage, 'movieListPage.noMoviesFound')) // ADD TRANSLATION HERE
