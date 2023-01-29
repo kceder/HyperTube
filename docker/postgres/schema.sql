@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS users_movies (
 );
 
 -- Hashed password is Asdf1
-INSERT INTO users VALUES (1, 'Bobby1', 'Robert', 'Doe', 'test@test.com', '$2a$12$bzfTNVzNkqMH94ubFhDPL.OfPQcj5Xi2/5H2tPemG0fByaUGlZDlu');
+INSERT INTO users VALUES (1, 'Bobby1', 'Robert', 'Doe', 'test@test.com', '$2a$12$bzfTNVzNkqMH94ubFhDPL.OfPQcj5Xi2/5H2tPemG0fByaUGlZDlu', true);
 
 -- We need to manually set the id column after inserting the three users
 SELECT setval(pg_get_serial_sequence('users', 'id'), MAX(id)) FROM users;
