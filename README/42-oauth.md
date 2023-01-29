@@ -3,6 +3,11 @@ Regarding the **42 strategy**, it also works the same way as the one for **GitHu
 
 > The [getting started guide](https://api.intra.42.fr/apidoc/guides/getting_started) it's pretty darn good.
 
+⚠ During development, the front-end is served at **port 5173**, during production at **port 80**, so we have to remember to change the **redirect URI** which is required for **42 OAuth** (not for GitHub OAuth tho). Instead, of having to remember to change the value of the variable in the `.env` file, we have two options:
+
+1. We could add an [.env.production](https://vitejs.dev/guide/env-and-mode.html) file, that will take precedence when we're in [production mode](https://vitejs.dev/guide/env-and-mode.html#modes) (automatically when running `npm run build`)
+2. We could take advantage of the fact that during [production mode](https://vitejs.dev/guide/env-and-mode.html#modes), the `PROD` environment variable is set to `true`; that's the approach we took.
+
 ## Create a New Application
 First step is to register our application to use the **42 API**. We'll need to set up a few parameters:
 

@@ -179,11 +179,12 @@ async function oauth42(req, res) {
   // URL for requesting an access token from 42 (don't forget the question mark!)
   const urlAccessToken = 'https://api.intra.42.fr/oauth/token?'
   
-  const redirectUri = process.env.PRODUCTION === 1 ?
+  const redirectUri = +process.env.PRODUCTION === 1 ?
   'http://localhost/oauth/42'
   :
   'http://localhost:5173/oauth/42'
-  console.log('PRODUCTION?', process.env.PRODUCTION) // testing
+  // console.log('PRODUCTION?', process.env.PRODUCTION) // testing
+  // console.log('redirectUri?', redirectUri) // testing
 
   // Necessary parameters for requesting the token
   const queryParams = new URLSearchParams({
@@ -191,9 +192,7 @@ async function oauth42(req, res) {
     client_id:      process.env.FORTY_TWO_CLIENT_ID,
     client_secret:  process.env.FORTY_TWO_CLIENT_SECRET,
     code:           code,
-    // redirect_uri:   'http://localhost:5173/oauth/42' // development
-    // redirect_uri:   'http://localhost/oauth/42'       // production
-    redirect_uri:   redirectUri                     // dynamically
+    redirect_uri:   redirectUri   // Set dynamically, depending on env. var.
   })
 
   // Make request to get the 42 access token (needed to get user data)
@@ -203,17 +202,17 @@ async function oauth42(req, res) {
   })
   
   const dataWithToken = await response.json()
-  // console.log(dataWithToken) // testing
+  // console.log('42 token:',dataWithToken) // testing
   // If there's an error we bail!
   if (dataWithToken.error) {
-    console.log(dataWithToken.error) // testing
+    console.log('Error getting data token:', dataWithToken.error) // testing
     return res.status(401).json({
       error: dataWithToken.error
     })
   }
   // Now that we have the token, let's pull out data from the 42 API!
   const fortyTwoAccessToken = dataWithToken.access_token
-  console.log(`Response: ${fortyTwoAccessToken}`) // testing
+  // console.log(`Response: ${fortyTwoAccessToken}`) // testing
   
   // URL for getting information from user's 42 account
   const urlUser = 'https://api.intra.42.fr/v2/me'
