@@ -19,6 +19,10 @@ prod-stop:
 	docker compose -f compose.yml -f compose-prod.yml down
 
 .PHONY:
+prod-restart:
+	docker compose -f compose.yml -f compose-prod.yml restart
+
+.PHONY:
 prod-clean:
 	docker compose -f compose.yml -f compose-prod.yml up --build --force-recreate
 
