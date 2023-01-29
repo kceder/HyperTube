@@ -65,13 +65,21 @@ async function oauthGitHub(req, res) {
 
   // URL for requesting an access token from GitHub
   const urlAccessToken = 'https://github.com/login/oauth/access_token?'
-  
+  const redirectUri = process.env.PRODUCTION === 1 ?
+  'http://localhost/oauth/github'
+  :
+  'http://localhost:5173/oauth/github'
+
+  console.log('PRODUCTION?', process.env.PRODUCTION) // testing
+
   // Necessary parameteres for requesting the token
   const queryParams = new URLSearchParams({
     client_id:      process.env.GITHUB_CLIENT_ID,
     client_secret:  process.env.GITHUB_CLIENT_SECRET,
     code:           code,
-    redirect_uri:   'http://localhost:5173/oauth/github'
+    // redirect_uri:   'http://localhost:5173/oauth/github' // development
+    // redirect_uri:   'http://localhost/oauth/github'         // production
+    redirect_uri:   redirectUri                         // dynamic
   })
   // Make request to get the GitHub access token (needed to get user data)
   const response = await fetch(urlAccessToken + queryParams, {
@@ -161,7 +169,7 @@ async function oauthGitHub(req, res) {
 async function oauth42(req, res) {
   // Parse the code (after pressing the 42 authorize button)
   const code = req.body.code
-  // console.log(`code: ${code}`) // testing
+  console.log(`code: ${code}`) // testing
   if (!code) {
     return res.status(401).json({
       error: 'bad request: no code was supplied'
@@ -171,13 +179,21 @@ async function oauth42(req, res) {
   // URL for requesting an access token from 42 (don't forget the question mark!)
   const urlAccessToken = 'https://api.intra.42.fr/oauth/token?'
   
+  const redirectUri = process.env.PRODUCTION === 1 ?
+  'http://localhost/oauth/42'
+  :
+  'http://localhost:5173/oauth/42'
+  console.log('PRODUCTION?', process.env.PRODUCTION) // testing
+
   // Necessary parameters for requesting the token
   const queryParams = new URLSearchParams({
     grant_type:     'authorization_code',
     client_id:      process.env.FORTY_TWO_CLIENT_ID,
     client_secret:  process.env.FORTY_TWO_CLIENT_SECRET,
     code:           code,
-    redirect_uri:   'http://localhost:5173/oauth/42'
+    // redirect_uri:   'http://localhost:5173/oauth/42' // development
+    // redirect_uri:   'http://localhost/oauth/42'       // production
+    redirect_uri:   redirectUri                     // dynamically
   })
 
   // Make request to get the 42 access token (needed to get user data)
