@@ -105,7 +105,7 @@
         },
         "pictureInput": {
             "label": "Profiilikuva",
-            "btnLabel": "Valitse kuva",
+            "btnLabel": "Valitse",
             "clearPicLabel": "Poista kuva",
             "noFilePlaceholder": "Ei tiedostoa valittuna",
             "maxSizeWarning": "Enintään 5MB",
@@ -149,7 +149,7 @@
         },
         "pictureInput": {
             "label": "Profiilikuva",
-            "btnLabel": "Valitse kuva",
+            "btnLabel": "Valitse",
             "clearPicLabel": "Poista kuva",
             "noFilePlaceholder": "Ei tiedostoa valittuna",
             "maxSizeWarning": "Enintään 5MB",

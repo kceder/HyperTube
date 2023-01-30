@@ -186,7 +186,7 @@ export default function SignUpPage() {
   // console.log(watch('profilePic')) // we can watch input content on 'change' events
   // console.log(errors) // testing
   return (
-    <div className='text-white max-w-4xl mx-auto pt-10 pb-20 px-2'>
+    <div className='text-white max-w-[17rem] md:max-w-4xl mx-auto pt-10 pb-20 px-2'>
       <h1 className='text-2xl text-center pb-8'>
         {t(activeLanguage, 'signUpPage.title')}
       </h1>
