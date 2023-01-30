@@ -47,7 +47,7 @@ async function saveMovie(movie) {
 
   const result = await pool.query(query, values)
 
-  // console.log('Downloads model - created movie',result.rows[0]) // testing
+  console.log('Downloads model - created movie',result.rows[0]) // testing
   const savedMovie = result.rows[0]
   return savedMovie ?? null 
 }
