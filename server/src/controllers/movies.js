@@ -4,14 +4,8 @@ import { checkIfWatched, markAsWatched } from '../models/watchedHistory.js'
 
 async function getListMovies(req, res) {
   // Destructure the query
-  const {
-    page,
-    minimum_rating,
-    genre,
-    query_term,
-    sort_by,
-    order_by
-  } = req.query
+  const { page, minimum_rating, genre, query_term, sort_by, order_by } =
+    req.query
 
   const uid = req.uid // wired up authentication
   // const uid = 1    // testing
@@ -24,7 +18,7 @@ async function getListMovies(req, res) {
     if (+page > 1) {
       // console.log('requested page', page)
       url += `?page=${+page}`
-    } else{
+    } else {
       // console.log('requested page', page)
       url += '?page=1'
     }
@@ -57,31 +51,29 @@ async function getListMovies(req, res) {
     // console.log(url) // testing
     const response = await fetch(url)
     const { data } = await response.json()
-    
+
     // console.log(data.movies.map(m => m.title)) //  testing
     if (data.movie_count > 0 && data?.movies?.length > 0) {
       const movies = []
       for (const m of data.movies) {
-        movies.push(
-            {
-                // consider extracting more info here
-                title:      m.title,
-                imdbId:     m.imdb_code,
-                year:       m.year,
-                imdbRating: m.rating,
-                coverUrl:   m.large_cover_image,
-                synopsis:   m.synopsis,
-                genres:     m.genres,
-                torrents:   m.torrents,
-                watched:    await checkIfWatched({ uid : uid, imdbId : m.imdb_code })
-            }
-        )
+        movies.push({
+          // consider extracting more info here
+          title: m.title,
+          imdbId: m.imdb_code,
+          year: m.year,
+          imdbRating: m.rating,
+          coverUrl: m.large_cover_image,
+          synopsis: m.synopsis,
+          genres: m.genres,
+          torrents: m.torrents,
+          watched: await checkIfWatched({ uid: uid, imdbId: m.imdb_code }),
+        })
       }
       return res.status(200).json({ movies })
     } else {
       return res.status(200).json({
         params: req.query,
-        error: 'no movies found'
+        error: 'no movies found',
       })
     }
   } catch (error) {
@@ -90,56 +82,60 @@ async function getListMovies(req, res) {
 }
 
 async function getMovie(req, res) {
-    // Destructure the query
-    const { language, hash, quality } = req.query  // The language of the UI (needed for subtitles)
-    const { id } = req.params       // The imdb id of the movie (needed for querying the yts API)
+  // Destructure the query
+  const { language, hash, quality } = req.query // The language of the UI (needed for subtitles)
+  const { id } = req.params // The imdb id of the movie (needed for querying the yts API)
 
-    const ytsBaseUrl = 'https://yts.mx/api/v2/movie_details.json'
+  const ytsBaseUrl = 'https://yts.mx/api/v2/movie_details.json'
 
-    console.log('Client sent - Language:', language, `(Imdb-id${id})`) // testing
+  console.log('Client sent - Language:', language, `(Imdb-id${id})`) // testing
 
-    try {
-      // 1st of all, we request the movie with lots of extra information
-      const response = await fetch(ytsBaseUrl + '?' + new URLSearchParams({
-        imdb_id: id,
-        with_images: true,
-        with_cast: true
-      }))
+  try {
+    // 1st of all, we request the movie with lots of extra information
+    const response = await fetch(
+      ytsBaseUrl +
+        '?' +
+        new URLSearchParams({
+          imdb_id: id,
+          with_images: true,
+          with_cast: true,
+        }),
+    )
 
-      const { data } = await response.json() // Destructure the data property
-      // console.log(data.movie) // testing
+    const { data } = await response.json() // Destructure the data property
+    // console.log(data.movie) // testing
 
-      // Here we check our DB for the existence of the video file (and if it's completed)
-      // 1. If it exists, we start streaming it.
+    // Here we check our DB for the existence of the video file (and if it's completed)
+    // 1. If it exists, we start streaming it.
 
-      // 2. If it doesn't, we download it using the BitTorrent protocol (and also streaming it from there).
-      // downloadTorrent({
-      //   title: data.movie.title,
-      //   imdb_code: data.movie.imdb_code,
-      //   hash,
-      //   quality
-      // })
+    // 2. If it doesn't, we download it using the BitTorrent protocol (and also streaming it from there).
+    // downloadTorrent({
+    //   title: data.movie.title,
+    //   imdb_code: data.movie.imdb_code,
+    //   hash,
+    //   quality
+    // })
 
-      return res.status(200).json(data.movie)
-    } catch (error) {
-      return res.status(200).json({
-        error: error
-      })
-    }
+    return res.status(200).json(data.movie)
+  } catch (error) {
+    return res.status(200).json({
+      error: error,
+    })
+  }
 }
 
 async function watchMovie(req, res) {
-    try {
-        const { id } = req.params
-        // const uid = req.uid
-        const uid = 1
-        await markAsWatched({uid : uid, imdbId : id})
-        res.status(200)
-    } catch (error) {
-        res.status(200).json({
-            error : error
-        })
-    }
+  try {
+    const { id } = req.params
+
+    const uid = req.uid
+    await markAsWatched({ uid: uid, imdbId: id })
+    res.status(200)
+  } catch (error) {
+    res.status(200).json({
+      error: error,
+    })
+  }
 }
 
 export { getListMovies, getMovie, watchMovie }
