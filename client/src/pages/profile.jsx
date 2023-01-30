@@ -12,7 +12,7 @@ import InputFile from '../components/input-file'
 
 // redux
 import { useDispatch, useSelector } from 'react-redux'
-import { setProfilePic, logOut } from '../store/authSlice'
+import { setProfilePic, logOut, logIn } from '../store/authSlice'
 import { showNotif } from '../store/notificationsSlice'
 
 // homemade i18n
@@ -27,65 +27,92 @@ const ACCEPTED_IMAGE_TYPES = [
 ]
 
 export default function ProfilePage() {
-  const { activeLanguage } = useSelector(slices => slices.language)
+  const { activeLanguage } = useSelector((slices) => slices.language)
 
-  const { accessToken, uid, isLoggedIn } = useSelector(slices => slices.auth)
-  const validationSchema = z
-  .object({
+  let { accessToken, uid, isLoggedIn } = useSelector((slices) => slices.auth)
+
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  React.useEffect(() => {
+    const userData = window.localStorage.hypertube
+    if (isLoggedIn) return
+    else if (userData !== undefined) {
+      const parsedData = JSON.parse(userData)
+      dispatch(logIn(parsedData))
+      accessToken = parsedData.accessToken
+    } else navigate('/')
+  }, [])
+
+  const validationSchema = z.object({
     userName: z
       .string()
-      .min(1, { message: t(activeLanguage, 'profilePage.userNameInput.minWarning') })
+      .min(1, {
+        message: t(activeLanguage, 'profilePage.userNameInput.minWarning'),
+      })
       .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
-        message: t(activeLanguage, 'profilePage.userNameInput.regexWarning')
+        message: t(activeLanguage, 'profilePage.userNameInput.regexWarning'),
       })
       .refine(
         async (userName) => {
           const resp = await fetch(`/api/usernames`, {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ username: userName, uid: uid })
+            body: JSON.stringify({ username: userName, uid: uid }),
           })
           const data = await resp.json()
           const usernameExists = data.message
           // console.log('usernameExists? '+ usernameExists)
           return !usernameExists
         },
-        { message: t(activeLanguage, 'profilePage.userNameInput.alreadyExists') }
+        {
+          message: t(activeLanguage, 'profilePage.userNameInput.alreadyExists'),
+        },
       ),
     firstName: z
       .string()
-      .min(1, { message: t(activeLanguage, 'profilePage.firstNameInput.minWarning') })
-      .max(30, { message: t(activeLanguage, 'profilePage.firstNameInput.maxWarning') })
-      .regex(/^(?=.*[^\W_])[\w ]*$/, { message:  t(activeLanguage, 'profilePage.firstNameInput.regexWarning') }),
+      .min(1, {
+        message: t(activeLanguage, 'profilePage.firstNameInput.minWarning'),
+      })
+      .max(30, {
+        message: t(activeLanguage, 'profilePage.firstNameInput.maxWarning'),
+      })
+      .regex(/^(?=.*[^\W_])[\w ]*$/, {
+        message: t(activeLanguage, 'profilePage.firstNameInput.regexWarning'),
+      }),
     lastName: z
       .string()
-      .min(1, { message:  t(activeLanguage, 'profilePage.lastNameInput.minWarning') })
-      .max(30, { message:  t(activeLanguage, 'profilePage.lastNameInput.maxWarning') })
+      .min(1, {
+        message: t(activeLanguage, 'profilePage.lastNameInput.minWarning'),
+      })
+      .max(30, {
+        message: t(activeLanguage, 'profilePage.lastNameInput.maxWarning'),
+      })
       .regex(/^(?=.*[^\W_])[\w ]*$/, {
-        message: t(activeLanguage, 'profilePage.lastNameInput.regexWarning')
+        message: t(activeLanguage, 'profilePage.lastNameInput.regexWarning'),
       }),
     email: z
       .string()
-      .min(1, { message:  t(activeLanguage, 'profilePage.emailInput.minWarning') })
-      .email({ message:  t(activeLanguage, 'profilePage.emailInput.validEmailWarning') }),
+      .min(1, {
+        message: t(activeLanguage, 'profilePage.emailInput.minWarning'),
+      })
+      .email({
+        message: t(activeLanguage, 'profilePage.emailInput.validEmailWarning'),
+      }),
     profilePic: z
       .any()
-      .refine(
-        (files) => {
-          // console.log('refine', files)
-          return files?.length === 0 || files?.[0]?.size <= MAX_FILE_SIZE
-        },
-        t(activeLanguage, 'profilePage.pictureInput.maxSizeWarning')
-      )
-      .refine(
-        (files) => {
-          // console.log('refine', files)
-          return files?.length === 0 || ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type)
-        },
-        t(activeLanguage, 'profilePage.pictureInput.filetypeWarning')
-      ),
+      .refine((files) => {
+        // console.log('refine', files)
+        return files?.length === 0 || files?.[0]?.size <= MAX_FILE_SIZE
+      }, t(activeLanguage, 'profilePage.pictureInput.maxSizeWarning'))
+      .refine((files) => {
+        // console.log('refine', files)
+        return (
+          files?.length === 0 || ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type)
+        )
+      }, t(activeLanguage, 'profilePage.pictureInput.filetypeWarning')),
   })
 
   const {
@@ -94,49 +121,47 @@ export default function ProfilePage() {
     formState: { errors },
     setValue,
     watch,
-    clearErrors
+    clearErrors,
   } = useForm({
     mode: 'all',
     resolver: zodResolver(validationSchema),
   })
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
 
   // console.log(watch('userName')) // testing
   // console.log(watch('profilePic')) // testing
   React.useEffect(() => {
-    if (!isLoggedIn) navigate('/', { replace: true })
-
+    if (!isLoggedIn) return
     async function getProfile() {
+      console.log('testing __ uid: ' + uid, 'accessToken: ' + accessToken)
       const response = await fetch(`/api/users/${uid}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`,
-        }
+          Authorization: `Bearer ${accessToken}`,
+        },
       })
       // console.log(response) // testing
       const data = await response.json()
       if (response.ok) {
         // console.log(data.user) // testing
-        setValue('userName',  data.user.username)
+        setValue('userName', data.user.username)
         setValue('firstName', data.user.firstname)
-        setValue('lastName',  data.user.lastname)
-        setValue('email',     data.user.email)
+        setValue('lastName', data.user.lastname)
+        setValue('email', data.user.email)
       } else {
         console.log(data) // testing
       }
     }
     getProfile()
-  }, [])
+  }, [accessToken, uid, isLoggedIn])
 
   async function submitHandler(data) {
     // console.log(data) // testing
     dispatch(
       showNotif({
         status: 'loading',
-        message: t(activeLanguage, 'profilePage.notification.loading')
-      })
+        message: t(activeLanguage, 'profilePage.notification.loading'),
+      }),
     )
 
     const formData = new FormData()
@@ -152,13 +177,13 @@ export default function ProfilePage() {
       // console.log('form - profilePic[0] =', data.profilePic[0]) // testing
       formData.append('profilePic', data.profilePic[0])
     }
-    
+
     const response = await fetch(`/api/users/${uid}`, {
       method: 'PUT',
       headers: {
-        'Authorization': `Bearer ${accessToken}`,
+        Authorization: `Bearer ${accessToken}`,
       },
-      body: formData
+      body: formData,
     })
     const parsed = await response.json()
     if (parsed.error) {
@@ -166,8 +191,8 @@ export default function ProfilePage() {
       dispatch(
         showNotif({
           status: 'error',
-          message: t(activeLanguage, 'profilePage.notification.error')
-        })
+          message: t(activeLanguage, 'profilePage.notification.error'),
+        }),
       )
     } else {
       // logout the user if the email was changed
@@ -175,8 +200,11 @@ export default function ProfilePage() {
         dispatch(
           showNotif({
             status: 'success',
-            message: t(activeLanguage, 'profilePage.notification.successConfirm')
-          })
+            message: t(
+              activeLanguage,
+              'profilePage.notification.successConfirm',
+            ),
+          }),
         )
         dispatch(logOut())
         // redirect after 3 seconds
@@ -192,8 +220,8 @@ export default function ProfilePage() {
       dispatch(
         showNotif({
           status: 'success',
-          message: t(activeLanguage, 'profilePage.notification.success')
-        })
+          message: t(activeLanguage, 'profilePage.notification.success'),
+        }),
       )
 
       // update the profile pic (if there was any in the response)
@@ -203,7 +231,7 @@ export default function ProfilePage() {
       const timer = setTimeout(() => {
         navigate('/', { replace: true })
       }, 3000)
-  
+
       // Cleanup function (so we don't end up with multiple timers on)
       return () => clearTimeout(timer)
     }
@@ -262,9 +290,15 @@ export default function ProfilePage() {
         <InputFile
           label={t(activeLanguage, 'profilePage.pictureInput.label')}
           inputId='profilePic' // to avoid 'id' collisions with other elements
-          noFilePlaceholder={t(activeLanguage, 'profilePage.pictureInput.noFilePlaceholder')}
+          noFilePlaceholder={t(
+            activeLanguage,
+            'profilePage.pictureInput.noFilePlaceholder',
+          )}
           btnLabel={t(activeLanguage, 'profilePage.pictureInput.btnLabel')}
-          clearPicLabel={t(activeLanguage, 'profilePage.pictureInput.clearPicLabel')}
+          clearPicLabel={t(
+            activeLanguage,
+            'profilePage.pictureInput.clearPicLabel',
+          )}
           register={register}
           registerOptions={{ required: false }}
           errors={errors}
