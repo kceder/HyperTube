@@ -17,6 +17,7 @@ function MoviePage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { isLoggedIn } = useSelector((slices) => slices.auth)
+  const { accessToken } = useSelector((slices) => slices.auth)
   const { activeLanguage } = useSelector((slices) => slices.language)
   const [isLoading, setIsloading] = React.useState(true)
   const [movie, setMovie] = React.useState(null)
@@ -71,6 +72,7 @@ function MoviePage() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
         },
       })
       const data = await response.json()

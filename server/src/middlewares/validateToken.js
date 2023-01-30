@@ -2,12 +2,11 @@
 import jwt from 'jsonwebtoken'
 
 const validateToken = (req, res, next) => {
-
   const authHeader = req?.headers?.authorization
   console.log(`validateToken middleware: ${req.headers.authorization}`)
 
   if (authHeader) {
-    const [key, accessToken] = authHeader.split(' ');
+    const [key, accessToken] = authHeader.split(' ')
 
     // Check the header for the Access token.
     if (key !== 'Bearer') {
@@ -21,7 +20,7 @@ const validateToken = (req, res, next) => {
       res.status(403).json({ message: error })
     }
   } else {
-    res.status(400).json({ message: 'bad request'})
+    res.status(400).json({ message: 'bad request' })
   }
 }
 
