@@ -25,6 +25,9 @@
             "noComments": "Ei kommentteja vielä"
         }
     },
+    "movieCard": {
+        "noSynopsisAvailable": "Ei yhteenvetoa saatavilla elokuvalle"
+    },
     "sideBar": {
         "advancedSearch": "tarkempi haku",
         "sortBy": "järjestä",

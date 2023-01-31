@@ -1,9 +1,13 @@
 import React from 'react'
 import imdbLogo from '../assets/imdb.png'
 import notFound from '../assets/not_found.png'
+import t from '../i18n/i18n'
 import MovieCast from './movieCast'
 
+import { useSelector } from 'react-redux'
+
 function MovieCard(props) {
+  const { activeLanguage } = useSelector(slices => slices.language)  // redux
   const {
     title,
     year,
@@ -13,7 +17,8 @@ function MovieCard(props) {
     description_full: synopsis
   } = props.movie
 
-  // console.log('props.movie', props) // check all props you get
+  console.log('props.movie', props) // check all props you get
+  console.log('synopsis', synopsis)
   return (
   <div>
   <div className='p-3 bg-white bg-opacity-5 text-white rounded-md'>
@@ -31,7 +36,7 @@ function MovieCard(props) {
       </p>
       </div>
       <p className='mt-3'>
-      {synopsis}
+      {synopsis ? synopsis : t(activeLanguage, 'movieCard.noSynopsisAvailable')}
       </p>
     </div>
     <img

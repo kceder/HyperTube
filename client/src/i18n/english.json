@@ -26,6 +26,9 @@
 
         }
     },
+    "movieCard": {
+        "noSynopsisAvailable": "No synopsis available for this movie"
+    },
     "sideBar": {
         "advancedSearch": "advanced search",
         "sortBy": "sort by",

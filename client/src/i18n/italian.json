@@ -23,8 +23,10 @@
             "comments": "Commenti",
             "wroteOn": " ha commentato il",
             "noComments": "Non ci sono commenti"
-
         }
+    },
+    "movieCard": {
+        "noSynopsisAvailable": "Nessuna sinossi disponibile per questo film"
     },
     "sideBar": {
         "advancedSearch": "ricerca avanzata",
