@@ -69,8 +69,7 @@ function Header() {
             {!isLoggedIn ? (
               <li>
                 <Link to='/auth'>
-                  <img src={greenDoor} className='inline h-12 hover:scale-110 hover:cursor-pointer' />
-                  {/* <ArrowLeftOnRectangleIcon className='inline w-10 md:w-12 mr-4 hover:scale-105 hover:text-green-300' /> */}
+                  <ArrowLeftOnRectangleIcon className='inline w-10 md:w-12 mr-4 hover:scale-105 hover:text-green-300' />
                 </Link>
               </li>
             ) : (
@@ -83,8 +82,7 @@ function Header() {
                 </li>
 
                 <li onClick={logoutHandler}>
-                  <img src={redDoor} className='inline h-12 hover:scale-110 hover:cursor-pointer' />
-                  {/* <ArrowRightOnRectangleIcon className='inline w-10 md:w-12 mr-4 hover:scale-105 hover:text-red-500' /> */}
+                  <ArrowRightOnRectangleIcon className='inline w-10 md:w-12 mr-4 hover:scale-105 hover:text-red-500' />
                 </li>
               </>
             )}

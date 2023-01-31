@@ -44,7 +44,6 @@ export default function ForgotPasswordPage() {
     const parsed = await response.json()
     if (parsed.error) {
       // console.log(`password request failed: ${JSON.stringify(parsed.error)}`) // testing!!!
-
       dispatch(
         showNotif({
           status: 'error',
