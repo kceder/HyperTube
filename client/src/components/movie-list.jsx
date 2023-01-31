@@ -108,8 +108,10 @@ function MovieList(props) {
 
   // This function will be triggered by clicking on the 'Submit Filter' button.
   function submitQuery() {
-    setPageNumber(1)
-    fetchMovies()
+    if (pageNumber !== 1)
+      setPageNumber(1)
+    else
+      fetchMovies()
     setIsVisible(prev => !prev)
   }
 

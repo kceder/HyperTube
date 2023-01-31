@@ -169,6 +169,8 @@ function MoviePage() {
             width='100%'
             height='100%'
             config={config}
+            autoplay={true}
+            muted={true}
           />
         </div>
       )}
