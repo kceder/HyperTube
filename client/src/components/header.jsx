@@ -46,12 +46,12 @@ function Header() {
   }
 
   return (
-    <header className='bg-gray-800 py-4 h-20 border-b-[1px] border-white'>
+    <header className='bg-gray-900 py-4 h-20 border-b border-white'>
       <div className='flex justify-between items-center max-w-6xl mx-auto'>
         <div className={`pl-3`}>
           <Link
             to='/'
-            className='text-white text-4xl md:text-5xl font-leagueGothic'
+            className='text-white text-2xl md:text-3xl font-leagueGothic'
           >
             <span>Hyper</span>{' '}
             <span className='bg-red-600 px-[2px] tracking-wider rounded-xl -ml-[1px]'>
