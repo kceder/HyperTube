@@ -43,10 +43,11 @@ function MoviePage() {
     if (location.state === null) navigate('/')
     const userData = window.localStorage.hypertube
     if (isLoggedIn) return
-    else if (userData !== undefined) {
-      const parsedData = JSON.parse(userData)
-      dispatch(logIn(parsedData))
-    } else navigate('/')
+    // else if (userData !== undefined) {
+    //   const parsedData = JSON.parse(userData)
+    //   dispatch(logIn(parsedData))
+    //   console.log('LOGGED IN 1:', isLoggedIn)
+     else navigate('/')
   }, [])
 
   // console.log(location.pathname) // testing
@@ -56,7 +57,11 @@ function MoviePage() {
     1. Try 720p.
     2. If not found then 1080p.
     3. If not found either, the quality of the first torrent. */
+    console.log('LOGGED IN:', isLoggedIn)
+    console.log('torrentOptions:', torrentOptions)
+    if (!isLoggedIn) return
     if (torrentOptions === undefined) return
+    console.log('Got here bisshshs')
     let smallestQuality = torrentOptions.find(
       (torrent) => torrent.value === '720p',
     )
@@ -78,12 +83,12 @@ function MoviePage() {
       const data = await response.json()
     }
     setAsWatched()
-  }, [torrentOptions])
+  }, [torrentOptions, isLoggedIn])
 
   React.useEffect(() => {
     if (!selectedTorrent) return
     // setIsloading(true)
-
+    console.log('SOmethingQQQÖMS')
     const urlSubs = '/api/subtitles/' + imdbId
 
     async function fetchSubtitles() {
@@ -149,7 +154,7 @@ function MoviePage() {
   // console.log('config:', config) // testing
   // make api request to get all the imdb info, and video stuff
   return (
-    <div className='max-w-4xl min-w-[360px] md:w-4xl md:px-0 px-3 flex flex-col space-y-10'>
+    <div className='max-w-4xl min-w-[360px] md:w-4xl md:px-0 px-3 flex flex-col space-y-10 md:pt-7'>
       {isLoading && (
         <p className='text-center pt-10'>
           <img
