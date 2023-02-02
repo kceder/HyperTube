@@ -69,7 +69,7 @@ app.use('/api', subtitlesRouter)
 
 // To be able to paste a link in the browser's search bar
 app.get('/*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'))
 })
 
 //Listen port

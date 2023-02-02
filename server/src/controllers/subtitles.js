@@ -4,6 +4,7 @@ async function getSubtitles(req, res) {
   // Destructure the query
   const { id: imdbId } = req.params
   const { language } = req.query
+  console.log('languafe', language)
   const baseUrl = 'https://api.opensubtitles.com/api/v1/'
   const englishSubsArr = []
   const otherSubsArr = []

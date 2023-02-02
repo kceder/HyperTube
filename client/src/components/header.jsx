@@ -24,7 +24,6 @@ function Header() {
 
   function logoutHandler() {
     navigate('/', { replace: true })
-    localStorage.clear()
     dispatch(logOut())
   }
   // console.log(`header: ${isLoggedIn}`);

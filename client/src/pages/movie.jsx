@@ -57,11 +57,8 @@ function MoviePage() {
     1. Try 720p.
     2. If not found then 1080p.
     3. If not found either, the quality of the first torrent. */
-    console.log('LOGGED IN:', isLoggedIn)
-    console.log('torrentOptions:', torrentOptions)
     if (!isLoggedIn) return
     if (torrentOptions === undefined) return
-    console.log('Got here bisshshs')
     let smallestQuality = torrentOptions.find(
       (torrent) => torrent.value === '720p',
     )
@@ -88,7 +85,6 @@ function MoviePage() {
   React.useEffect(() => {
     if (!selectedTorrent) return
     // setIsloading(true)
-    console.log('SOmethingQQQÖMS')
     const urlSubs = '/api/subtitles/' + imdbId
 
     async function fetchSubtitles() {
@@ -99,20 +95,20 @@ function MoviePage() {
             language: activeLanguage,
           }),
       )
-      // console.log(response) // testing
 
       if (response.ok) {
         // console.log(data) // testing
         const data = await response.json()
-        console.log('subtitles ALL', data.allSubs) // testing
+        console.log('subtitles ALL', data.subtitles) // testing
 
-        const tracks = data.allSubs.map((st) => ({
+        const tracks = data.subtitles.map((st) => ({
           kind: 'subtitles',
           src: st.src, // the link to the sub file in our server.
           srcLang: st.srcLang,
           label: st.label,
           // default: true,
         }))
+        console.log('after map', tracks)
         // console.log('subs array:', tracks) // this is a link
         setConfig({
           file: {
