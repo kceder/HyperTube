@@ -8,8 +8,6 @@ import Select from 'react-select'
 import MovieCard from '../components/movie-card'
 import { logIn } from '../store/authSlice'
 
-import spinner from '../assets/rose.png'
-
 // homemade i18n
 import t from '../i18n/i18n'
 
@@ -43,14 +41,9 @@ function MoviePage() {
     if (location.state === null) navigate('/')
     const userData = window.localStorage.hypertube
     if (isLoggedIn) return
-    // else if (userData !== undefined) {
-    //   const parsedData = JSON.parse(userData)
-    //   dispatch(logIn(parsedData))
-    //   console.log('LOGGED IN 1:', isLoggedIn)
     else navigate('/')
   }, [])
 
-  // console.log(location.pathname) // testing
   const imdbId = location.pathname.split('/').pop()
   React.useEffect(() => {
     /* Here we select the default quality (smaller better):
@@ -84,7 +77,6 @@ function MoviePage() {
 
   React.useEffect(() => {
     if (!selectedTorrent) return
-    // setIsloading(true)
     const urlSubs = '/api/subtitles/' + imdbId
 
     async function fetchSubtitles() {
@@ -97,10 +89,7 @@ function MoviePage() {
       )
 
       if (response.ok) {
-        // console.log(data) // testing
         const data = await response.json()
-        console.log('subtitles ALL', data.subtitles) // testing
-
         const tracks = data.subtitles.map((st) => ({
           kind: 'subtitles',
           src: st.src, // the link to the sub file in our server.
@@ -108,8 +97,6 @@ function MoviePage() {
           label: st.label,
           // default: true,
         }))
-        console.log('after map', tracks)
-        // console.log('subs array:', tracks) // this is a link
         setConfig({
           file: {
             attributes: {
@@ -128,7 +115,6 @@ function MoviePage() {
     if (!config) return // if the config is still not ready, bail
     const url = '/api' + location.pathname
 
-    // console.log(imdbId)
     async function fetchMovie() {
       const response = await fetch(
         url +
@@ -147,18 +133,11 @@ function MoviePage() {
     setIsloading(false)
   }, [config])
 
-  // console.log('config:', config) // testing
   // make api request to get all the imdb info, and video stuff
   return (
     <div className='max-w-4xl min-w-[360px] md:w-4xl md:px-0 px-3 flex flex-col space-y-10 md:pt-7'>
       {isLoading && (
-        <p className='text-center pt-10'>
-          <img
-            src={spinner}
-            alt='trendy-spinner'
-            className='inline w-32 animate-spin'
-          />
-        </p>
+        <ArrowPathIcon className='inline w-8 animate-spin'/>
       )}
 
       {!isLoading && (

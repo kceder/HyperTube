@@ -79,7 +79,7 @@ export default function ProfilePage() {
       .max(30, {
         message: t(activeLanguage, 'profilePage.firstNameInput.maxWarning'),
       })
-      .regex(/^(?=.*[^\W_])[\w ]*$/, {
+      .regex(/^[A-Za-z\ ]*$/, {
         message: t(activeLanguage, 'profilePage.firstNameInput.regexWarning'),
       }),
     lastName: z
@@ -90,7 +90,7 @@ export default function ProfilePage() {
       .max(30, {
         message: t(activeLanguage, 'profilePage.lastNameInput.maxWarning'),
       })
-      .regex(/^(?=.*[^\W_])[\w ]*$/, {
+      .regex(/^[A-Za-z\ ]*$/, {
         message: t(activeLanguage, 'profilePage.lastNameInput.regexWarning'),
       }),
     email: z

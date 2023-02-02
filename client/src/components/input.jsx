@@ -4,11 +4,6 @@ function Input(props) {
   return (
     <div className='relative flex flex-col w-full'>
       <div className='flex flex-col w-full'>
-      {props.errors[props.id] &&
-        <p className='text-white text-sm'>
-          {`${props.errors[props.id].message}`}
-          <HandRaisedIcon className='inline w-5 -mt-1 mx-2' />
-        </p>}
         <label className='text-white pb-2 align-left'>
           {props.label}{props.isRequired && <sup className="text-sm">*</sup>}
         </label>
@@ -21,6 +16,11 @@ function Input(props) {
           {...props.register(props.id, props.registerOptions)}
         />
       </div>
+        {props.errors[props.id] &&
+        <p className='text-white text-sm'>
+          {`${props.errors[props.id].message}`}
+          <HandRaisedIcon className='inline w-5 mx-2' />
+        </p>}
     </div>
   )
 }
