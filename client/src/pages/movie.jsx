@@ -47,7 +47,7 @@ function MoviePage() {
     //   const parsedData = JSON.parse(userData)
     //   dispatch(logIn(parsedData))
     //   console.log('LOGGED IN 1:', isLoggedIn)
-     else navigate('/')
+    else navigate('/')
   }, [])
 
   // console.log(location.pathname) // testing
@@ -104,9 +104,9 @@ function MoviePage() {
       if (response.ok) {
         // console.log(data) // testing
         const data = await response.json()
-        // console.log('subtitles ALL', data.allSubs) // testing
+        console.log('subtitles ALL', data.allSubs) // testing
 
-        const tracks = data.subtitles.map((st) => ({
+        const tracks = data.allSubs.map((st) => ({
           kind: 'subtitles',
           src: st.src, // the link to the sub file in our server.
           srcLang: st.srcLang,

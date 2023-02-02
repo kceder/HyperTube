@@ -1,15 +1,15 @@
 import React from 'react'
-
+import placeholder from '../assets/cast-placeholder.jpeg'
 const MovieCast = ({ cast }) => {
   if (cast !== undefined) {
-    var castMembers = cast.map((member) => {
+    var castMembers = cast.map((member, i) => {
       return (
         <div
-          key={member.imdb_code}
+          key={member.imdb_code || i}
           className='flex flex-row flex-start mt-2'
         >
           <img
-            src={member.url_small_image}
+            src={member.url_small_image || placeholder}
             className='ml-5 mr-5 h-[60px] w-[60px]'
           />
           <div className='flex flex-col items-center'>
@@ -29,9 +29,7 @@ const MovieCast = ({ cast }) => {
         {cast !== undefined ? (
           castMembers
         ) : (
-          <p className='text-center'>
-            No cast information found.
-          </p>
+          <p className='text-center'>No cast information found.</p>
         )}
       </div>
       <hr></hr>
