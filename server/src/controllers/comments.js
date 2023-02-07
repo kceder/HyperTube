@@ -4,13 +4,12 @@ import { createComment } from '../models/comment.js'
 import { findByUid } from '../models/user.js'
 
 async function postComment(req, res) {
-  const { imdb_id, comment, created_at } = req.body
-  // req.uid = 1 // testing while authentication is bypassed
+  const { imdb_id, comment } = req.body
 
   const user = await findByUid({ uid: req.uid })
 
   const savedComment = await createComment({
-    user_id: req.uid, // testing
+    user_id: req.uid,
     imdb_id: imdb_id,
     comment: comment
   })

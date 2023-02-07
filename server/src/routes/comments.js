@@ -4,7 +4,6 @@ import { postComment } from '../controllers/comments.js'
 
 const router = express.Router()
 
-// router.get('/comments', validateToken, getCommentList)
 router.post('/comments', validateToken, postComment)
 
 export default router

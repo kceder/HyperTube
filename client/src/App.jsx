@@ -28,7 +28,7 @@ export default function Home() {
     if (isLoggedIn) return
     else if (userData !== undefined) {
       const parsedData = JSON.parse(userData)
-      console.log(parsedData)
+      // console.log(parsedData)
       dispatch(logIn(parsedData))
     }
   }, [])
