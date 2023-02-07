@@ -129,7 +129,7 @@ export default function AuthPage() {
     'http://localhost/oauth/42'
   :
     'http://localhost:5173/oauth/42'
-  console.log('PROD?', import.meta.env.PROD)
+  // console.log('PROD?', import.meta.env.PROD)
   
   // Let's build the 42 OAuth url string here (it's long AF)
   let fortyTwoUrl = `${import.meta.env.VITE_FORTY_TWO_OAUTH_BASE_URL}?`

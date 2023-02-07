@@ -49,23 +49,24 @@ function MovieList(props) {
           'Authorization': `Bearer ${accessToken}`
         }
       })
-      const data = await response.json()
-  
-      if (data.error === 'no movies found') {
-        setError(t(activeLanguage, 'movieListPage.noMoviesFound')) // ADD TRANSLATION HERE
-        setIsLoading(false)
-        return console.log(data.error)
-      }
+      if (response.ok) {
+        const data = await response.json()
+        if (data.error === 'no movies found') {
+          setError(t(activeLanguage, 'movieListPage.noMoviesFound')) // ADD TRANSLATION HERE
+          setIsLoading(false)
+          return console.log(data.error)
+        }
 
-      /* If we receive less than 20 movies, the 'hasMore' state is set to false. */
-      setHasMore(data.movies.length > 19)
-    
-      // Once the data is ready, we invoke our callback function with it.
-      // setMovieList(prev => [...prev, ...data.movies])
-      if (pageNumber === 1)
-        setMovieList(data.movies)
-      else
-        setMovieList(prev => [...[...prev, ...data.movies].filter((v,i,a) => a.findIndex(v2 => (v2.imdbId === v.imdbId)) === i)])
+        /* If we receive less than 20 movies, the 'hasMore' state is set to false. */
+        setHasMore(data.movies.length > 19)
+      
+        // Once the data is ready, we invoke our callback function with it.
+        // setMovieList(prev => [...prev, ...data.movies])
+        if (pageNumber === 1)
+          setMovieList(data.movies)
+        else
+          setMovieList(prev => [...[...prev, ...data.movies].filter((v,i,a) => a.findIndex(v2 => (v2.imdbId === v.imdbId)) === i)])
+      }
       setIsLoading(false)
     } catch (error) {
       console.log(error)

@@ -102,7 +102,11 @@ async function getMovie(req, res) {
         }),
     )
 
-    const { data } = await response.json() // Destructure the data property
+    if (response.ok) {
+      const { data } = await response.json() // Destructure the data property
+      
+      return res.status(200).json(data.movie)
+    }
     // console.log(data.movie) // testing
 
     // Here we check our DB for the existence of the video file (and if it's completed)
@@ -116,7 +120,6 @@ async function getMovie(req, res) {
     //   quality
     // })
 
-    return res.status(200).json(data.movie)
   } catch (error) {
     return res.status(200).json({
       error: error,

@@ -70,9 +70,11 @@ function MoviePage() {
           Authorization: `Bearer ${accessToken}`,
         },
       })
-      const data = await response.json()
+      if (response.ok) {
+        const data = await response.json()
+        setAsWatched()
+      }
     }
-    setAsWatched()
   }, [torrentOptions, isLoggedIn])
 
   React.useEffect(() => {
@@ -80,31 +82,35 @@ function MoviePage() {
     const urlSubs = '/api/subtitles/' + imdbId
 
     async function fetchSubtitles() {
-      const response = await fetch(
-        urlSubs +
-          '?' +
-          new URLSearchParams({
-            language: activeLanguage,
-          }),
-      )
-
-      if (response.ok) {
-        const data = await response.json()
-        const tracks = data.subtitles.map((st) => ({
-          kind: 'subtitles',
-          src: st.src, // the link to the sub file in our server.
-          srcLang: st.srcLang,
-          label: st.label,
-          // default: true,
-        }))
-        setConfig({
-          file: {
-            attributes: {
-              crossOrigin: 'true',
+      try {
+        const response = await fetch(
+          urlSubs +
+            '?' +
+            new URLSearchParams({
+              language: activeLanguage,
+            }),
+        )
+  
+        if (response.ok) {
+          const data = await response.json()
+          const tracks = data.subtitles.map((st) => ({
+            kind: 'subtitles',
+            src: st.src, // the link to the sub file in our server.
+            srcLang: st.srcLang,
+            label: st.label,
+            // default: true,
+          }))
+          setConfig({
+            file: {
+              attributes: {
+                crossOrigin: 'true',
+              },
+              tracks: tracks,
             },
-            tracks: tracks,
-          },
-        })
+          })
+        }
+      } catch (error) {
+        console.log(error)
       }
     } // fetchSubtitles
 
@@ -116,17 +122,23 @@ function MoviePage() {
     const url = '/api' + location.pathname
 
     async function fetchMovie() {
-      const response = await fetch(
-        url +
-          '?' +
-          new URLSearchParams({
-            language: activeLanguage,
-            hash: selectedTorrent.hash,
-            quality: selectedTorrent.quality,
-          }),
-      )
-      const data = await response.json()
-      setMovie(data)
+      try {
+        const response = await fetch(
+          url +
+            '?' +
+            new URLSearchParams({
+              language: activeLanguage,
+              hash: selectedTorrent.hash,
+              quality: selectedTorrent.quality,
+            }),
+        )
+        if (response.ok) {
+          const data = await response.json()
+          setMovie(data)
+        }
+      } catch (error) {
+        console.log(error)
+      }
     }
 
     fetchMovie()

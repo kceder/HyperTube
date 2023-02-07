@@ -132,7 +132,7 @@ export default function ProfilePage() {
   React.useEffect(() => {
     if (!isLoggedIn) return
     async function getProfile() {
-      console.log('testing __ uid: ' + uid, 'accessToken: ' + accessToken)
+      // console.log('testing __ uid: ' + uid, 'accessToken: ' + accessToken)
       const response = await fetch(`/api/users/${uid}`, {
         method: 'GET',
         headers: {

@@ -56,7 +56,7 @@ function CommentSection(props) {
       return
     }
     async function postComment() {
-      console.log(comment)
+      // console.log(comment)
       const response = await fetch('/api/comments', {
         method: 'POST',
         headers: {

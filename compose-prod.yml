@@ -2,8 +2,8 @@ version: '3.8'
 
 services:
   hypertube-express:
-    image: hypertube-express
-    container_name: hypertube-express
+    image: hypertube-express-prod
+    container_name: hypertube-express-prod
     depends_on: 
       - postgres
     env_file:
