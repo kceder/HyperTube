@@ -12,35 +12,9 @@ import {
 } from '@heroicons/react/24/outline'
 
 function CommentSection(props) {
-
-  const { isLoggedIn } = useSelector(slices => slices.auth)
-  const { imdbId } = props
-  const [comments, setComments] = React.useState(null)
   const [newComment, setNewComment] = React.useState('')
   const activeLanguage = useSelector(slices => slices.language.activeLanguage)
   const accessToken = useSelector(slices => slices.auth.accessToken)
-
-  React.useEffect(() => {
-    if (!isLoggedIn)
-        return
-    async function fetchComments() {
-      const response = await fetch(
-        '/api/comments?' +
-          new URLSearchParams({
-            imdb_id: imdbId,
-          }),{
-            headers: {
-                'Content-Type' : 'application/json',
-                Authorization : `Bearer ${accessToken}`
-            }
-          } 
-      )
-      const data = await response.json()
-      setComments(data.comments)
-    }
-    
-    fetchComments()
-  }, [isLoggedIn])
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -56,21 +30,27 @@ function CommentSection(props) {
       return
     }
     async function postComment() {
-      // console.log(comment)
-      const response = await fetch('/api/comments', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization : `Bearer ${accessToken}`
-        },
-        body: JSON.stringify({
-          imdb_id: imdbId,
-          comment: comment,
-          created_at: +new Date(),
-        }),
-      })
-      const data = await response.json()
-      setComments(prev => [data.comment, ...prev])
+      try {
+        const response = await fetch('/api/comments', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization : `Bearer ${accessToken}`
+          },
+          body: JSON.stringify({
+            imdb_id: props.imdbId,
+            comment: comment,
+            created_at: +new Date(),
+          }),
+        })
+        // Check if the response is OK
+        if (response.ok) {
+          const data = await response.json()
+          props.setComments(prev => [data.comment, ...prev])
+        }
+      } catch (error) {
+        console.log(error)
+      }
     }
 
     postComment()
@@ -101,13 +81,13 @@ function CommentSection(props) {
           </p>
         </div>
       </form>
-        {comments && comments.length > 0 && (
+        {props.comments && props.comments.length > 0 && (
           <>
           <h2 className='text-2xl text-white text-center mb-4'>{t(activeLanguage, 'moviePage.commentSection.comments')}</h2>
           <hr />
-          <ul className={`flex flex-col space-y-6 py-6 max-h-96${comments && comments.length > 0 &&' overflow-y-scroll'}`}>
-            {comments && comments.length > 0 && (
-              comments.map(comment => {
+          <ul className={`flex flex-col space-y-6 py-6 max-h-96${props.comments && props.comments.length > 0 &&' overflow-y-scroll'}`}>
+            {props.comments && props.comments.length > 0 && (
+              props.comments.map(comment => {
                 return (
                   <li
                     key={comment.id}

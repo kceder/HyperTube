@@ -1,18 +1,7 @@
 // Import the comments model
-import { getComments, createComment } from '../models/comment.js'
+import { createComment } from '../models/comment.js'
 // Import the users model
 import { findByUid } from '../models/user.js'
-
-async function getCommentList(req, res) {
-  const { imdb_id } = req.query
-  // console.log('Comments controller', imdb_id) // always printing shit to check
-
-  // call the getCommentList fn from the comments model
-  const comments = await getComments({ imdb_id })
-
-  // send them to the front, instead of dummy comments
-  res.status(200).json({ comments: comments })
-}
 
 async function postComment(req, res) {
   const { imdb_id, comment, created_at } = req.body
@@ -33,4 +22,4 @@ async function postComment(req, res) {
   } })
 }
 
-export { getCommentList, postComment }
+export { postComment }

@@ -2,6 +2,8 @@
 // import { downloadTorrent } from '/app/src/lib/downloadTorrent.js'
 import { checkIfWatched, markAsWatched } from '../models/watchedHistory.js'
 
+import { getComments } from '../models/comment.js'
+
 async function getListMovies(req, res) {
   // Destructure the query
   const { page, minimum_rating, genre, query_term, sort_by, order_by } =
@@ -90,6 +92,7 @@ async function getMovie(req, res) {
 
   console.log('Client sent - Language:', language, `(Imdb-id${id})`) // testing
 
+  const comments = await getComments({ imdb_id: id })
   try {
     // 1st of all, we request the movie with lots of extra information
     const response = await fetch(
@@ -105,21 +108,11 @@ async function getMovie(req, res) {
     if (response.ok) {
       const { data } = await response.json() // Destructure the data property
       
-      return res.status(200).json(data.movie)
+      return res.status(200).json({
+        movie: data.movie,
+        comments: comments
+      })
     }
-    // console.log(data.movie) // testing
-
-    // Here we check our DB for the existence of the video file (and if it's completed)
-    // 1. If it exists, we start streaming it.
-
-    // 2. If it doesn't, we download it using the BitTorrent protocol (and also streaming it from there).
-    // downloadTorrent({
-    //   title: data.movie.title,
-    //   imdb_code: data.movie.imdb_code,
-    //   hash,
-    //   quality
-    // })
-
   } catch (error) {
     return res.status(200).json({
       error: error,

@@ -19,6 +19,7 @@ function MoviePage() {
   const { activeLanguage } = useSelector((slices) => slices.language)
   const [isLoading, setIsloading] = React.useState(true)
   const [movie, setMovie] = React.useState(null)
+  const [comments, setComments] = React.useState(null)
   const location = useLocation() // needed to parse the imdb id from React URL
   const [selectedTorrent, setSelectedTorrent] = React.useState(null)
   const [config, setConfig] = React.useState(null)
@@ -33,9 +34,6 @@ function MoviePage() {
       }))
     }
   }, [])
-
-  // Protected route: redirect to home page if user's not logged in
-  // DISABLE IT DURING DEVELOPMENT!!
 
   React.useEffect(() => {
     if (location.state === null) navigate('/')
@@ -72,9 +70,9 @@ function MoviePage() {
       })
       if (response.ok) {
         const data = await response.json()
-        setAsWatched()
       }
     }
+    setAsWatched()
   }, [torrentOptions, isLoggedIn])
 
   React.useEffect(() => {
@@ -134,13 +132,13 @@ function MoviePage() {
         )
         if (response.ok) {
           const data = await response.json()
-          setMovie(data)
+          setMovie(data.movie)
+          setComments(data.comments)
         }
       } catch (error) {
         console.log(error)
       }
     }
-
     fetchMovie()
     setIsloading(false)
   }, [config])
@@ -178,7 +176,13 @@ function MoviePage() {
         />
       </div>
       {!isLoading && movie && <MovieCard movie={movie} />}
-      <CommentSection imdbId={imdbId} />
+      {!isLoading && comments &&
+        <CommentSection
+          comments={comments}
+          setComments={setComments}
+          imdbId={imdbId}
+      />}
+
     </div>
   )
 }
