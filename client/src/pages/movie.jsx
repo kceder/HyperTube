@@ -165,15 +165,15 @@ function MoviePage() {
         </div>
       )}
       <div className='flex space-x-3 items-center h-3'>
-        <p className='text-white text-xl capitalize mb-3'>
+        {/* <p className='text-white text-xl capitalize mb-3'>
           {t(activeLanguage, 'moviePage.chooseQuality')}
-        </p>
-        <Select
+        </p> */}
+        {/* <Select
           onChange={(e) => setSelectedTorrent(e)}
           options={torrentOptions}
           value={selectedTorrent}
           className='mb-2'
-        />
+        /> */}
       </div>
       {!isLoading && movie && <MovieCard movie={movie} />}
       {!isLoading && comments &&
