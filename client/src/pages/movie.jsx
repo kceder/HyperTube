@@ -1,20 +1,17 @@
 import React from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import ReactPlayer from 'react-player'
 import CommentSection from '../components/comment-section'
 import Select from 'react-select'
 import MovieCard from '../components/movie-card'
-import { logIn } from '../store/authSlice'
 
 // homemade i18n
 import t from '../i18n/i18n'
 
 function MoviePage() {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
-  const { isLoggedIn } = useSelector((slices) => slices.auth)
   const { accessToken } = useSelector((slices) => slices.auth)
   const { activeLanguage } = useSelector((slices) => slices.language)
   const [isLoading, setIsloading] = React.useState(true)
@@ -23,6 +20,8 @@ function MoviePage() {
   const location = useLocation() // needed to parse the imdb id from React URL
   const [selectedTorrent, setSelectedTorrent] = React.useState(null)
   const [config, setConfig] = React.useState(null)
+
+  const imdbId = location.pathname.split('/').pop()
   let torrentOptions
   React.useEffect(() => {
     if (location.state !== null) {
@@ -32,24 +31,18 @@ function MoviePage() {
         label: t.quality,
         hash: t.hash,
       }))
+    } else {
+      navigate('/')
     }
   }, [])
 
-  React.useEffect(() => {
-    if (location.state === null) navigate('/')
-    const userData = window.localStorage.hypertube
-    if (isLoggedIn) return
-    else navigate('/')
-  }, [])
-
-  const imdbId = location.pathname.split('/').pop()
   React.useEffect(() => {
     /* Here we select the default quality (smaller better):
     1. Try 720p.
     2. If not found then 1080p.
     3. If not found either, the quality of the first torrent. */
-    if (!isLoggedIn) return
-    if (torrentOptions === undefined) return
+    // if (!isLoggedIn) return
+    if (torrentOptions === null) return
     let smallestQuality = torrentOptions.find(
       (torrent) => torrent.value === '720p',
     )
@@ -59,21 +52,7 @@ function MoviePage() {
       )
     }
     setSelectedTorrent(smallestQuality || torrentOptions[0])
-
-    async function setAsWatched() {
-      const response = await fetch(`/api/movies/${imdbId}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-      if (response.ok) {
-        const data = await response.json()
-      }
-    }
-    setAsWatched()
-  }, [torrentOptions, isLoggedIn])
+  }, [torrentOptions])
 
   React.useEffect(() => {
     if (!selectedTorrent) return
@@ -81,12 +60,15 @@ function MoviePage() {
 
     async function fetchSubtitles() {
       try {
-        const response = await fetch(
-          urlSubs +
-            '?' +
-            new URLSearchParams({
-              language: activeLanguage,
-            }),
+        const response = await fetch(urlSubs + '?' + new URLSearchParams({
+            language: activeLanguage,
+          }),
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${accessToken}`,
+            }
+          }
         )
   
         if (response.ok) {
@@ -116,20 +98,24 @@ function MoviePage() {
   }, [selectedTorrent])
 
   React.useEffect(() => {
-    if (!config) return // if the config is still not ready, bail
+    if (!config || !accessToken || !selectedTorrent)
+      return // if the config is still not ready, bail
     const url = '/api' + location.pathname
 
     async function fetchMovie() {
       try {
-        const response = await fetch(
-          url +
-            '?' +
-            new URLSearchParams({
-              language: activeLanguage,
-              hash: selectedTorrent.hash,
-              quality: selectedTorrent.quality,
-            }),
-        )
+        const response = await fetch(url + '?' + new URLSearchParams({
+          language: activeLanguage,
+          hash: selectedTorrent.hash,
+          quality: selectedTorrent.quality,
+        }),
+        {
+          headers: {
+            'Content-Type' : 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+          }
+        })
+
         if (response.ok) {
           const data = await response.json()
           setMovie(data.movie)
@@ -141,9 +127,8 @@ function MoviePage() {
     }
     fetchMovie()
     setIsloading(false)
-  }, [config])
+  }, [config, selectedTorrent, accessToken])
 
-  // make api request to get all the imdb info, and video stuff
   return (
     <div className='max-w-4xl min-w-[360px] md:w-4xl md:px-0 px-3 flex flex-col space-y-10 md:pt-7'>
       {isLoading && (
@@ -182,7 +167,6 @@ function MoviePage() {
           setComments={setComments}
           imdbId={imdbId}
       />}
-
     </div>
   )
 }

@@ -11,7 +11,7 @@ export default defineConfig({
       }
     },
   },
-  // publicDir: '../server/public', // disable before build (movies end up in dist/ 🤔)
+  publicDir: '../server/public', // disable before build (movies end up in dist/ 🤔)
   build: {
     outDir: '../server/dist',
     emptyOutDir: true
