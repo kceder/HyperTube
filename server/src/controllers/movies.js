@@ -93,17 +93,17 @@ async function getMovie(req, res) {
   console.log('Client sent - Language:', language, `(Imdb-id${id})`) // testing
 
   const comments = await getComments({ imdb_id: id })
+
+  // No need for a POST endpoint for marking movies as watched.
+  await markAsWatched({ uid: 1, imdbId: id })
+
   try {
     // 1st of all, we request the movie with lots of extra information
-    const response = await fetch(
-      ytsBaseUrl +
-        '?' +
-        new URLSearchParams({
-          imdb_id: id,
-          with_images: true,
-          with_cast: true,
-        }),
-    )
+    const response = await fetch(ytsBaseUrl + '?' + new URLSearchParams({
+      imdb_id: id,
+      with_images: true,
+      with_cast: true,
+      }))
 
     if (response.ok) {
       const { data } = await response.json() // Destructure the data property
@@ -120,18 +120,4 @@ async function getMovie(req, res) {
   }
 }
 
-async function watchMovie(req, res) {
-  try {
-    const { id } = req.params
-
-    const uid = req.uid
-    await markAsWatched({ uid: uid, imdbId: id })
-    res.status(200)
-  } catch (error) {
-    res.status(200).json({
-      error: error,
-    })
-  }
-}
-
-export { getListMovies, getMovie, watchMovie }
+export { getListMovies, getMovie }
