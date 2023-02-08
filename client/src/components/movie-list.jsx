@@ -66,9 +66,7 @@ function MovieList(props) {
           setMovieList(data.movies)
         else
           setMovieList(prev => [...[...prev, ...data.movies].filter((v,i,a) => a.findIndex(v2 => (v2.imdbId === v.imdbId)) === i)])
-      } else {
-
-      } //timeout?
+      }
       setIsLoading(false)
     } catch (error) {
       console.log(error)
@@ -179,9 +177,10 @@ function MovieList(props) {
 
       {isLoading && <p className='text-white text-center text-2xl pt-20'>
         <ArrowPathIcon className='inline w-8 animate-spin'/>
+        <p>Max number of movies downloadable at same time: 3.</p>
       </p>}
 
-      
+
     </div>
   </>)
 }

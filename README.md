@@ -11,5 +11,9 @@ Prep: Please make sure you have [Docker](https://www.docker.com/) running on you
 
 **Stack:**
 Node.js, Express, React, Redux, Vite, Tailview and PostgreSQL.
-Docker (docker-compose).
+Docker (docker-compose). RESTful API.
 Architectural pattern: MVC. 
+
+**Only Project constraint:**
+Libraries executing the transfer from a torrent to a video stream are forbidden: use of libraries such as webtorrent, pulsar or peerflix aretherefore considered cheating.
+
