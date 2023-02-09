@@ -177,7 +177,6 @@ function MovieList(props) {
 
       {isLoading && <p className='text-white text-center text-2xl pt-20'>
         <ArrowPathIcon className='inline w-8 animate-spin'/>
-        <p>Max number of movies downloadable at same time: 3. If you see this message continuously in homepage, please reduce simultaneous downloads to 3 or less.</p>
       </p>}
 
 

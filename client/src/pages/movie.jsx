@@ -147,7 +147,7 @@ function MoviePage() {
   return (
     <div className='max-w-4xl min-w-[360px] md:w-4xl md:px-0 px-3 flex flex-col space-y-10 md:pt-7'>
       {isLoading && (
-        <><ArrowPathIcon className='inline w-8 animate-spin' /><p className='text-white text-center text-2xl pt-20'>Max number of movies downloadable at same time: 3. If stuck in loading player, please reduce simultaneous downloads to 3 or less.</p></>
+        <ArrowPathIcon className='inline w-8 animate-spin' />
       )}
 
       {!isLoading && (
