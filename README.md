@@ -31,7 +31,7 @@ Libraries executing the transfer from a torrent to a video stream are forbidden:
 
 **Deviations relative to subject/eval form**
 - (42 omniauth works only in prod)
-- ...
+- when registering with omniauth, password is not editable
 
 **TO DO**
 1) Test in prod all eval form, especially the omniauth
