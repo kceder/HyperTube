@@ -10,6 +10,7 @@ import { logIn } from '../store/authSlice'
 import t from '../i18n/i18n'
 
 import placeholder from '../assets/cast-placeholder.jpeg'
+import Footer from '../components/footer'
 
 export default function UserProfilePage() {
   const [isLoading, setIsloading] = React.useState(true)
@@ -83,6 +84,7 @@ export default function UserProfilePage() {
               <div className='px-6 pt-4 pb-2'></div>
             </div>
           </div>
+          <Footer />
         </>
       )}
     </div>
