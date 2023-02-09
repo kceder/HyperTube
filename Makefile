@@ -11,6 +11,10 @@ dev-stop:
 	docker compose -f compose.yml -f compose-dev.yml down
 
 .PHONY:
+dev-restart:
+	docker compose -f compose.yml -f compose-dev.yml restart
+
+.PHONY:
 prod:
 	docker compose -f compose.yml -f compose-prod.yml up
 
