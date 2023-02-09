@@ -13,9 +13,6 @@ For pgadmin credentials:
 - username: hyper@tube.com
 - password: hyper
 
-(Then, add new server, name: hyper. 
-then, connection tab, hostname is postgres.)
-
 database credentials:
 hostname: postgres
 port: 5432
