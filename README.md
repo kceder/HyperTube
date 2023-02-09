@@ -33,7 +33,8 @@ Libraries executing the transfer from a torrent to a video stream are forbidden:
 - (42 omniauth works only in prod)
 - when registering with omniauth, password is not editable
 
+
 **TO DO**
 1) Test in prod all eval form, especially the omniauth
 2) create the page to be able to check all other users' profiles
-3) add the omniauth buttons in register ?
+3) add the omniauth buttons in register page?
