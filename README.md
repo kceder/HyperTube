@@ -31,10 +31,8 @@ Libraries executing the transfer from a torrent to a video stream are forbidden:
 
 **Deviations relative to subject/eval form**
 - (42 omniauth works only in prod)
-- no way to consult the profile of any other user, ie see the profile picture and information. 
-- 
+- ...
 
 **TO DO**
 1) Test in prod all eval form, especially the omniauth
 2) Add the page to be able to check all other users' profiles
-3) add pierre to footer, just for the eval 
