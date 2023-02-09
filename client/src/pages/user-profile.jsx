@@ -2,11 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
 // redux
-import { useDispatch, useSelector } from 'react-redux'
-import { showNotif } from '../store/notificationsSlice'
-
-// homemade i18n
-import t from '../i18n/i18n'
+import { useSelector } from 'react-redux'
 
 export default function UserProfilePage() {
   const [isLoading, setIsloading] = React.useState(true)
@@ -15,8 +11,6 @@ export default function UserProfilePage() {
   let { accessToken, uid, isLoggedIn } = useSelector((slices) => slices.auth)
 
   const navigate = useNavigate()
-  const dispatch = useDispatch()
-
 
   React.useEffect(() => {
     if (!isLoggedIn) navigate('/')
@@ -39,13 +33,10 @@ export default function UserProfilePage() {
           setProfile(data.user)
           setIsloading(false)
         } else {
-          dispatch(showNotif({
-            status: 'error',
-            message:  t(activeLanguage, 'signUpPage.notification.error')
-          }))
+          navigate('/')
         }
       } catch (error) {
-        console.log(error)
+        // console.log(error)
       }
     }
     getUserProfile()
