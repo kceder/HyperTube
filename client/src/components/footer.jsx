@@ -24,6 +24,12 @@ function Footer() {
           >
           rodrodri
         </a>
+          <a
+          href='https://github.com/pawaters/'
+          className='ml-3 text-sm hover:text-blue-500'
+          >
+          pwaters
+        </a>
       </div>
     </footer>
   )
