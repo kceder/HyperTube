@@ -11,10 +11,7 @@ import crypto from 'crypto' // No need to install, included in Node.js
 import { savePic, deletePic } from '/app/src/lib/picUtils.js'
 
 // To save/delete email tokens
-import {
-  saveToken,
-  deleteTokenByEmail,
-} from '/app/src/models/email-token.js'
+import { saveToken, deleteTokenByEmail } from '/app/src/models/email-token.js'
 
 // To hash passwords before saving them to DB
 import { hashPassword } from '/app/src/lib/auth.js'
@@ -32,10 +29,10 @@ import {
   findByUid,
   createUser,
   writeProfilePic,
-  updateUserProfile
+  updateUserProfile,
 } from '/app/src/models/user.js'
 
-const MAX_FILE_SIZE = 500000
+const MAX_FILE_SIZE = 5000000
 const ACCEPTED_IMAGE_TYPES = [
   'image/jpeg',
   'image/jpg',
@@ -43,110 +40,102 @@ const ACCEPTED_IMAGE_TYPES = [
   'image/webp',
 ]
 
-const validationSchema = z
-  .object({
-    userName: z
-      .string()
-      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
-        message: '5-10 upper and lowercase letters, and digits',
-      })
-      .refine(
-        async (userName) => {
-          const user = await findByUsername({ username: userName })
+const validationSchema = z.object({
+  userName: z
+    .string()
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
+      message: '5-10 upper and lowercase letters, and digits',
+    })
+    .refine(
+      async (userName) => {
+        const user = await findByUsername({ username: userName })
 
-          return user ? false : true
-        },
-        { message: 'Username already taken' }
-      ),
-    firstName: z
-      .string()
-      .min(1, { message: 'First Name is required' })
-      .max(30, { message: 'Maximum 30 characters' })
-      .regex(/^[a-zA-Z\s]+$/, { message: 'Only letters and spaces' }),
-    lastName: z
-      .string()
-      .min(1, { message: 'Last Name is required' })
-      .max(30, { message: 'Maximum 30 characters' })
-      .regex(/^[a-zA-Z\s]+$/, { message: 'Only letters and spaces' }),
-    email: z
-      .string()
-      .min(1, { message: 'Email is required' })
-      .email({ message: 'Must be a valid email' })
-      .refine(
-        async (email) => {
-          const user = await findByEmail({ email })
+        return user ? false : true
+      },
+      { message: 'Username already taken' },
+    ),
+  firstName: z
+    .string()
+    .min(1, { message: 'First Name is required' })
+    .max(30, { message: 'Maximum 30 characters' })
+    .regex(/^[a-zA-Z\s]+$/, { message: 'Only letters and spaces' }),
+  lastName: z
+    .string()
+    .min(1, { message: 'Last Name is required' })
+    .max(30, { message: 'Maximum 30 characters' })
+    .regex(/^[a-zA-Z\s]+$/, { message: 'Only letters and spaces' }),
+  email: z
+    .string()
+    .min(1, { message: 'Email is required' })
+    .email({ message: 'Must be a valid email' })
+    .refine(
+      async (email) => {
+        const user = await findByEmail({ email })
 
-          return user ? false : true
-        },
-        { message: 'Email already exists' }
-      ),
-    password: z
-      .string()
-      .min(5, { message: 'Between 5-10 characters' })
-      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
-        message: 'Upper and lowercase letters, and digits',
-      }),
-    profilePic: z
-      .any()
-      .refine(
-        (file) => !file || file.size <= MAX_FILE_SIZE,
-        `Max image size is 5MB.`
-      )
-      .refine(
-        async (file) => {
-          if (!file) return true // if the user didn't submit a file
-          // console.log(JSON.stringify(file)) // testing
+        return user ? false : true
+      },
+      { message: 'Email already exists' },
+    ),
+  password: z
+    .string()
+    .min(5, { message: 'Between 5-10 characters' })
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
+      message: 'Upper and lowercase letters, and digits',
+    }),
+  profilePic: z
+    .any()
+    .refine(
+      (file) => !file || file.size <= MAX_FILE_SIZE,
+      `Max image size is 5MB.`,
+    )
+    .refine(async (file) => {
+      if (!file) return true // if the user didn't submit a file
+      // console.log(JSON.stringify(file)) // testing
 
-          const result = await fileTypeFromFile(file.filepath)
-          if (!result) return false     // if file is not recognized (undefined)
-          const { ext, mime } = result  // if file is recognized
-          console.log(`File: ${mime}, ${ext}`) // testing
-          if (ACCEPTED_IMAGE_TYPES.includes(mime)) return true
-        },
-        'Only .jpg, .jpeg, .png and .webp formats are supported.'
-      ),
-  })
+      const result = await fileTypeFromFile(file.filepath)
+      if (!result) return false // if file is not recognized (undefined)
+      const { ext, mime } = result // if file is recognized
+      console.log(`File: ${mime}, ${ext}`) // testing
+      if (ACCEPTED_IMAGE_TYPES.includes(mime)) return true
+    }, 'Only .jpg, .jpeg, .png and .webp formats are supported.'),
+})
 
-  const validationSchema2 = z
-  .object({
-    userName: z
-      .string()
-      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
-        message: '5-10 upper and lowercase letters, and digits',
-      }),
-    firstName: z
-      .string()
-      .min(1, { message: 'First Name is required' })
-      .max(30, { message: 'Maximum 30 characters' })
-      .regex(/^[a-zA-Z\s]+$/, { message: 'Only letters and spaces' }),
-    lastName: z
-      .string()
-      .min(1, { message: 'Last Name is required' })
-      .max(30, { message: 'Maximum 30 characters' })
-      .regex(/^[a-zA-Z\s]+$/, { message: 'Only letters and spaces' }),
-    email: z
-      .string()
-      .min(1, { message: 'Email is required' })
-      .email({ message: 'Must be a valid email' }),
-    profilePic: z
-      .any()
-      .refine(
-        (file) => !file || file.size <= MAX_FILE_SIZE,
-        `Max image size is 5MB.`
-      )
-      .refine(
-        async (file) => {
-          if (!file) return true // if the user didn't submit a file
+const validationSchema2 = z.object({
+  userName: z
+    .string()
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,10}$/, {
+      message: '5-10 upper and lowercase letters, and digits',
+    }),
+  firstName: z
+    .string()
+    .min(1, { message: 'First Name is required' })
+    .max(30, { message: 'Maximum 30 characters' })
+    .regex(/^[a-zA-Z\s]+$/, { message: 'Only letters and spaces' }),
+  lastName: z
+    .string()
+    .min(1, { message: 'Last Name is required' })
+    .max(30, { message: 'Maximum 30 characters' })
+    .regex(/^[a-zA-Z\s]+$/, { message: 'Only letters and spaces' }),
+  email: z
+    .string()
+    .min(1, { message: 'Email is required' })
+    .email({ message: 'Must be a valid email' }),
+  profilePic: z
+    .any()
+    .refine(
+      (file) => !file || file.size <= MAX_FILE_SIZE,
+      `Max image size is 5MB.`,
+    )
+    .refine(async (file) => {
+      if (!file) return true // if the user didn't submit a file
 
-          const result = await fileTypeFromFile(file.filepath)
-          if (!result) return false     // if file is not recognized (undefined)
-          const { ext, mime } = result  // if file is recognized
-          // console.log(`File: ${mime}, ${ext}`) // testing
-          if (ACCEPTED_IMAGE_TYPES.includes(mime)) return true
-        },
-        'Only .jpg, .jpeg, .png and .webp formats are supported.'
-      ),
-  })
+      const result = await fileTypeFromFile(file.filepath)
+      if (!result) return false // if file is not recognized (undefined)
+      const { ext, mime } = result // if file is recognized
+      // console.log(`File: ${mime}, ${ext}`) // testing
+      if (ACCEPTED_IMAGE_TYPES.includes(mime)) return true
+    }, 'Only .jpg, .jpeg, .png and .webp formats are supported.'),
+})
 
 // Important! We have to disable bodyParser to parse incoming data as a Form
 export const config = { api: { bodyParser: false } }
@@ -181,7 +170,7 @@ async function handleProfilePic(oldProfilePic, profilePic, uid) {
     try {
       const result = await writeProfilePic({
         profilePic: profilePicUrl,
-        uid: uid
+        uid: uid,
       })
       console.log(result)
     } catch (error) {
@@ -196,47 +185,47 @@ async function signUpUser(req, res) {
   const form = new formidable.IncomingForm()
 
   form.parse(req, async function (err, fields, files) {
-    const profilePic =  files?.profilePic === undefined ? false : files.profilePic
+    const profilePic =
+      files?.profilePic === undefined ? false : files.profilePic
 
     try {
       // Validate user data (zod)
       const parsedUser = await validationSchema.parseAsync({
         ...fields,
-        profilePic: profilePic
+        profilePic: profilePic,
       })
     } catch (errors) {
       const firstError = JSON.parse(errors)[0].message
       // console.log(`Errors parsing User: ${JSON.parse(errors)[0].message}`) // testing
       return res.status(400).json({
-        error: firstError
+        error: firstError,
       })
     }
 
     // Let's check that the email doesn't exist in our DB
     const user = await findByEmail({ email: fields.email })
-    if (user)
-      return res.status(400).json({ error: 'email already exists' })
+    if (user) return res.status(400).json({ error: 'email already exists' })
 
     let uid
     // Save user intel to DB
     try {
       const hashed_password = await hashPassword(fields.password)
-      
+
       const newUser = {
-        username:       fields.userName,
-        firstname:      fields.firstName,
-        lastname:       fields.lastName,
-        email:          fields.email,
+        username: fields.userName,
+        firstname: fields.firstName,
+        lastname: fields.lastName,
+        email: fields.email,
         hashed_password,
-        profile_pic:    '',
-        confirmed:      false
+        profile_pic: '',
+        confirmed: false,
       }
 
       const createdUser = await createUser(newUser)
       uid = createdUser.id
     } catch (error) {
       return res.status(422).json({
-        error: `couldn't create account: ${error.stack}`
+        error: `couldn't create account: ${error.stack}`,
       })
     }
     let profilePicUrl
@@ -244,9 +233,9 @@ async function signUpUser(req, res) {
     try {
       // We pass false as 1st argument because there's no old pic to delete!
       profilePicUrl = handleProfilePic(false, profilePic, uid)
-    } catch(error) {
+    } catch (error) {
       return res.status(422).json({
-        error: error
+        error: error,
       })
     }
 
@@ -263,7 +252,7 @@ async function signUpUser(req, res) {
     const emailTokenCreated = saveToken({
       email: fields.email,
       token_hash: emailTokenHash,
-      expires_at: unixtimeInSeconds + eval(process.env.EMAIL_TOKEN_EXP) // 2 days
+      expires_at: unixtimeInSeconds + eval(process.env.EMAIL_TOKEN_EXP), // 2 days
     })
 
     // Set the email options,
@@ -274,7 +263,7 @@ async function signUpUser(req, res) {
       html: `<h1>Welcome to HyperTube!</h1>
       <p>
       Please, click <a href="http://localhost/confirm-account?email=${fields.email}&token=${emailTokenHash}" >here</a> to confirm your account!
-      </p>`
+      </p>`,
     }
 
     // Send Account Confirmation Email
@@ -282,13 +271,12 @@ async function signUpUser(req, res) {
       if (error) {
         console.log(error) // testing
         res.status(400).json({
-          error: `Error sending Account Confirmation Link: ${error}`
+          error: `Error sending Account Confirmation Link: ${error}`,
         })
-      }
-      else {
-        console.log('Email sent: ' + info.response)// testing
+      } else {
+        console.log('Email sent: ' + info.response) // testing
         res.status(200).json({
-          message: `Account Confirmation Link sent to ${req.query.email}`
+          message: `Account Confirmation Link sent to ${req.query.email}`,
         })
       }
     })
@@ -306,9 +294,8 @@ async function getUser(req, res) {
   } catch (error) {
     return res.status(400).json({ error: 'something went wrong' })
   }
-  
-  if (!user)
-    return res.status(400).json({ error: 'user does not exist' })
+
+  if (!user) return res.status(400).json({ error: 'user does not exist' })
 
   delete user.password // don't send the password in any case
 
@@ -335,25 +322,25 @@ async function updateUser(req, res) {
     return res.status(400).json({ error: 'something went wrong' })
   }
 
-  if (!user)
-    return res.status(400).json({ error: 'user does not exist' })
-  
+  if (!user) return res.status(400).json({ error: 'user does not exist' })
+
   const form = new formidable.IncomingForm()
   form.parse(req, async function (err, fields, files) {
     // console.log(`fields: ${JSON.stringify(fields)}`) // testing
-    const profilePic =  files?.profilePic === undefined ? false : files.profilePic
+    const profilePic =
+      files?.profilePic === undefined ? false : files.profilePic
 
     // Validate user data (zod)
     try {
       const parsedUser = await validationSchema2.parseAsync({
         ...fields,
-        profilePic: profilePic
+        profilePic: profilePic,
       })
     } catch (errors) {
       const firstError = JSON.parse(errors)[0].message
       // console.log(`Errors parsing User: ${JSON.parse(errors)[0].message}`) // testing
       return res.status(400).json({
-        error: firstError
+        error: firstError,
       })
     }
 
@@ -362,12 +349,12 @@ async function updateUser(req, res) {
       // console.log(`comparing ${user.username} to ${fields.userName}`) // testing
       // Check that the new username is not in use by other user.
       const newUsernameExists = await findByUsername({
-        username: fields.userName
+        username: fields.userName,
       })
 
       if (newUsernameExists) {
         return res.status(401).json({
-          error: 'sorry, that username is already taken'
+          error: 'sorry, that username is already taken',
         })
       }
     }
@@ -381,7 +368,7 @@ async function updateUser(req, res) {
       // console.log(newEmailExists) // testing
       if (newEmailExists) {
         return res.status(401).json({
-          error: 'sorry, that email is already taken'
+          error: 'sorry, that email is already taken',
         })
       }
       // If the new email is available, we gotta set 'confirmed' to false.
@@ -403,7 +390,7 @@ async function updateUser(req, res) {
       const emailTokenCreated = saveToken({
         email: fields.email,
         token_hash: emailTokenHash,
-        expires_at: unixtimeInSeconds + eval(process.env.EMAIL_TOKEN_EXP) // 2 days
+        expires_at: unixtimeInSeconds + eval(process.env.EMAIL_TOKEN_EXP), // 2 days
       })
 
       // Set the email options,
@@ -414,7 +401,7 @@ async function updateUser(req, res) {
         html: `<h1>Welcome to HyperTube!</h1>
         <p>
         Please, click <a href="http://localhost/confirm-account?email=${fields.email}&token=${emailTokenHash}" >here</a> to confirm your account!
-        </p>`
+        </p>`,
       }
 
       // Send Account Confirmation Email
@@ -422,19 +409,22 @@ async function updateUser(req, res) {
         if (error) {
           console.log(error) // testing
           return res.status(400).json({
-            error: `Error sending Account Confirmation Link: ${error}`
+            error: `Error sending Account Confirmation Link: ${error}`,
           })
         }
       })
     }
-    
+
     const toBeUpdatedUser = {
       uid,
-      username: (user.username === fields.userName) ? user.username : fields.userName,
-      firstname: (user.firstname === fields.firstName) ? user.firstname : fields.firstName,
-      lastname: (user.lastname === fields.lastName) ? user.lastname : fields.lastName,
-      email: (user.email === fields.email) ? user.email : fields.email,
-      confirmed: confirmValue
+      username:
+        user.username === fields.userName ? user.username : fields.userName,
+      firstname:
+        user.firstname === fields.firstName ? user.firstname : fields.firstName,
+      lastname:
+        user.lastname === fields.lastName ? user.lastname : fields.lastName,
+      email: user.email === fields.email ? user.email : fields.email,
+      confirmed: confirmValue,
     }
 
     try {
@@ -442,26 +432,24 @@ async function updateUser(req, res) {
     } catch (error) {
       return res.status(400).json({ error: 'something went wrong' })
     }
-    
+
     let profilePicUrl
     // Let's try to write the new pic to filesystem and DB (and delete old one)
     try {
       profilePicUrl = await handleProfilePic(user.profile_pic, profilePic, uid)
       // console.log(`profilePicUrl: ${profilePicUrl}`) // testing
-    } catch(error) {
+    } catch (error) {
       return res.status(422).json({
-        error: error
+        error: error,
       })
     }
     // If all went OK, let's return a successful response
     return res.status(200).json({
       message: 'user profile successfully updated',
       confirmed: confirmValue,
-      profilePicUrl
+      profilePicUrl,
     })
   })
 }
-
-
 
 export { signUpUser, getUser, updateUser }

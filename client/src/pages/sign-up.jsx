@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom'
 // homemade i18n
 import t from '../i18n/i18n'
 
-const MAX_FILE_SIZE = 500000
+const MAX_FILE_SIZE = 5000000
 const ACCEPTED_IMAGE_TYPES = [
   'image/jpeg',
   'image/jpg',
