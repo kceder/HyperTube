@@ -17,6 +17,7 @@ import moviesRouter from './src/routes/movies.js'
 import streamsRouter from './src/routes/streams.js'
 import commentsRouter from './src/routes/comments.js'
 import subtitlesRouter from './src/routes/subtitles.js'
+import userProfilesRouter from './src/routes/userProfiles.js'
 
 // Middleware
 import cors from 'cors'
@@ -66,6 +67,9 @@ app.use('/api', commentsRouter)
 
 // Route for comments (get list of them, and create new ones)
 app.use('/api', subtitlesRouter)
+
+// Route for user profiles (get some user profile)
+app.use('/api', userProfilesRouter)
 
 // To be able to paste a link in the browser's search bar
 app.get('/*', function (req, res) {

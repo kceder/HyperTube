@@ -2,7 +2,7 @@ import pool from "../lib/db.js"
 
 async function getComments({ imdb_id }) {
   // console.log('downloads received',quality, imdb_id)
-  const query = `SELECT comments.id, comments.created_at, comments.comment, users.username
+  const query = `SELECT comments.id, comments.created_at, comments.comment, users.username, comments.user_id
   FROM comments
   INNER JOIN users
           ON users.id = comments.user_id
@@ -12,7 +12,7 @@ async function getComments({ imdb_id }) {
   const values = [ imdb_id ]
   const result = await pool.query(query, values)
 
-  // console.log('Comment model', result.rows) // testing
+  console.log('Comment model', result.rows) // testing
   const comments = result.rows
   return comments ?? null 
 }

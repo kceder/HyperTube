@@ -16,6 +16,7 @@ import ForgotPasswordPage from './pages/forgot-password'
 import ResetPasswordPage from './pages/reset-password'
 import RequestConfirmationPage from './pages/request-confirmation'
 import ConfirmAccountPage from './pages/confirm-account'
+import UserProfilePage from './pages/user-profile'
 import PageNotFound from './pages/page-not-found'
 import Notification from './components/notification'
 
@@ -47,6 +48,11 @@ export default function Home() {
           <Route
             path='movies/:id'
             element={<MoviePage />}
+          />
+
+          <Route
+            path='users/:id'
+            element={<UserProfilePage />}
           />
 
           <Route

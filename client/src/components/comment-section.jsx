@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { Link } from 'react-router-dom'
+
 import { useSelector } from 'react-redux'
 
 // homemade translation system
@@ -57,7 +59,7 @@ function CommentSection(props) {
     // Clear text area
     setNewComment('')
   }
-
+console.log(props.comments)// testing
   return (
     <div className='min-w-4xl pb-6'>
       <form className='flex flex-col'>
@@ -94,7 +96,14 @@ function CommentSection(props) {
                     className='break-all'
                   >
                   <p className='text-white'>
-                    <span className='font-bold'>{comment.username}</span>{t(activeLanguage, 'moviePage.commentSection.wroteOn')}{' '}
+                    <span className='font-bold'>
+                      <Link
+                        to={`/users/${comment.user_id}`}
+                        className='hover:text-blue-500'
+                      >
+                        {comment.username}
+                      </Link>
+                    </span>{t(activeLanguage, 'moviePage.commentSection.wroteOn')}{' '}
                     <span>
                       <CalendarIcon className='inline w-4 text-white -mt-1 mr-1'/>
                       {new Date(+comment.created_at).toLocaleDateString('fi-FI')} at{' '}
