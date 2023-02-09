@@ -59,7 +59,7 @@ function CommentSection(props) {
     // Clear text area
     setNewComment('')
   }
-console.log(props.comments)// testing
+
   return (
     <div className='min-w-4xl pb-6'>
       <form className='flex flex-col'>

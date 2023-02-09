@@ -4,13 +4,9 @@ import { useNavigate } from 'react-router-dom'
 // redux
 import { useDispatch, useSelector } from 'react-redux'
 import { showNotif } from '../store/notificationsSlice'
-import { logIn } from '../store/authSlice'
 
 // homemade i18n
 import t from '../i18n/i18n'
-
-import placeholder from '../assets/cast-placeholder.jpeg'
-import Footer from '../components/footer'
 
 export default function UserProfilePage() {
   const [isLoading, setIsloading] = React.useState(true)
@@ -21,38 +17,35 @@ export default function UserProfilePage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  React.useEffect(() => {
-    const userData = window.localStorage.hypertube
-    if (isLoggedIn) return
-    else if (userData !== undefined) {
-      const parsedData = JSON.parse(userData)
-      dispatch(logIn(parsedData))
-      accessToken = parsedData.accessToken
-    } else navigate('/')
-  }, [])
 
   React.useEffect(() => {
-    if (!isLoggedIn) return
+    if (!isLoggedIn) navigate('/')
+
     async function getUserProfile() {
       setIsloading(true)
-      // console.log('testing __ uid: ' + uid, 'accessToken: ' + accessToken)
-      const target = window.location.pathname.split('/').pop() // uid is user using app not target so i changed it to target user from url
-      const response = await fetch(`/api/user-profile/${target}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-      // console.log(response) // testing
-      const data = await response.json()
-      if (response.ok) {
-        console.log(data) // testing
-
-        setProfile(data.user)
-        setIsloading(false)
-      } else {
-        console.log(data) // testing
+      try {
+        // uid is user using app not target so i changed it to target user from url
+        const target = window.location.pathname.split('/').pop()
+        const response = await fetch(`/api/user-profile/${target}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        // console.log(response) // testing
+        if (response.ok) {
+          const data = await response.json()
+          setProfile(data.user)
+          setIsloading(false)
+        } else {
+          dispatch(showNotif({
+            status: 'error',
+            message:  t(activeLanguage, 'signUpPage.notification.error')
+          }))
+        }
+      } catch (error) {
+        console.log(error)
       }
     }
     getUserProfile()
@@ -69,7 +62,7 @@ export default function UserProfilePage() {
               <h1 className='font-bold text-center'>
                 {profile.firstname} {profile.lastname}
               </h1>
-              <h2 className='font-bold mb-4 text-center font-thin'>
+              <h2 className='font-bold mb-4 text-center'>
                 <span className='font-thin'>as </span>
                 {profile.username}
               </h2>
@@ -84,7 +77,6 @@ export default function UserProfilePage() {
               <div className='px-6 pt-4 pb-2'></div>
             </div>
           </div>
-          <Footer />
         </>
       )}
     </div>
