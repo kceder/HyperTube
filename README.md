@@ -1,6 +1,6 @@
 # matcha #
 
-Video streaming app
+Web-app to stream torrent with P2P protocol (Popcorn-Time & Netflix-like).
 
 **Installation:**
 Prep: Please make sure you have [Docker](https://www.docker.com/) running on your machine (or install if needed, use init_docker.sh script if not working)
