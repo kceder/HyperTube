@@ -112,7 +112,7 @@
             "clearPicLabel": "Poista kuva",
             "noFilePlaceholder": "Ei tiedostoa valittuna",
             "maxSizeWarning": "Enintään 5MB",
-            "filetypeWarning": "Vain .jpg, .jpeg, .png ja .webp tiedostoja"
+            "filetypeWarning": "Vain .jpg, .jpeg, .png ja .webp"
         },
         "submitBtn": {
             "fillForm": "Täytä kaikki kentät",
@@ -156,7 +156,7 @@
             "clearPicLabel": "Poista kuva",
             "noFilePlaceholder": "Ei tiedostoa valittuna",
             "maxSizeWarning": "Enintään 5MB",
-            "filetypeWarning": "Vain .jpg, .jpeg, .png ja .webp tiedostoja"
+            "filetypeWarning": "Vain .jpg, .jpeg, .png ja .webp"
         },
         "submitBtn": {
             "fillForm": "Täytä kaikki kentät",

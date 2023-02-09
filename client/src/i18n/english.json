@@ -113,7 +113,7 @@
             "clearPicLabel": "clear pic",
             "noFilePlaceholder": "No File Selected",
             "maxSizeWarning": "Max image size is 5MB.",
-            "filetypeWarning": "Only .jpg, .jpeg, .png and .webp formats are supported."
+            "filetypeWarning": "Only .jpg, .jpeg, .png and .webp"
         },
         "submitBtn": {
             "fillForm": "Please, fill the form",
@@ -157,7 +157,7 @@
             "clearPicLabel": "clear pic",
             "noFilePlaceholder": "No File Selected",
             "maxSizeWarning": "Max image size is 5MB.",
-            "filetypeWarning": "Only .jpg, .jpeg, .png and .webp formats are supported."
+            "filetypeWarning": "Only .jpg, .jpeg, .png and .webp"
         },
         "submitBtn": {
             "fillForm": "Please, fill the form",

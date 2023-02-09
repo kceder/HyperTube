@@ -105,7 +105,7 @@ export default function RequestConfirmationPage() {
 
         <button
           type='submit'
-          className={`p-3 border-[1px] border-slate-500 rounded-md hover:enabled:bg-white hover:enabled:bg-opacity-20 w-full`}
+          className={`p-3 !mt-5 border-[1px] border-slate-500 rounded-md hover:enabled:bg-white hover:enabled:bg-opacity-20 w-full`}
         >
           {t(activeLanguage, 'requestConfirmationLinkPage.submitBtn')}
         </button>

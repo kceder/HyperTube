@@ -52,8 +52,8 @@ function InputFile(props) {
   }
 
   return (
-    <div className='relative flex flex-col w-full'>
-      <label className='pb-2 capitalize ml-2'>
+    <div className='relative flex flex-col  md:max-w-md'>
+      <label className='pb-2 capitalize mt-2'>
         {label}{isRequired && <sup className="text-sm">*</sup>}
       </label>
       <div className="flex items-center">
@@ -67,13 +67,13 @@ function InputFile(props) {
         />
 
         <button
-          className='border border-white rounded-l-md p-3 w-[35%] capitalize'
+          className='border border-white rounded-l-md p-2 w-[35%] capitalize'
           onClick={handleUploadFile}
         >
           {btnLabel}
         </button>
 
-        <p className='bg-white border border-white w-[65%] p-3 rounded-r-md text-slate-700 truncate'>
+        <p className='bg-white border border-white w-[65%] p-2 rounded-r-md text-slate-700 truncate'>
           {filename}
         </p>
 
@@ -91,8 +91,7 @@ function InputFile(props) {
         </button>
       </div>
       {errors[inputId] &&
-        <p className='absolute top-24 left-2 text-white'>
-          <HandRaisedIcon className='inline w-5 -mt-1 mx-2' />
+        <p className='absolute text-red-400  text-[0.7rem] bottom-[-1.1rem]'>
           {`${errors[inputId].message}`}
         </p>}
     </div>

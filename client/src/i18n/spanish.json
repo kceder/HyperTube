@@ -113,7 +113,7 @@
             "clearPicLabel": "borra pic",
             "noFilePlaceholder": "No archivo seleccionado",
             "maxSizeWarning": "Máximo tamaño es 5MB.",
-            "filetypeWarning": "Sólo formatos .jpg, .jpeg, .png and .webp se soportan."
+            "filetypeWarning": "Sólo formatos .jpg, .jpeg, .png and .webp"
         },
         "submitBtn": {
             "fillForm": "Porfi, rellena en condiciones",
@@ -157,7 +157,7 @@
             "clearPicLabel": "borra pic",
             "noFilePlaceholder": "No archivo seleccionado",
             "maxSizeWarning": "Tamaño máximo es 5MB.",
-            "filetypeWarning": "Sólo formatos .jpg, .jpeg, .png and .webp se soportan."
+            "filetypeWarning": "Sólo formatos .jpg, .jpeg, .png and .webp"
         },
         "submitBtn": {
             "fillForm": "Porfi, rellena en condiciones",

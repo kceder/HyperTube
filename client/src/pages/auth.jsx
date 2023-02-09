@@ -139,8 +139,8 @@ export default function AuthPage() {
   fortyTwoUrl += `scope=public`
 
   return (
-    <div className='text-white max-w-4xl mx-auto pt-10 pb-20 px-2'>
-      <h1 className='text-2xl text-center pb-8'>
+    <div className='text-white max-w-4xl mx-auto pt-4 pb-10 px-2'>
+      <h1 className='text-2xl text-center pb-4'>
         {t(activeLanguage, 'logInPage.title')}
       </h1>
 
@@ -172,7 +172,7 @@ export default function AuthPage() {
         <button
           type='submit'
           disabled={!isValid}
-          className={`p-3 border-[1px] border-slate-500 rounded-md hover:enabled:bg-white hover:enabled:bg-opacity-20 disabled:cursor-not-allowed w-full`}
+          className={`p-3 border-[1px] !mt-10 border-slate-500 rounded-md hover:enabled:bg-white hover:enabled:bg-opacity-20 disabled:cursor-not-allowed w-full`}
         >
           {isValid ?
           t(activeLanguage, 'logInPage.submitBtn.submitForm')

@@ -238,7 +238,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className='text-white sm:w-[18rem] md:w-[22rem] mx-auto pt-5 pb-2 px-2'>
+    <div className='text-white w-[18rem] md:w-[22rem] mx-auto pt-5 pb-2 px-2'>
       <h1 className='text-xl text-center pb-5 capitalize'>
         {t(activeLanguage, 'profilePage.title')}
       </h1>
@@ -309,7 +309,7 @@ export default function ProfilePage() {
 
         <button
           type='submit'
-          className={`!mb-2 p-3 border-[1px] border-slate-500 rounded-md hover:enabled:bg-white hover:enabled:bg-opacity-20 w-full`}
+          className={`!mb-2 !mt-5 p-3 border-[1px] border-slate-500 rounded-md hover:enabled:bg-white hover:enabled:bg-opacity-20 w-full`}
         >
           {t(activeLanguage, 'profilePage.submitBtn.submitForm')}
         </button>
