@@ -30,4 +30,12 @@ Architectural pattern: MVC.
 Libraries executing the transfer from a torrent to a video stream are forbidden: use of libraries such as webtorrent, pulsar or peerflix aretherefore considered cheating.
 
 **Deviations relative to subject/eval form**
-- The user must be able to register and connect via Omniauth. You must then implement at least 2 strategies: the 42 strategy and another one of your choice. We ppn
+- (42 omniauth works only in prod)
+- Consult the profile of any other user, ie see the profile picture and information. The
+email address however will remain private.
+--> I could not find how to do that. Is there a way to check another user's profile? 
+
+
+**TO DO**
+1) Test in prod all eval form, especially the omniauth
+2) Add the page to be able to check all other users' profiles
