@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 // redux
 import { useDispatch, useSelector } from 'react-redux'
 import { showNotif } from '../store/notificationsSlice'
+import { logIn } from '../store/authSlice'
 
 // homemade i18n
 import t from '../i18n/i18n'
@@ -11,7 +12,6 @@ import t from '../i18n/i18n'
 import placeholder from '../assets/cast-placeholder.jpeg'
 
 export default function UserProfilePage() {
-  const { activeLanguage } = useSelector((slices) => slices.language)
   const [isLoading, setIsloading] = React.useState(true)
   const [profile, setProfile] = React.useState(null)
 
@@ -19,7 +19,6 @@ export default function UserProfilePage() {
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  console.log(location.pathname.split('/').pop())
 
   React.useEffect(() => {
     const userData = window.localStorage.hypertube
