@@ -178,6 +178,8 @@ function MovieList(props) {
       {isLoading && <p className='text-white text-center text-2xl pt-20'>
         <ArrowPathIcon className='inline w-8 animate-spin'/>
       </p>}
+
+
     </div>
   </>)
 }

@@ -132,7 +132,7 @@ function MoviePage() {
   return (
     <div className='max-w-4xl min-w-[360px] md:w-4xl md:px-0 px-3 flex flex-col space-y-10 md:pt-7'>
       {isLoading && (
-        <ArrowPathIcon className='inline w-8 animate-spin'/>
+        <ArrowPathIcon className='inline w-8 animate-spin' />
       )}
 
       {!isLoading && (
@@ -150,15 +150,15 @@ function MoviePage() {
         </div>
       )}
       <div className='flex space-x-3 items-center h-3'>
-        <p className='text-white text-xl capitalize mb-3'>
+        {/* <p className='text-white text-xl capitalize mb-3'>
           {t(activeLanguage, 'moviePage.chooseQuality')}
-        </p>
-        <Select
+        </p> */}
+        {/* <Select
           onChange={(e) => setSelectedTorrent(e)}
           options={torrentOptions}
           value={selectedTorrent}
           className='mb-2'
-        />
+        /> */}
       </div>
       {!isLoading && movie && <MovieCard movie={movie} />}
       {!isLoading && comments &&
