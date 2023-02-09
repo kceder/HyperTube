@@ -38,3 +38,4 @@ Libraries executing the transfer from a torrent to a video stream are forbidden:
 1) Test in prod all eval form, especially the omniauth
 2) create the page to be able to check all other users' profiles
 3) add the omniauth buttons in register page?
+4) styling of other users profile
