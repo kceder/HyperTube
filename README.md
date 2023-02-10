@@ -46,7 +46,6 @@ We reviewed the eval form and based on our tests we comply with all points, apar
 
 Apart from these 2 points, all good, and we guarantee all works up to 10 movie downloads at same time (above this, there will be space issues in school computers and also slows down requests). 
 
-We have 3 bonuses: 
+We have 2 bonuses: 
 - Website is translated
 - Advanced search (genre, keyword, min rating) 
-- infinite scroll
