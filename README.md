@@ -5,9 +5,11 @@ Web-app to stream torrent with P2P protocol (Popcorn-Time & Netflix-like).
 **Installation:**
 Prep: Please make sure you have [Docker](https://www.docker.com/) running on your machine (or install if needed, use init_docker.sh script if not working)
 
-1. `git clone https://github.com/lifeBalance/hypertube-express`
-2. `make dev` in root directory (takes 3-4 minutes)
-3. go to `localhost` in browser
+1) Delete downloaded movies (yes, uploads and subtitles too)
+2) make prune
+3) git clone
+4) make prod-recreate
+5) go to localhost in browser
 
 For pgadmin credentials: 
 - username: hyper@tube.com
