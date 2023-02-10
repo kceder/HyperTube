@@ -17,10 +17,19 @@ For pgadmin credentials:
 - username: hyper@tube.com
 - password: hyper
 
-database credentials:
+Add a new server and with these credentials:
+
+server details:
+name: hyper
+
+switch to connection tab and with these connection credentials: 
 hostname: postgres
 port: 5432
 username: hyper
+password: hyper
+
+then expand hyper > schemas > public > tables > the table you want
+then click on "view data" icon
 
 **Stack:**
 Node.js, Express, React, Redux, Vite, Tailview and PostgreSQL.
