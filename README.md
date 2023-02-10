@@ -8,7 +8,7 @@ Prep: Please make sure you have [Docker](https://www.docker.com/) running on you
 1) Delete all files in goinfre / documents
 2) ensure docker is installed and purge data  (or even run init_docker shell script if needed) 
 3) git clone 
-4) make prod-clean (takes 2-3 minutes)
+4) make prod-clean
 5) go to localhost in browser 
 
 Note: each video on average takes 5-10 minutes of download to be able to start playing
