@@ -13,23 +13,21 @@ Prep: Please make sure you have [Docker](https://www.docker.com/) running on you
 
 Note: each video on average takes 5-10 minutes of download to be able to start playing
 
-For pgadmin credentials: 
-- username: hyper@tube.com
-- password: hyper
 
-Add a new server and with these credentials:
+**How to access database**
+- login with pgadmin credentials: 
+  - username: hyper@tube.com
+  - password: hyper
 
-server details:
-name: hyper
-
-switch to connection tab and with these connection credentials: 
-hostname: postgres
-port: 5432
-username: hyper
-password: hyper
-
-then expand hyper > schemas > public > tables > the table you want
-then click on "view data" icon
+- Add a new server and with these credentials:
+  - server details: name: hyper
+- switch to connection tab and with these connection credentials: 
+  - hostname: postgres
+  - port: 5432
+  - username: hyper
+  - password: hyper
+- expand hyper > schemas > public > tables >
+- click on "view data" icon
 
 **Stack:**
 Node.js, Express, React, Redux, Vite, Tailview and PostgreSQL.
