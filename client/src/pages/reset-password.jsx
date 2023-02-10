@@ -19,12 +19,7 @@ import t from '../i18n/i18n'
 export default function ResetPasswordPage() {
   const { activeLanguage } = useSelector((slices) => slices.language)
   const navigate = useNavigate()
-  React.useEffect(() => {
-    const userData = window.localStorage.hypertube
-    if (userData === undefined) {
-      navigate('/')
-    }
-  }, [])
+
   const validationSchema = z
     .object({
       password: z
