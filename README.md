@@ -8,7 +8,7 @@ Prep: Please make sure you have [Docker](https://www.docker.com/) running on you
 1) Delete all previous files in goinfre 
 2) ensure docker is installed and purge data  (or even run init_docker shell script if needed) 
 3) git clone 
-4) make prod
+4) make prod-clean
 5) go to localhost in browser 
 
 
