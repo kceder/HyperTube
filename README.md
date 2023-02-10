@@ -38,3 +38,15 @@ Architectural pattern: MVC.
 
 **Only Project constraint:**
 Libraries executing the transfer from a torrent to a video stream are forbidden: use of libraries such as webtorrent, pulsar or peerflix aretherefore considered cheating.
+
+**Comments about the eval form and our test coverage/results**
+We reviewed the eval form and based on our tests we comply with all points, apart from:
+- Search engine must interrogate at least 2 external sources --> apparently all projects only used one
+- Video conversion: For example this magnet must be streamable: --> we were not able to make it work.
+
+Apart from these 2 points, all good, and we guarantee all works up to 10 movie downloads at same time (above this, there will be space issues in school computers and also slows down requests). 
+
+We have 3 bonuses: 
+- Website is translated
+- Advanced search (genre, keyword, min rating) 
+- infinite scroll
