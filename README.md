@@ -5,7 +5,7 @@ Web-app to stream torrent with P2P protocol (Popcorn-Time & Netflix-like).
 **Installation:**
 Prep: Please make sure you have [Docker](https://www.docker.com/) running on your machine (or install if needed, use init_docker.sh script if not working)
 
-1) Delete all previous files, 
+1) Delete all previous files in goinfre 
 2) ensure docker is installed and purge data  (or even run init_docker shell script if needed) 
 3) git clone 
 4) make prod
