@@ -64,51 +64,55 @@ export default function AuthPage() {
           message: t(activeLanguage, 'logInPage.notification.loading')
         }),
       )
-      const result = await fetch('api/sessions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          username: data.userName,
-          password: data.password
-        }),
-        // credentials: 'include'
-      })
-      // console.log(result) // testing
-      const parsed = await result.json()
-      // console.log(parsed) // testing
+      try {
+        const result = await fetch('api/sessions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: data.userName,
+            password: data.password
+          }),
+          // credentials: 'include'
+        })
+        // console.log(result) // testing
+        if (result?.ok) {
+          const parsed = await result.json()
+          // console.log(parsed) // testing
 
-      if (!parsed.error) {
-        // Let's clear the input fields (unnecessary if we redirect...)
-        if (parsed.unconfirmed) {
-          // Show notification
-          dispatch(
-            showNotif({
-              status: 'success',
-              message: t(activeLanguage, 'logInPage.notification.unconfirmed')
-            }),
-          )
-        } else {
-          setValue('userName', '')
-          setValue('password', '')
-          // console.log(parsed.message) // testing
-          // Show notification
-          dispatch(
-            showNotif({
-              status: 'success',
-              message: t(activeLanguage, 'logInPage.notification.success')
-            }),
-          )
-          // set global state
-          dispatch(logIn({
-            uid: parsed.uid,
-            username: parsed.username,
-            profilePic: parsed.profilePic,
-            accessToken: parsed.accessToken
-          }))
+          if (!parsed?.error) {
+            // Let's clear the input fields (unnecessary if we redirect...)
+            if (parsed?.unconfirmed) {
+              // Show notification
+              dispatch(
+                showNotif({
+                  status: 'success',
+                  message: t(activeLanguage, 'logInPage.notification.unconfirmed')
+                }),
+              )
+            } else {
+              setValue('userName', '')
+              setValue('password', '')
+              // console.log(parsed.message) // testing
+              // Show notification
+              dispatch(
+                showNotif({
+                  status: 'success',
+                  message: t(activeLanguage, 'logInPage.notification.success')
+                }),
+              )
+              // set global state
+              dispatch(logIn({
+                uid: parsed.uid,
+                username: parsed.username,
+                profilePic: parsed.profilePic,
+                accessToken: parsed.accessToken
+              }))
+            }
+          }
+          // And redirect the user to the main page
+          navigate('/', { replace: true })
         }
-        // And redirect the user to the main page
-        navigate('/', { replace: true })
-      } else {
+       else {
         // console.log(parsed.error) // testing
 
         // Show notification
@@ -120,6 +124,9 @@ export default function AuthPage() {
         )
         setValue('password', '')
       }
+    } catch(error) {
+      console.log(error)
+    }
     }
     sendRequest()
   }
