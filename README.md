@@ -15,6 +15,7 @@ Note: each video on average takes 5-10 minutes of download to be able to start p
 
 
 **How to access database**
+- http://localhost:8080/
 - login with pgadmin credentials: 
   - username: hyper@tube.com
   - password: hyper
