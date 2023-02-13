@@ -84,6 +84,7 @@ async function getListMovies(req, res) {
 }
 
 async function getMovie(req, res) {
+  // console.log('req uid', req.uid);
   // Destructure the query
   const { language, hash, quality } = req.query // The language of the UI (needed for subtitles)
   const { id } = req.params // The imdb id of the movie (needed for querying the yts API)
@@ -95,7 +96,7 @@ async function getMovie(req, res) {
   const comments = await getComments({ imdb_id: id })
 
   // No need for a POST endpoint for marking movies as watched.
-  await markAsWatched({ uid: 1, imdbId: id })
+  await markAsWatched({ uid: req.uid, imdbId: id })
 
   try {
     // 1st of all, we request the movie with lots of extra information
