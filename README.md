@@ -1,4 +1,4 @@
-# matcha #
+# hypertube #
 
 Web-app to stream torrent with P2P protocol (Popcorn-Time & Netflix-like).
 
