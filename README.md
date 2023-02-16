@@ -1,4 +1,6 @@
-# hypertube #
+# HyperTube - Web app for torrent streaming  🍿
+
+## This project was done for educational purposes only is not deployed publicly
 
 Web-app to stream torrent with P2P protocol (Popcorn-Time & Netflix-like).
 
